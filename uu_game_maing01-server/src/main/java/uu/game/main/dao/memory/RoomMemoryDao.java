@@ -40,7 +40,9 @@ public class RoomMemoryDao implements RoomDao {
     entity.getSys().setCts(ZonedDateTime.now());
     entity.getSys().setMts(ZonedDateTime.now());
     entity.getSys().setRevision(0);
-    rooms.put(entity.getAwid(), Collections.singletonMap(entity.getId(), entity));
+    Map<String, Room> roomByAwid = rooms.getOrDefault(entity.getAwid(), new HashMap<>());
+    roomByAwid.put(entity.getId(), entity);
+    rooms.put(entity.getAwid(), roomByAwid);
     return entity;
   }
 
