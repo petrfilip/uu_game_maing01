@@ -98,6 +98,46 @@
         "consumes" : "*/*",
         "produces" : "application/*"
       },
+      "room/create" : {
+        "realization" : "uu.game.main.api.RoomController::roomCreate",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "room/join" : {
+        "realization" : "uu.game.main.api.RoomController::roomJoin",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "room/list" : {
+        "realization" : "uu.game.main.api.RoomController::roomList",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "score/getByUuIdentity" : {
+        "realization" : "uu.game.main.api.ScoreController::getByUuIdentity",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "score/list" : {
+        "realization" : "uu.game.main.api.ScoreController::list",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
       "sys/appClientToken/initKeys" : {
         "realization" : "uu.app.workspace.controller.AppClientTokenController::initKeys",
         "httpMethod" : "POST",

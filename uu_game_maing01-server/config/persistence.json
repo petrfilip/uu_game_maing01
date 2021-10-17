@@ -10,6 +10,10 @@
           "realization" : "uu.game.main.dao.mongo.GameMainMongoDao",
           "maxSoi" : "16000000"
         },
+        "score" : {
+          "realization" : "uu.game.main.dao.mongo.ScoreMongoDao",
+          "maxSoi" : "16000000"
+        },
         "sysAppConfig" : {
           "realization" : "uu.app.workspace.store.dao.SysAppConfigMongoDao",
           "maxSoi" : "16000000",
