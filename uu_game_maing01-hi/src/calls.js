@@ -13,6 +13,35 @@ let Calls = {
     return response.data;
   },
 
+  // start of uuGame
+
+  roomGet(dtoInData) {
+    let commandUri = Calls.getCommandUri("room/get");
+    return Calls.call("get", commandUri, dtoInData);
+  },
+
+  roomList(dtoInData) {
+    let commandUri = Calls.getCommandUri("room/list");
+    return Calls.call("get", commandUri, dtoInData);
+  },
+
+  roomCreate(dtoInData) {
+    let commandUri = Calls.getCommandUri("room/create");
+    return Calls.call("post", commandUri, dtoInData);
+  },
+
+  roomDelete(dtoInData) {
+    let commandUri = Calls.getCommandUri("room/delete");
+    return Calls.call("post", commandUri, dtoInData);
+  },
+
+  scoreList(dtoInData) {
+    let commandUri = Calls.getCommandUri("score/list");
+    return Calls.call("get", commandUri, dtoInData);
+  },
+
+  // end of uuGame
+
   loadDemoContent(dtoIn) {
     let commandUri = Calls.getCommandUri("loadDemoContent");
     return Calls.call("get", commandUri, dtoIn);

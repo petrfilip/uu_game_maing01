@@ -21,6 +21,7 @@ public final class RoomController {
 
   @Command(path = "room/create", method = POST)
   public Room roomCreate(CommandContext<RoomCreateDtoIn> ctx) {
+    ctx.getDtoIn().setRoomOwner(ctx.getAuthenticationSession().getIdentity().getUUIdentity());
     return roomAbl.roomCreate(ctx.getUri().getAwid(), ctx.getDtoIn());
   }
 
@@ -31,6 +32,7 @@ public final class RoomController {
 
   @Command(path = "room/join", method = POST)
   public Room roomJoin(CommandContext<RoomJoinDtoIn> ctx) {
+    ctx.getDtoIn().setPlayerId(ctx.getAuthenticationSession().getIdentity().getUUIdentity());
     return roomAbl.roomJoinPlayer(ctx.getUri().getAwid(), ctx.getDtoIn());
   }
 

@@ -132,7 +132,7 @@
       },
       "score/list" : {
         "realization" : "uu.game.main.api.ScoreController::list",
-        "httpMethod" : "POST",
+        "httpMethod" : "GET",
         "type" : "CMD",
         "primary" : false,
         "consumes" : "*/*",

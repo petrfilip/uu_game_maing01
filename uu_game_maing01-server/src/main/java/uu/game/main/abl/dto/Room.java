@@ -3,12 +3,16 @@ package uu.game.main.abl.dto;
 import java.util.ArrayList;
 import java.util.List;
 import uu.app.datastore.domain.LockableSysAttributes;
+import uu.app.datastore.mongodb.domain.UuDataEntitySysAttributes;
 import uu.app.objectstore.domain.UuObject;
 import uu.game.main.abl.GameInstance;
 
 public class Room implements UuObject {
-
+  
   private String awid;
+  private UuDataEntitySysAttributes sys;
+
+
   private String id;
   private GameInstance game;
   private String roomName;
@@ -88,6 +92,9 @@ public class Room implements UuObject {
 
   @Override
   public LockableSysAttributes getSys() {
-    return null;
+    if (sys == null) {
+      sys = new UuDataEntitySysAttributes();
+    }
+    return sys;
   }
 }

@@ -1,7 +1,6 @@
 package uu.game.main.api;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import javax.inject.Inject;
 import uu.app.server.CommandContext;
@@ -19,7 +18,7 @@ public final class ScoreController {
   @Inject
   private ScoreAbl scoreAbl;
 
-  @Command(path = "score/list", method = POST)
+  @Command(path = "score/list", method = GET)
   public ScoreListDtoOut list(CommandContext<ScoreListDtoIn> ctx) {
     return scoreAbl.list(ctx.getUri().getAwid(), ctx.getDtoIn());
   }

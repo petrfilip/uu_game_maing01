@@ -28,7 +28,7 @@ public class RoomMemoryDao implements RoomDao {
 
   @Override
   public boolean exists(String awid, String id) throws DatastoreRuntimeException, DatastoreUnexpectedRuntimeException {
-    Map<String, Room> idRoomMap = rooms.get(awid);
+    Map<String, Room> idRoomMap = rooms.getOrDefault(awid, Collections.emptyMap());
     return idRoomMap.containsKey(id);
   }
 
@@ -38,6 +38,7 @@ public class RoomMemoryDao implements RoomDao {
   public Room create(Room entity) throws DatastoreRuntimeException, DatastoreLimitsRuntimeException {
     entity.setId(generatedIdentifier());
     entity.getSys().setCts(ZonedDateTime.now());
+    entity.getSys().setMts(ZonedDateTime.now());
     entity.getSys().setRevision(0);
     rooms.put(entity.getAwid(), Collections.singletonMap(entity.getId(), entity));
     return entity;
@@ -50,7 +51,7 @@ public class RoomMemoryDao implements RoomDao {
 
   @Override
   public Room get(String awid, String id) throws DatastoreRuntimeException, DatastoreUnexpectedRuntimeException {
-    Map<String, Room> idRoomMap = rooms.get(awid);
+    Map<String, Room> idRoomMap = rooms.getOrDefault(awid, Collections.emptyMap());
     return idRoomMap.get(id);
   }
 
@@ -70,7 +71,7 @@ public class RoomMemoryDao implements RoomDao {
 
   @Override
   public void delete(String awid, String id) throws DatastoreRuntimeException, DatastoreUnexpectedRuntimeException, DatastoreConcurrencyRuntimeException {
-    Map<String, Room> idRoomMap = rooms.get(awid);
+    Map<String, Room> idRoomMap = rooms.getOrDefault(awid, Collections.emptyMap());
     idRoomMap.remove(id);
   }
 
@@ -81,7 +82,7 @@ public class RoomMemoryDao implements RoomDao {
 
   @Override
   public List<Room> list(String awid, Pageable pageable) throws DatastoreRuntimeException {
-    Map<String, Room> idRoomMap = rooms.get(awid);
+    Map<String, Room> idRoomMap = rooms.getOrDefault(awid, Collections.emptyMap());
     return new ArrayList<>(idRoomMap.values());
   }
 
