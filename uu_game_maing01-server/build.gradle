@@ -1,0 +1,62 @@
+apply plugin: 'java'
+apply plugin: "com.sourcemuse.mongo"
+apply plugin: 'uu.appg01.devkit'
+
+// repositories setup
+repositories {
+  maven { url uuProdRepository }
+}
+
+// java properties setup
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+configurations {
+  all*.exclude module: 'spring-boot-starter-logging'
+}
+
+dependencies {
+  compile "uu.appg01:uu_appg01_server:${uuAppg01ServerVersion}"
+  compile "org.modelmapper:modelmapper"
+
+  testCompile "uu.appg01:uu_appg01_core-test_support:${uuAppg01ServerVersion}"
+}
+
+bootRepackage {
+  enabled = false
+}
+
+// testing with embedded MongoDb
+mongo {
+  System.setProperty("os.arch", "x86_64")
+  //workaround for https://github.com/flapdoodle-oss/de.flapdoodle.embed.mongo/issues/167
+  mongoVersion '3.4.3'
+}
+
+test {
+  runWithMongoDb = true
+}
+
+// artifacts which will be published to Nexus repository
+uuPublishArtifacts {
+  sources = true
+  javadoc = true
+  reports = false
+  tests = false
+  testSources = false
+}
+
+uuPublish {
+  repositories.mavenDeployer {
+    repository(url: uuDevReleaseRepository)
+    snapshotRepository(url: uuDevSprintRepository)
+  }
+}
+
+// deployment to C3
+war {
+  archiveName = project.name + '.war'
+  from('public') {
+    into('WEB-INF/classes/public')
+  }
+}

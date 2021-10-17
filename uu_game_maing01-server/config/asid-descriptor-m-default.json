@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0.0",
+  "schemaSpecificationUri": "https://uuapp.plus4u.net/uu-bookkit-maing01/bef682626ed943f28cde360ccb325981/book/page?code=uuSubAppInstanceDescriptor",
+  "uuSubApp": {
+    "code": "UU.GAME.MAING01",
+    "version": "0.1.0",
+    "name": "uuGameMaing01",
+    "description": "",
+    "license": "License Commercial",
+    "asidRequired": true,
+    "awidCount": 1,
+    "resourcePoolUri": null,
+    "uuAppNodeSetMap": {
+      "CMD": {
+        "nodeSize": "G1_M",
+        "nodeCount": {
+          "min": 1,
+          "max": 1
+        },
+        "appPackUri": "",
+        "runtimeStack": "UU.APPG01/APPSERVER_JAVA_OPENJDK_STACK-1.4"
+      }
+    },
+    "uuAppObjectStoreMap": {
+      "OSID_1": {
+        "technology": "MongoDB-4.0",
+        "size": 0.25,
+        "backup": false,
+        "alias": "primary"
+      }
+    },
+    "uuConfigMap": {
+    }
+  }
+}

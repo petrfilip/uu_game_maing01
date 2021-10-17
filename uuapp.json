@@ -1,0 +1,24 @@
+{
+  "product": "uu_game_maing01",
+  "version": "0.1.0",
+  "license": "License Commercial",
+  "description": {
+    "cs": "",
+    "en": ""
+  },
+  "devkit": {
+    "development": {
+      "appBoxLocationUri": "----- VALUE REQUIRED -----",
+      "appDeploymentUri": null
+    }
+  },
+  "uu_game_maing01-hi": {},
+  "uu_game_maing01-server": {
+    "devkit": {
+      "development": {
+        "appBoxLocationUri": "----- VALUE REQUIRED -----",
+        "appDeploymentUri": null
+      }
+    }
+  }
+}

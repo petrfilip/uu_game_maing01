@@ -1,0 +1,41 @@
+{
+  "name": "uu_game_maing01-hi",
+  "version": "0.1.0",
+  "private": true,
+  "description": "",
+  "license": "License Commercial",
+  "namespace": "UuGame",
+  "spec": "uu5-app; uu_appg01_devkit@4.0.1",
+  "dependencies": {
+    "systemjs": "0.19.47",
+    "uu_contentkitg01": "^2.0.0",
+    "uu_plus4u5g01": "^4.0.0",
+    "uu_territoryg01": "^1.0.0",
+    "uu5g04": "^1.19.0"
+  },
+  "uuBuildSettings": {
+    "externals": {}
+  },
+  "devDependencies": {
+    "uu_appg01_devkit": "^4.0.1"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "scripts": {
+    "clean": "uu_appg01_devkit clean",
+    "test": "uu_appg01_devkit test",
+    "build": "uu_appg01_devkit build",
+    "package": "uu_appg01_devkit package",
+    "start": "uu_appg01_devkit start",
+    "prettify": "uu_appg01_devkit prettify",
+    "vulnerabilityScan": "uu_appg01_devkit vulnerabilityScan",
+    "generate": "uu_appg01_devkit generate",
+    "lsiExport": "uu_appg01_devkit lsiExport",
+    "lsiImport": "uu_appg01_devkit lsiImport",
+    "uuAppDevKitUpgrade": "uu_appg01_devkit uuAppDevKitUpgrade"
+  },
+  "prettier": {
+    "printWidth": 120
+  }
+}

@@ -1,0 +1,3 @@
+rootProject.name = 'tga_uuappdev_repo22-2061-1'
+include 'uu_game_maing01-server'
+include 'uu_game_maing01-hi'

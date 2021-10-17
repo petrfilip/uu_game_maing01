@@ -1,0 +1,43 @@
+allprojects {
+  group 'uu.game.maing01'
+  version '0.1.0'
+
+  gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+      options.compilerArgs << "-Xlint:unchecked,deprecation"
+    }
+  }
+}
+
+defaultTasks 'start'
+
+buildscript {
+  ext {
+    uuAppg01ServerVersion = "2.+"
+    uuAppg01DevKitVersion = "1.+"
+    uuProdRepository = 'https://repo.plus4u.net/repository/jars/'
+    gradlePluginsRepository = 'https://plugins.gradle.org/m2/'
+  }
+
+  repositories {
+    maven { url uuProdRepository }
+    maven { url gradlePluginsRepository }
+  }
+
+  dependencies {
+    classpath("com.sourcemuse.gradle.plugin:gradle-mongo-plugin:1.0.0")
+    classpath("uu.appg01:uu_appg01_devkit:${uuAppg01DevKitVersion}")
+  }
+}
+
+ext {
+  // Base package configuration for scanning
+  uuSubAppPackageName = "uu.game.main"
+
+  // Configuration of Nexus repositories for publishing output JARs
+  // TODO change to your nexus repository URL
+  uuDevReleaseRepository = 'https://repo.plus4u.net/repository/jars'
+  uuDevSprintRepository = 'https://repo.plus4u.net/repository/jars-sprint'
+}
+
+apply plugin: "uu.appg01.template"

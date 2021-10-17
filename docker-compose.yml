@@ -1,0 +1,7 @@
+version: '3'
+services:
+  uuGame-mongo:
+    image: mongo
+    tty: true
+    ports:
+      - 27017:27017

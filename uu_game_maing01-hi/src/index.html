@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>uuGame</title>
+
+    <!-- NOTE Following URLs are automatically replaced during build according to the configuration.
+      Additionally, <base> element is automatically inserted here so that relative paths are loaded relatively to app base,
+      not relatively to current use case in the URL. -->
+    <% template = `
+    <script src="uu5-environment.js"></script>
+    <script src="~uu5g04/uu5g04-browser-update.min.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="https://cdn.plus4u.net/libs/clearsans/2.0.0/fonts/clear-sans.min.css">
+    <link type="text/css" rel="stylesheet" href="loading.css">
+    <link rel="preconnect" href="https://uuidentity.plus4u.net">
+    <script src="~systemjs/system.js"></script>
+
+    <meta name="apple-mobile-web-app-title" content="uuGame">
+    <meta name="application-name" content="uuGame">
+    <meta name="msapplication-TileImage" content="assets/meta/mstile-150x150.png">
+    <meta name="msapplication-TileColor" content="#004191">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/meta/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="assets/meta/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="assets/meta/favicon-16x16.png" sizes="16x16">
+    <link rel="mask-icon" href="assets/meta/safari-pinned-tab.svg" color="#004191">
+
+    <!-- Add extra <link>s or <script>s here if necessary. -->
+
+    ` %><%= htmlWebpackPlugin.options.ejsFixUrls(template) %>
+  </head>
+
+  <body class="clear-sans">
+    <div id="uuApp">
+      <div class="uu-app-loading">
+        <div class="uu-app-loading-spinner">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <div class="uu-app-loading-content">uuGame</div>
+      </div>
+    </div>
+    
+<%=
+  // insert error snippet if application initialization fails entirely
+  htmlWebpackPlugin.options.renderTemplate("index-error.html", {
+    handlerName: "handleUuAppScriptError",
+    targetElementId: "uuApp"
+  })
+%>
+
+    <script>
+      if (!window.SystemJS) handleUuAppScriptError(new Error("SystemJS failed to load."));
+      else SystemJS.import("./index.js").then(function (Index) {
+        Index.render("uuApp");
+      }).catch(handleUuAppScriptError);
+    </script>
+
+<%=
+  // insert <noscript> snippet for users with turned off JavaScript
+  htmlWebpackPlugin.options.renderTemplate("index-noscript.html")
+%>
+  </body>
+</html>

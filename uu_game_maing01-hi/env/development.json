@@ -1,0 +1,7 @@
+{
+  "port": 1234,
+  "autoOpenInBrowser": false,
+  "basePath": "/uu-game-main/0-0/",
+  "useMockData": false,
+  "uu5Environment": {}
+}

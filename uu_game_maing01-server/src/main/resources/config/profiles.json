@@ -1,0 +1,17 @@
+{
+  "{asid}": {
+    "profileList": ["AsidOwner"],
+    "permissionMap": {
+      "{asidOwner}": ["AsidOwner"]
+    },
+    "useCaseMap": {
+    }
+  },
+  "*": {
+    "profileList": ["Authorities", "Executives", "AwidOwner"],
+    "useCaseMap": {
+      "init": ["AwidOwner"],
+      "defaultUve": ["Public"]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "title": {
+    "cs": "Zkušební data",
+    "en": "Testing data"
+  },
+  "name": "<uu5string/><UU5.Bricks.Lsi><UU5.Bricks.Lsi.Item language='cs'>Zkušební data</UU5.Bricks.Lsi.Item><UU5.Bricks.Lsi.Item language='en'>Testing data</UU5.Bricks.Lsi.Item></UU5.Bricks.Lsi>",
+  "description": "<uu5string/><UU5.Bricks.Lsi><UU5.Bricks.Lsi.Item language='cs'><UU5.Bricks.P>Testovací mock data, které jsou čteny s lokálního souboru.</UU5.Bricks.P><UU5.Bricks.P>Pokud chcete vypnout čtení mock dat a volat rozhraní serveru, upravte konfiguraci v &lt;client&gt;/config/config.js hodnotu parametru useMockData : false </UU5.Bricks.P></UU5.Bricks.Lsi.Item><UU5.Bricks.Lsi.Item language='en'><UU5.Bricks.P>Testing mock data loaded from local file.</UU5.Bricks.P><UU5.Bricks.P>For switching off mock dat and calling server api change parameter useMockData : false in configuration file v &lt;client&gt;/config/config.js </UU5.Bricks.P></UU5.Bricks.Lsi.Item></UU5.Bricks.Lsi>",
+  "languages": [
+    "cs",
+    "en"
+  ]
+}
