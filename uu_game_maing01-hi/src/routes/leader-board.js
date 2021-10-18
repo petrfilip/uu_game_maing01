@@ -3,6 +3,9 @@ import UU5 from "uu5g04";
 import {createVisualComponent} from "uu5g04-hooks";
 import Config from "./config/config";
 import ScoreProvider from "../bricks/score-provider";
+import PlayerScoreItem from "../bricks/player-score-item";
+import Uu5Tiles from "uu5tilesg02";
+
 //@@viewOff:imports
 
 const LeaderBoard = createVisualComponent({
@@ -18,9 +21,16 @@ const LeaderBoard = createVisualComponent({
 
     function renderReady(items) {
       return (
-        <>
-          {JSON.stringify(items)}
-        </>
+        <Uu5Tiles.Grid
+          data={items}
+          tileHeight="auto"
+          tileMinWidth={200}
+          tileMaxWidth={400}
+          tileSpacing={8}
+          rowSpacing={8}
+        >
+          {PlayerScoreItem}
+        </Uu5Tiles.Grid>
       );
     }
 
@@ -43,8 +53,7 @@ const LeaderBoard = createVisualComponent({
 
     //@@viewOn:render
     return (
-      <UU5.Bricks.Container>
-        Leader Board
+      <UU5.Bricks.Section level={1} header="Leader board" className={UU5.Common.Css.css`padding: 16px`}>
 
         <ScoreProvider>
           {({state, data, errorData, handlerMap}) => {
@@ -64,7 +73,7 @@ const LeaderBoard = createVisualComponent({
           }}
         </ScoreProvider>
 
-      </UU5.Bricks.Container>
+      </UU5.Bricks.Section>
     );
     //@@viewOff:render
   },
