@@ -19,10 +19,11 @@ const Game = createVisualComponent({
     const [value, setValue] = useState();
     const [waiting, setWaiting] = useState(false);
 
-    useEffect(() => {
+    useEffect(async () => {
       if (props?.params?.roomId) {
         setWaiting(true);
-        Calls.roomJoin({roomId: props.params.roomId})
+        const room = await Calls.roomJoin({roomId: props.params.roomId})
+        setRoomState(room);
         poll(); //todo abort request when room changed
         setWaiting(false);
       }
@@ -58,13 +59,10 @@ const Game = createVisualComponent({
     const draw = (ctx, frameCount) => {
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
       ctx.fillStyle = '#000000'
-      ctx.beginPath()
 
       console.log(GameState?.output?.game)
 
-      const ee = JSON.parse(JSON.stringify(GameState?.output?.game))
-
-      const arr = [...GameState?.output?.game];
+      const arr = GameState?.output?.game ? [...GameState?.output?.game] : []
       if (Array.isArray(arr)) {
 
         for (const element of arr) {
