@@ -48,7 +48,7 @@ const RoomList = createVisualComponent({
     const addList = (
       <UU5.Forms.TextButton
         value={list?.roomName || ""}
-        message={<UU5.Bricks.Lsi lsi={"Add"}/>}
+        message={"Add"}
         buttons={[
           {
             icon: "mdi-check",

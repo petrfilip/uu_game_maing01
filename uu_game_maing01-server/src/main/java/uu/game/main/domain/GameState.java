@@ -57,4 +57,15 @@ public class GameState<STATE> {
   public void setGame(STATE game) {
     this.game = game;
   }
+
+  @Override
+  public String toString() {
+    return "GameState{" +
+      "tick=" + tick +
+      ", state=" + state +
+      ", params=" + params +
+      ", players=" + players +
+      ", game=" + game +
+      '}';
+  }
 }

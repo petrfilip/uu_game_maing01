@@ -18,6 +18,9 @@
       "AwidOwner"
     ],
     "useCaseMap": {
+      "polling/poll": [
+        "Public"
+      ],
       "init": [
         "AwidOwner"
       ],
@@ -35,6 +38,14 @@
         "Authorities"
       ],
       "room/join": [
+        "Executives",
+        "Authorities"
+      ],
+      "gameInstance/addPlayerMove": [
+        "Executives",
+        "Authorities"
+      ],
+      "gameInstance/startGame": [
         "Executives",
         "Authorities"
       ]

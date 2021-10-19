@@ -10,6 +10,22 @@
         "consumes" : "*/*",
         "produces" : "text/html, application/*"
       },
+      "gameInstance/addPlayerMove" : {
+        "realization" : "uu.game.main.api.RoomController::roomAddPlayerMoves",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "gameInstance/startGame" : {
+        "realization" : "uu.game.main.api.RoomController::startGame",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
       "init" : {
         "realization" : "uu.game.main.api.GameMainController::create",
         "httpMethod" : "POST",
@@ -92,6 +108,14 @@
       },
       "oidc/setAllowedRedirects" : {
         "realization" : "uu.app.authentication.oidc.controller.OidcController::setAllowedRedirects",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "polling/poll" : {
+        "realization" : "uu.game.main.api.BroadcastController::poll",
         "httpMethod" : "POST",
         "type" : "CMD",
         "primary" : false,

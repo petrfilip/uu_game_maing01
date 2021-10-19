@@ -9,9 +9,12 @@ import uu.app.server.annotation.Command;
 import uu.app.server.annotation.CommandController;
 import uu.game.main.abl.RoomAbl;
 import uu.game.main.abl.dto.Room;
+import uu.game.main.api.dto.AddPlayerMoveDtoIn;
 import uu.game.main.api.dto.RoomCreateDtoIn;
 import uu.game.main.api.dto.RoomJoinDtoIn;
 import uu.game.main.api.dto.RoomListDtoOut;
+import uu.game.main.api.dto.StartGameDtoIn;
+import uu.game.main.domain.GameState;
 
 @CommandController
 public final class RoomController {
@@ -34,6 +37,18 @@ public final class RoomController {
   public Room roomJoin(CommandContext<RoomJoinDtoIn> ctx) {
     ctx.getDtoIn().setPlayerId(ctx.getAuthenticationSession().getIdentity().getUUIdentity());
     return roomAbl.roomJoinPlayer(ctx.getUri().getAwid(), ctx.getDtoIn());
+  }
+
+  @Command(path = "gameInstance/addPlayerMove", method = POST)
+  public void roomAddPlayerMoves(CommandContext<AddPlayerMoveDtoIn> ctx) {
+    ctx.getDtoIn().setPlayerId(ctx.getAuthenticationSession().getIdentity().getUUIdentity());
+    roomAbl.addPlayerMove(ctx.getUri().getAwid(), ctx.getDtoIn());
+  }
+
+  @Command(path = "gameInstance/startGame", method = POST)
+  public GameState startGame(CommandContext<StartGameDtoIn> ctx) {
+    ctx.getDtoIn().setPlayerId(ctx.getAuthenticationSession().getIdentity().getUUIdentity());
+    return roomAbl.startGame(ctx.getUri().getAwid(), ctx.getDtoIn());
   }
 
 

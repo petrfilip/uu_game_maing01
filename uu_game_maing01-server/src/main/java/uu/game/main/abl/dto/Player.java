@@ -1,5 +1,7 @@
 package uu.game.main.abl.dto;
 
+import java.util.Objects;
+
 public class Player {
 
   private String playerId;
@@ -48,5 +50,30 @@ public class Player {
 
   public void setScore(Integer score) {
     this.score = score;
+  }
+
+
+  /**
+   * Do not override
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Player player = (Player) o;
+    return Objects.equals(playerId, player.playerId);
+  }
+
+
+  /**
+   * Do not override
+   */
+  @Override
+  public int hashCode() {
+    return Objects.hash(playerId);
   }
 }

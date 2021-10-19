@@ -5,26 +5,26 @@ import java.util.List;
 import uu.app.datastore.domain.LockableSysAttributes;
 import uu.app.datastore.mongodb.domain.UuDataEntitySysAttributes;
 import uu.app.objectstore.domain.UuObject;
-import uu.game.main.abl.GameInstance;
+import uu.game.main.abl.GameInstanceAbl;
 
 public class Room implements UuObject {
-  
+
   private String awid;
   private UuDataEntitySysAttributes sys;
 
 
   private String id;
-  private GameInstance game;
+  private GameInstanceAbl game;
   private String roomName;
   private RoomStateEnum state;
   private Player roomOwner;
   private List<Player> connectedPlayers = new ArrayList<>();
 
-  public GameInstance getGame() {
+  public GameInstanceAbl getGame() {
     return game;
   }
 
-  public void setGame(GameInstance game) {
+  public void setGame(GameInstanceAbl game) {
     this.game = game;
   }
 
