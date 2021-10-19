@@ -18,7 +18,7 @@ public class BroadcastController {
 
   @Command(path = "polling/poll", method = RequestMethod.POST)
   public PollDtoOut poll(CommandContext<PollDtoIn> ctx) {
-    return broadcastAbl.poll();
+    return broadcastAbl.poll(ctx.getUri().getAwid(), ctx.getDtoIn());
   }
 
 }

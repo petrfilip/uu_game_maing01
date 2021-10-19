@@ -5,7 +5,7 @@ import uu.game.main.abl.dto.Room;
 public class RoomEvent extends GameServerEvent<Room> {
 
 
-  public RoomEvent(Object source, Room output) {
-    super(source, output);
+  public RoomEvent(Object source, String awid, String roomId, Room output) {
+    super(source, awid, roomId, output);
   }
 }

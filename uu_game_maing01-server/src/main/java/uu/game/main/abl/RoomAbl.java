@@ -88,7 +88,7 @@ public class RoomAbl {
 
     room.getGame().addPlayer(new Player(dtoIn.getPlayerId()));
 
-    eventPublisher.publish(new RoomEvent(this, room));
+    eventPublisher.publish(new RoomEvent(this, awid, dtoIn.getRoomId(), room));
 
     return room;
   }
@@ -96,7 +96,7 @@ public class RoomAbl {
   public void addPlayerMove(String awid, AddPlayerMoveDtoIn dtoIn) {
     Room room = roomDao.get(awid, dtoIn.getRoomId());
     room.getGame().addPlayerMove(dtoIn.getPlayerId(), dtoIn.getPlayerMoves());
-    eventPublisher.publish(new RoomEvent(this, room));
+    eventPublisher.publish(new RoomEvent(this, awid, dtoIn.getRoomId(), room));
   }
 
   public GameState startGame(String awid, StartGameDtoIn dtoIn) {
@@ -122,16 +122,16 @@ public class RoomAbl {
       @Override
       public void onNextRound(GameState gameState) {
         LOGGER.info("Next round  calculated: {}", gameState);
-        eventPublisher.publish(new GameEvent(this, gameState));
+        eventPublisher.publish(new GameEvent(this, awid, dtoIn.getRoomId(), gameState));
       }
 
       @Override
       public void onGameEnd(GameState gameState) {
         LOGGER.info("Game finished: {}", gameState);
-        eventPublisher.publish(new GameEvent(this, gameState));
+        eventPublisher.publish(new GameEvent(this, awid, dtoIn.getRoomId(), gameState));
       }
     }, dtoIn.getGameParameters());
-    eventPublisher.publish(new GameEvent(this, gameState));
+    eventPublisher.publish(new GameEvent(this, awid, dtoIn.getRoomId(), gameState));
     LOGGER.info("Game started: {}", gameState);
     return gameState;
   }

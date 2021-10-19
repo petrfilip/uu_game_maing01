@@ -6,8 +6,6 @@ import Calls from "../calls";
 import Canvas from "../bricks/canvas";
 //@@viewOff:imports
 
-let GameState = {};
-
 const Game = createVisualComponent({
   //@@viewOn:statics
   displayName: Config.TAG + "Game",
@@ -16,18 +14,34 @@ const Game = createVisualComponent({
   render(props) {
     //@@viewOn:hooks
     const [roomState, setRoomState] = useState();
-    const [value, setValue] = useState();
+    const [gameState, setGameState] = useState();
     const [waiting, setWaiting] = useState(false);
 
-    useEffect(async () => {
+
+    useEffect(() => {
+      async function poll() {
+        while (true) {
+          console.log(props.params.roomId)
+          const result = await Calls.poll({roomId: props.params.roomId});
+          console.log(result)
+          if (result.eventType === 'RoomEvent') {
+            setRoomState(oldValue => ({...oldValue, ...result}));
+          } else if (result.eventType === 'GameEvent') {
+            setGameState(oldValue => ({...oldValue, ...result}));
+          }
+        }
+      }
+
+
       if (props?.params?.roomId) {
         setWaiting(true);
-        const room = await Calls.roomJoin({roomId: props.params.roomId})
+        const room = Calls.roomJoin({roomId: props.params.roomId})
         setRoomState(room);
         poll(); //todo abort request when room changed
         setWaiting(false);
       }
       return () => {
+
       }
     }, [props?.params?.roomId]);
     //@viewOff:hooks
@@ -38,18 +52,9 @@ const Game = createVisualComponent({
       ctx.fillRect(event.clientX, event.clientY, 5, 5); // fill in the pixel at (10,10)
     }
 
-    async function poll() {
-      while (true) {
-        const result = await Calls.poll({roomId: props.params.roomId});
-        console.log(result)
-        GameState = result;
-        //todo if room or game event
-      }
-    }
 
     async function startGameHandler() {
       const result = await Calls.gameInstanceStartGame({roomId: props.params.roomId})
-      setRoomState(result);
     }
 
     function sendPosition(event) {
@@ -60,14 +65,12 @@ const Game = createVisualComponent({
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
       ctx.fillStyle = '#000000'
 
-      console.log(GameState?.output?.game)
-
-      const arr = GameState?.output?.game ? [...GameState?.output?.game] : []
+      const arr = gameState?.output?.game ?? []
       if (Array.isArray(arr)) {
 
         for (const element of arr) {
 
-          console.log(element)
+          // console.log(element)
           ctx.fillStyle = "red";
           ctx.fillRect(element.x, element.y, 5, 5)
         }
@@ -89,13 +92,13 @@ const Game = createVisualComponent({
           Waiting: {waiting}
         </UU5.Bricks.Container>
 
-        <UU5.Bricks.Container>
-          Value: {value}
-        </UU5.Bricks.Container>
+        <pre>
+          GAME: {JSON.stringify(gameState, undefined, 2)}
+        </pre>
 
-        <UU5.Bricks.Container>
-          Room: {JSON.stringify(roomState)}
-        </UU5.Bricks.Container>
+        <pre>
+          ROOM: {JSON.stringify(roomState, undefined, 2)}
+        </pre>
 
 
         {roomState && <UU5.Bricks.Container>
@@ -103,6 +106,7 @@ const Game = createVisualComponent({
                   onMouseDown={() => document.addEventListener("mousemove", sendPosition)}
                   onMouseUp={() => document.removeEventListener("mousemove", sendPosition)}
           />
+          Game is running
         </UU5.Bricks.Container>}
 
 
