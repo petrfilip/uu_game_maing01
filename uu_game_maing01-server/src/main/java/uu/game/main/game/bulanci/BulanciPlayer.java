@@ -1,67 +1,18 @@
 package uu.game.main.game.bulanci;
 
-import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.List;
-import uu.game.main.abl.dto.Player;
+import uu.game.main.game.bulanci.ammo.Ammo;
+import uu.game.main.game.common.GameRectangle;
 
-public class BulanciPlayer {
+public class BulanciPlayer extends GameRectangle {
 
-  private Player player;
-
-  private Integer x;
-  private Integer y;
-
-  private Integer width;
-  private Integer height;
-
-  private Integer speed;
-
-  private List<Ammo> ammo;
-
+  private Integer speed = 10;
+  private List<Ammo> ammo = new ArrayList<>();
   private Integer lives = 1;
 
-  public Rectangle getRectangle() {
-    return new Rectangle(x,y,width,height);
-  }
-
-  public Player getPlayer() {
-    return player;
-  }
-
-  public void setPlayer(Player player) {
-    this.player = player;
-  }
-
-  public Integer getX() {
-    return x;
-  }
-
-  public void setX(Integer x) {
-    this.x = x;
-  }
-
-  public Integer getY() {
-    return y;
-  }
-
-  public void setY(Integer y) {
-    this.y = y;
-  }
-
-  public Integer getWidth() {
-    return width;
-  }
-
-  public void setWidth(Integer width) {
-    this.width = width;
-  }
-
-  public Integer getHeight() {
-    return height;
-  }
-
-  public void setHeight(Integer height) {
-    this.height = height;
+  public BulanciPlayer(Integer x, Integer y, Integer width, Integer height) {
+    super(x, y, width, height);
   }
 
   public Integer getSpeed() {

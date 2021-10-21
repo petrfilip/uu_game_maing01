@@ -1,20 +1,23 @@
-package uu.game.main.game.bulanci;
+package uu.game.main.game.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.awt.Rectangle;
-import java.util.Collection;
 
-public abstract class Ammo {
-
+public class GameRectangle {
 
   private Integer x;
   private Integer y;
   private Integer width;
   private Integer height;
-  private boolean isUsed = false;
 
+  public GameRectangle(Integer x, Integer y, Integer width, Integer height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+  }
 
-  abstract void applyEffect(Collection<BulanciPlayer> value);
-
+  @JsonIgnore
   public Rectangle getRectangle() {
     return new Rectangle(x, y, width, height);
   }
@@ -49,13 +52,5 @@ public abstract class Ammo {
 
   public void setHeight(Integer height) {
     this.height = height;
-  }
-
-  public boolean isUsed() {
-    return isUsed;
-  }
-
-  public void setUsed(boolean used) {
-    isUsed = used;
   }
 }

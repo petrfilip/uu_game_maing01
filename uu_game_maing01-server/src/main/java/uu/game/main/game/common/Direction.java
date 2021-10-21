@@ -1,4 +1,4 @@
-package uu.game.main.game.bulanci;
+package uu.game.main.game.common;
 
 public enum Direction {
   UP,

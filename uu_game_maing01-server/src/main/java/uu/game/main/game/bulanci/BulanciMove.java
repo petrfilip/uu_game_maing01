@@ -1,12 +1,13 @@
 package uu.game.main.game.bulanci;
 
-import java.util.List;
+import uu.game.main.game.bulanci.ammo.Ammo;
+import uu.game.main.game.common.Direction;
 
 public class BulanciMove {
 
   private Direction move;
 
-  private Ammo fired;
+  private Ammo fired; //todo only ammo name
 
   private boolean sprint;
 
