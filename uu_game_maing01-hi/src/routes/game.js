@@ -19,8 +19,10 @@ const Game = createVisualComponent({
 
 
     useEffect(() => {
+      let fetch = true;
+
       async function poll() {
-        while (true) {
+        while (fetch) {
           console.log(props.params.roomId)
           const result = await Calls.poll({roomId: props.params.roomId});
           console.log(result)
@@ -41,7 +43,7 @@ const Game = createVisualComponent({
         setWaiting(false);
       }
       return () => {
-
+        fetch = false;
       }
     }, [props?.params?.roomId]);
     //@viewOff:hooks
