@@ -87,20 +87,17 @@ const Game = createVisualComponent({
       <UU5.Bricks.Section level={1} header="Game" className={UU5.Common.Css.css`padding: 16px`}>
 
         <UU5.Bricks.Container>
-          GAME :: {props?.params?.roomId}
+          RoomId :: {props?.params?.roomId}
         </UU5.Bricks.Container>
 
-        <UU5.Bricks.Container>
-          Waiting: {waiting}
-        </UU5.Bricks.Container>
 
         <pre>
           GAME: {JSON.stringify(gameState, undefined, 2)}
         </pre>
 
-        <pre>
-          ROOM: {JSON.stringify(roomState, undefined, 2)}
-        </pre>
+        {/*<pre>*/}
+        {/*  ROOM: {JSON.stringify(roomState, undefined, 2)}*/}
+        {/*</pre>*/}
 
 
         {roomState && <UU5.Bricks.Container>

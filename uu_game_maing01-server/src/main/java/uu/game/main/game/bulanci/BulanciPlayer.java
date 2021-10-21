@@ -1,14 +1,17 @@
 package uu.game.main.game.bulanci;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.ArrayList;
 import java.util.List;
 import uu.game.main.game.bulanci.ammo.Ammo;
+import uu.game.main.game.bulanci.helper.PlayerAmmoSerialization;
 import uu.game.main.game.common.GameRectangle;
 
 public class BulanciPlayer extends GameRectangle {
 
   private Integer speed = 10;
-  private List<Ammo> ammo = new ArrayList<>();
+  @JsonSerialize(using = PlayerAmmoSerialization.class)
+  private List<Ammo> ammoList = new ArrayList<>();
   private Integer lives = 1;
 
   public BulanciPlayer(Integer x, Integer y, Integer width, Integer height) {
@@ -23,12 +26,12 @@ public class BulanciPlayer extends GameRectangle {
     this.speed = speed;
   }
 
-  public List<Ammo> getAmmo() {
-    return ammo;
+  public List<Ammo> getAmmoList() {
+    return ammoList;
   }
 
-  public void setAmmo(List<Ammo> ammo) {
-    this.ammo = ammo;
+  public void setAmmoList(List<Ammo> ammoList) {
+    this.ammoList = ammoList;
   }
 
   public Integer getLives() {

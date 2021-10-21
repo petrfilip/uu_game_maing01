@@ -36,17 +36,17 @@ public class BulanciRule implements IRule<BulanciBoard, BulanciMove> {
 
     for (Player player : players) {
       BulanciPlayer bulanciPlayer = new BulanciPlayer(Utils.getRandomNumber(0, 500), Utils.getRandomNumber(0, 500), 30, 30);
-      bulanciPlayer.getAmmo().add(new Bullet());
-      bulanciPlayer.getAmmo().add(new Bullet());
-      bulanciPlayer.getAmmo().add(new Bullet());
-      bulanciPlayer.getAmmo().add(new Bullet());
-      bulanciPlayer.getAmmo().add(new Mine());
+      bulanciPlayer.getAmmoList().add(new Bullet());
+      bulanciPlayer.getAmmoList().add(new Bullet());
+      bulanciPlayer.getAmmoList().add(new Bullet());
+      bulanciPlayer.getAmmoList().add(new Bullet());
+      bulanciPlayer.getAmmoList().add(new Mine());
       currentState.getGame().getPlayers().put(player, bulanciPlayer);
     }
 
     List<Wall> walls = new ArrayList<>(); //todo if generate ; add support to load predefined maps
     for (int i = 0; i < 5; i++) {
-      walls.add(new Wall("tree", Utils.getRandomNumber(0, 30), Utils.getRandomNumber(0, 30), 30, 30));
+      walls.add(new Wall("tree", Utils.getRandomNumber(0, 500), Utils.getRandomNumber(0, 500), 30, 30));
     }
     currentState.getGame().setWall(walls);
 

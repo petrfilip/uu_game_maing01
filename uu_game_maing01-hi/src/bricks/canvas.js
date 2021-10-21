@@ -44,7 +44,7 @@ const Canvas = createVisualComponent({
 
 
     //@@viewOn:render
-    return <canvas width={1000} height={1000} style={{
+    return <canvas width={500} height={500} style={{
       border: "1px solid black",
       height: "100vh",
       width: "100vw"
