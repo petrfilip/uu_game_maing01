@@ -10,7 +10,7 @@ import uu.game.main.abl.dto.Player;
 import uu.game.main.domain.GameState;
 import uu.game.main.domain.IRule;
 
-@Service("draw")
+@Service("bulanci")
 @Scope(scopeName = SCOPE_PROTOTYPE)
 public class BulanciRule implements IRule<Board, BulanciMove> {
 
