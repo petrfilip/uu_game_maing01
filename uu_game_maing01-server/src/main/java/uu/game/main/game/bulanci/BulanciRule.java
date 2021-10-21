@@ -15,6 +15,7 @@ import uu.game.main.domain.GameStateEnum;
 import uu.game.main.domain.IRule;
 import uu.game.main.game.bulanci.ammo.Bullet;
 import uu.game.main.game.bulanci.ammo.Mine;
+import uu.game.main.game.common.GameRectangle;
 import uu.game.main.helper.Utils;
 
 @Service("bulanci")
@@ -44,13 +45,20 @@ public class BulanciRule implements IRule<BulanciBoard, BulanciMove> {
       currentState.getGame().getPlayers().put(player, bulanciPlayer);
     }
 
-    List<Wall> walls = new ArrayList<>(); //todo if generate ; add support to load predefined maps
-    for (int i = 0; i < 5; i++) {
-      walls.add(new Wall("tree", Utils.getRandomNumber(0, 500), Utils.getRandomNumber(0, 500), 30, 30));
-    }
-    currentState.getGame().setWall(walls);
+    currentState.getGame().setObstacles(generateObstacles());
 
     return currentState;
+  }
+
+  private List<Obstacle> generateObstacles() {
+    List<Obstacle> obstacles = new ArrayList<>(); //todo if generate ; add support to load predefined maps
+    for (int i = 0; i < 3; i++) {
+      obstacles.add(new Obstacle(ObstacleTypeEnum.TREE, Utils.getRandomNumber(0, 500), Utils.getRandomNumber(0, 500), 30, 30));
+    }
+
+    obstacles.add(new Obstacle(ObstacleTypeEnum.MUSHROOM, new GameRectangle(0, 0, 100, 20), new GameRectangle(0, 100, 100, 20)));
+
+    return obstacles;
   }
 
   @Override

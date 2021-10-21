@@ -13,7 +13,7 @@ public class BulanciBoard {
 
   @JsonSerialize(keyUsing = PlayerSerializer.class)
   private Map<Player, BulanciPlayer> players = new HashMap<>();
-  private List<Wall> wall = new ArrayList<>();
+  private List<Obstacle> obstacles = new ArrayList<>();
   private List<Ammo> ammo = new ArrayList<>();
 
 
@@ -25,12 +25,13 @@ public class BulanciBoard {
     this.players = players;
   }
 
-  public List<Wall> getWall() {
-    return wall;
+
+  public List<Obstacle> getObstacles() {
+    return obstacles;
   }
 
-  public void setWall(List<Wall> wall) {
-    this.wall = wall;
+  public void setObstacles(List<Obstacle> obstacles) {
+    this.obstacles = obstacles;
   }
 
   public List<Ammo> getAmmo() {
