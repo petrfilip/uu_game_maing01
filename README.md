@@ -12,6 +12,18 @@ See following guidelines:
 - přidán docker s databází (volitelné)
 - přidán gradle 5.1.1
 
+## Inicializace
+V insomnii a v application.properties upravit údaje a `asidLicenseOwnerList`, `awidLicenseOwner` a `token`.
+Token je na https://uuidentity.plus4u.net/. 
+
+Zavolat uuCmds nad běžící aplikací:
+- sys/uuSubAppInstance/init
+- sys/uuAppWorkspace/create
+- sys/uuAppWorkspace/init
+- aplikace běží na http://localhost:8080/uu-game-maing01/22222222222222222222222222222222/
+
+Pro vývoj GUI je potřeba ještě spustit `npm start` v adresáři `*-hi`. 
+
 ## dtoOut
 
 ```json
