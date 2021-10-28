@@ -39,8 +39,11 @@ const Game = createVisualComponent({
         }
       }
 
+      document.addEventListener("keydown", sendPosition)
 
       if (props?.params?.roomId) {
+
+
         setWaiting(true);
         const room = Calls.roomJoin({roomId: props.params.roomId})
         setRoomState(room);
@@ -53,6 +56,8 @@ const Game = createVisualComponent({
         setGameState({})
         setRoomState({})
         setWaiting(true)
+        document.removeEventListener("keydown", sendPosition)
+
       }
     }, [props?.params?.roomId]);
     //@viewOff:hooks
@@ -68,23 +73,101 @@ const Game = createVisualComponent({
       const result = await Calls.gameInstanceStartGame({roomId: props.params.roomId})
     }
 
+
     function sendPosition(event) {
-      Calls.gameInstanceAddPlayerMove({roomId: props.params.roomId, playerMoves: {x: event.clientX, y: event.clientY}})
+      let direction;
+      let sprinting = false;
+      let fired = null;
+      let reload = false;
+      switch (event.key) {
+        case 'ArrowLeft':
+          direction = "LEFT";
+          break;
+        case 'ArrowRight':
+          direction = "RIGHT";
+          break;
+        case 'ArrowUp':
+          direction = "UP";
+          break
+        case 'ArrowDown':
+          direction = "DOWN";
+          break;
+        case "R":
+          reload = true;
+          break;
+        case ' ':
+          fired = "BULLET"
+          break;
+
+      }
+      if (event.shiftKey) {
+        sprinting = true;
+        fired = null;
+      }
+      console.log(event.key);
+      console.log("direction: " + direction);
+      console.log("sprinting: " + sprinting);
+      console.log("fire: " + fired);
+      console.log("reload: " + reload);
+      console.log(event.clientX + " " + event.clientY);
+      Calls.gameInstanceAddPlayerMove({roomId: props.params.roomId, playerMoves: {move: direction, fired: fired}})
+      event.preventDefault();
+    }
+
+
+    const playerColors = [];
+
+    const getPlayerColors = (index) => {
+      if (playerColors[index] === undefined) {
+        playerColors[index] = "#" + Math.floor(Math.random() * (16777215)).toString(16);
+      }
+      return playerColors[index];
+    }
+
+    function drawPlayers(ctx, players) {
+      for (let i = 0; i < players.length; i++) {
+        const player = players[i]
+        ctx.fillStyle = "blue";
+        ctx.fillRect(player.x, player.y, player.width, player.height);
+      }
+    }
+
+    function drawAmmo(ctx, ammos) {
+      for (let i = 0; i < ammos.length; i++) {
+        const ammo = ammos[i]
+        ctx.fillStyle = "red"
+        ctx.fillRect(ammo.x, ammo.y, ammo.width, ammo.height);
+      }
+    }
+
+    function drawObstacles(ctx, obstacles) {
+      for (let i = 0; i < obstacles.length; i++) {
+        const obstacle = obstacles[i]
+        for (const wall of obstacle.walls) {
+          console.log(wall)
+          ctx.fillStyle = "purple" // todo obstacle.type
+          ctx.fillRect(wall.x, wall.y, wall.width, wall.height);
+        }
+        // for (const wall of obstacle) {
+        //
+        // }
+      }
     }
 
     const draw = (ctx, frameCount) => {
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
       ctx.fillStyle = '#000000'
 
-      const arr = gameState?.output?.game ?? []
-      if (Array.isArray(arr)) {
+      ctx.fillStyle = "lightgreen";
+      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-        for (const element of arr) {
+      const game = gameState?.output?.game ?? []
 
-          // console.log(element)
-          ctx.fillStyle = "red";
-          ctx.fillRect(element.x, element.y, 5, 5)
-        }
+
+      if (game) {
+        drawPlayers(ctx, Object.values(game.players))
+        drawAmmo(ctx, game.ammo)
+        drawObstacles(ctx,game.obstacles);
       }
 
       ctx.fill()
@@ -107,13 +190,13 @@ const Game = createVisualComponent({
 
         <UU5.Bricks.Card className="uu5-common-padding-s" style={{
           border: "1px solid black",
-          height: "500px",
+          minHeight: "550px",
           width: "100%"
         }}>
           {gameState?.output?.tick > 0 ?
             <Canvas draw={draw}
-                    onMouseDown={() => document.addEventListener("mousemove", sendPosition)}
-                    onMouseUp={() => document.removeEventListener("mousemove", sendPosition)}
+              // onMouseDown={() => document.addEventListener("mousemove", sendPosition)}
+              // onMouseUp={() => document.removeEventListener("mousemove", sendPosition)}
             />
             :
             <>
@@ -140,11 +223,9 @@ const Game = createVisualComponent({
           <UU5.Bricks.Button onClick={startGameHandler} colorSchema={"secondary"}>Restart game<UU5.Bricks.Icon icon="mdi-apple"/></UU5.Bricks.Button>}
 
 
+        <UU5.Bricks.Paragraph content={"debug"}/>
 
-
-      <UU5.Bricks.Paragraph content={"debug"}/>
-
-    <UU5.Bricks.Panel header={props?.params?.roomId} content={<pre>
+        <UU5.Bricks.Panel header={props?.params?.roomId} content={<pre>
           RoomId :: {props?.params?.roomId}
         </pre>}/>
 

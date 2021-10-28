@@ -1,12 +1,15 @@
 package uu.game.main.game.bulanci;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import uu.game.main.game.bulanci.ammo.Ammo;
+import uu.game.main.game.bulanci.helper.AmmoDeserializer;
 import uu.game.main.game.common.Direction;
 
 public class BulanciMove {
 
   private Direction move;
 
+  @JsonDeserialize(using = AmmoDeserializer.class)
   private Ammo fired; //todo only ammo name
 
   private boolean sprint;

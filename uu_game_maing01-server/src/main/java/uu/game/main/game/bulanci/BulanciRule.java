@@ -13,8 +13,10 @@ import uu.game.main.abl.dto.Player;
 import uu.game.main.domain.GameState;
 import uu.game.main.domain.GameStateEnum;
 import uu.game.main.domain.IRule;
+import uu.game.main.game.bulanci.ammo.AmmoDamagable;
 import uu.game.main.game.bulanci.ammo.Bullet;
 import uu.game.main.game.bulanci.ammo.Mine;
+import uu.game.main.game.common.Direction;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.helper.Utils;
 
@@ -36,7 +38,7 @@ public class BulanciRule implements IRule<BulanciBoard, BulanciMove> {
     currentState.setGame(currentState.getGame() != null ? currentState.getGame() : new BulanciBoard());
 
     for (Player player : players) {
-      BulanciPlayer bulanciPlayer = new BulanciPlayer(Utils.getRandomNumber(0, 500), Utils.getRandomNumber(0, 500), 30, 30);
+      BulanciPlayer bulanciPlayer = new BulanciPlayer(Direction.DOWN, Utils.getRandomNumber(0, 500), Utils.getRandomNumber(0, 500), 30, 30);
       bulanciPlayer.getAmmoList().add(new Bullet());
       bulanciPlayer.getAmmoList().add(new Bullet());
       bulanciPlayer.getAmmoList().add(new Bullet());
@@ -67,24 +69,24 @@ public class BulanciRule implements IRule<BulanciBoard, BulanciMove> {
     BulanciBoard game = newGameState.getGame();
 
     // player moves
-    for (Player player : newGameState.getPlayers()) {
+    for (Player player : newGameState.getGame().getPlayers().keySet()) {
       BulanciMove bulanciMove = unprocessedMoves.getOrDefault(player, new BulanciMove());
       BulanciPlayer bulanciPlayer = game.getPlayers().get(player);
       calculateNextStep(bulanciPlayer, bulanciMove);
 
-      if (bulanciMove.getFired() instanceof Bullet) {
-        ((Bullet) bulanciMove.getFired()).setDirection(bulanciMove.getMove());
-      }
-
       if (bulanciMove.getFired() != null) {
+        bulanciMove.getFired().init(bulanciPlayer, bulanciMove);
         game.getAmmo().add(bulanciMove.getFired()); //todo check if has this kind of amo
       }
       game.getPlayers().put(player, bulanciPlayer);
     }
 
-    // affect players with ammo
+    // affect damagable with ammo
+    Collection<AmmoDamagable> damagable = new ArrayList<>();
+    damagable.addAll(game.getPlayers().values());
+    damagable.addAll(game.getObstacles());
     game.setAmmo(game.getAmmo().stream()
-      .peek(ammo -> ammo.applyEffect(game.getPlayers().values(), newGameState.getTick()))
+      .peek(ammo -> ammo.applyEffect(damagable, newGameState.getTick()))
       .filter(ammo -> !ammo.isUsed()).collect(Collectors.toList()));
 
     return newGameState;
@@ -97,6 +99,11 @@ public class BulanciRule implements IRule<BulanciBoard, BulanciMove> {
     //todo add sprint
 
     if (move.getMove() == null) {
+      return player;
+    }
+
+    if (!move.getMove().equals(player.getDirection())) {
+      player.setDirection(move.getMove());
       return player;
     }
 

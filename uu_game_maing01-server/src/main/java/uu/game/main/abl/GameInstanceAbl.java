@@ -111,7 +111,7 @@ public class GameInstanceAbl {
     currentState.setParams(gameParameters);
     rule.init(currentState, players.values());
     ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
-    scheduledFuture = executor.scheduleAtFixedRate(this::calculateNextState, 0, 1000, TimeUnit.MILLISECONDS);
+    scheduledFuture = executor.scheduleAtFixedRate(this::calculateNextState, 0, 50, TimeUnit.MILLISECONDS);
     return currentState;
   }
 

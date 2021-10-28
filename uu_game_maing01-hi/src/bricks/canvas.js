@@ -44,11 +44,7 @@ const Canvas = createVisualComponent({
 
 
     //@@viewOn:render
-    return <canvas width={500} height={500} style={{
-      border: "1px solid black",
-      height: "100vh",
-      width: "100vw"
-    }} ref={canvasRef} {...rest} />
+    return <canvas width={800} height={600} ref={canvasRef} {...rest} />
     //@@viewOff:render
   },
 });

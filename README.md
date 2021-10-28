@@ -10,7 +10,11 @@ See following guidelines:
 
 - běží na http://localhost:8080/uu-game-maing01/22222222222222222222222222222222/
 - přidán docker s databází (volitelné)
-- přidán gradle 5.1.1
+- přidán gradle wrapper 5.1.1
+
+## demo
+
+![Ukázka hry](demo.gif)
 
 ## Inicializace
 V insomnii a v application.properties upravit údaje a `asidLicenseOwnerList`, `awidLicenseOwner` a `token`.
