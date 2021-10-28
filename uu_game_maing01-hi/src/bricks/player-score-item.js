@@ -55,6 +55,7 @@ const PlayerScoreItem = createVisualComponent({
             <strong className={UU5.Common.Css.css`margin-right: 8px`}>
               <UU5.Bricks.Lsi lsi={data.playerName}/>
             </strong>
+            <Plus4U5.Bricks.BusinessCard visual="micro" elevation="0" elevationHover="1" uuIdentity={data.uuIdentity}/>
             <em>
               <small>({data.uuIdentity})</small>
             </em>

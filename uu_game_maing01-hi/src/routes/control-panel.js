@@ -1,5 +1,4 @@
 //@@viewOn:imports
-import Calls from "calls";
 import UU5 from "uu5g04";
 import "uu5g04-bricks";
 import "uu5g04-forms";
@@ -9,6 +8,7 @@ import "uu_territoryg01-artifactifc";
 import Plus4U5 from "uu_plus4u5g01";
 import "uu_plus4u5g01-app";
 import UuContentKit from "uu_contentkitg01";
+import Calls from "calls";
 
 import Config from "./config/config.js";
 import Lsi from "../config/lsi.js";

@@ -13,9 +13,9 @@ defaultTasks 'start'
 
 buildscript {
   ext {
-    uuAppg01ServerVersion = "2.+"
-    uuAppg01DevKitVersion = "1.+"
-    uuProdRepository = 'https://repo.plus4u.net/repository/jars/'
+    uuAppg01ServerVersion = "4.+"
+    uuAppg01DevKitVersion = "3.+"
+    uuProdRepository = 'https://repo.plus4u.net/repository/public-java/'
     gradlePluginsRepository = 'https://plugins.gradle.org/m2/'
   }
 

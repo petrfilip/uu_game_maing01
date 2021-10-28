@@ -26,16 +26,8 @@
         "consumes" : "*/*",
         "produces" : "application/*"
       },
-      "init" : {
-        "realization" : "uu.game.main.api.GameMainController::create",
-        "httpMethod" : "POST",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
       "oidc/callback" : {
-        "realization" : "uu.app.authentication.oidc.controller.OidcUveController::callback",
+        "realization" : "uu.app.authentication.oidc.api.controller.OidcUveController::callback",
         "httpMethod" : "GET",
         "type" : "UVE",
         "primary" : false,
@@ -43,7 +35,7 @@
         "produces" : "text/*"
       },
       "oidc/extendSession" : {
-        "realization" : "uu.app.authentication.oidc.controller.OidcController::extendSession",
+        "realization" : "uu.app.authentication.oidc.api.controller.OidcController::extendSession",
         "httpMethod" : "POST",
         "type" : "CMD",
         "primary" : false,
@@ -51,7 +43,7 @@
         "produces" : "application/*"
       },
       "oidc/getAllowedRedirects" : {
-        "realization" : "uu.app.authentication.oidc.controller.OidcController::getAllowedRedirects",
+        "realization" : "uu.app.authentication.oidc.api.controller.OidcController::getAllowedRedirects",
         "httpMethod" : "GET",
         "type" : "CMD",
         "primary" : false,
@@ -59,7 +51,7 @@
         "produces" : "application/*"
       },
       "oidc/getClientId" : {
-        "realization" : "uu.app.authentication.oidc.controller.OidcController::getClientId",
+        "realization" : "uu.app.authentication.oidc.api.controller.OidcController::getClientId",
         "httpMethod" : "GET",
         "type" : "CMD",
         "primary" : false,
@@ -67,7 +59,7 @@
         "produces" : "application/*"
       },
       "oidc/grantCallToken" : {
-        "realization" : "uu.app.authentication.oidc.controller.OidcController::grantCallToken",
+        "realization" : "uu.app.authentication.oidc.api.controller.OidcController::grantCallToken",
         "httpMethod" : "POST",
         "type" : "CMD",
         "primary" : false,
@@ -75,7 +67,7 @@
         "produces" : "application/*"
       },
       "oidc/initOidcClient" : {
-        "realization" : "uu.app.authentication.oidc.controller.OidcController::initOidcClient",
+        "realization" : "uu.app.authentication.oidc.api.controller.OidcController::initOidcClient",
         "httpMethod" : "POST",
         "type" : "CMD",
         "primary" : false,
@@ -83,7 +75,7 @@
         "produces" : "application/*"
       },
       "oidc/introspect" : {
-        "realization" : "uu.app.authentication.oidc.controller.OidcController::introspect",
+        "realization" : "uu.app.authentication.oidc.api.controller.OidcController::introspect",
         "httpMethod" : "GET",
         "type" : "CMD",
         "primary" : false,
@@ -91,7 +83,7 @@
         "produces" : "application/*"
       },
       "oidc/logout" : {
-        "realization" : "uu.app.authentication.oidc.controller.OidcUveController::logout",
+        "realization" : "uu.app.authentication.oidc.api.controller.OidcUveController::logout",
         "httpMethod" : "GET",
         "type" : "UVE",
         "primary" : false,
@@ -99,7 +91,7 @@
         "produces" : "text/*"
       },
       "oidc/refresh" : {
-        "realization" : "uu.app.authentication.oidc.controller.OidcUveController::refresh",
+        "realization" : "uu.app.authentication.oidc.api.controller.OidcUveController::refresh",
         "httpMethod" : "GET",
         "type" : "UVE",
         "primary" : false,
@@ -107,7 +99,7 @@
         "produces" : "text/*"
       },
       "oidc/setAllowedRedirects" : {
-        "realization" : "uu.app.authentication.oidc.controller.OidcController::setAllowedRedirects",
+        "realization" : "uu.app.authentication.oidc.api.controller.OidcController::setAllowedRedirects",
         "httpMethod" : "POST",
         "type" : "CMD",
         "primary" : false,
@@ -163,7 +155,7 @@
         "produces" : "application/*"
       },
       "sys/appClientToken/initKeys" : {
-        "realization" : "uu.app.workspace.controller.AppClientTokenController::initKeys",
+        "realization" : "uu.app.workspace.api.controller.AppClientTokenController::initKeys",
         "httpMethod" : "POST",
         "type" : "CMD",
         "primary" : false,
@@ -171,103 +163,7 @@
         "produces" : "application/*"
       },
       "sys/appClientToken/listKeys" : {
-        "realization" : "uu.app.workspace.controller.AppClientTokenController::listKeys",
-        "httpMethod" : "GET",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/awidDump" : {
-        "realization" : "uu.app.workspace.controller.DataStoreDumpController::awidDump",
-        "httpMethod" : "GET",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/awidRestore" : {
-        "realization" : "uu.app.workspace.controller.DataStoreDumpController::awidRestore",
-        "httpMethod" : "POST",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/calculateDataStoreStats" : {
-        "realization" : "uu.app.workspace.controller.DataStoreStatsController::calculateDataStoreStats",
-        "httpMethod" : "POST",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/clearAppWorkspaceConfig" : {
-        "realization" : "uu.app.workspace.controller.WorkspaceConfigController::clearAppWorkspaceConfig",
-        "httpMethod" : "POST",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/connectArtifact" : {
-        "realization" : "uu.app.workspace.controller.WorkspaceController::connectArtifact",
-        "httpMethod" : "POST",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/createPermission" : {
-        "realization" : "uu.app.workspace.controller.PermissionController::createPermission",
-        "httpMethod" : "POST",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/deleteAppWorkspace" : {
-        "realization" : "uu.app.workspace.controller.WorkspaceController::deleteAppWorkspace",
-        "httpMethod" : "POST",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/deleteAuditLogRecordsBeforeTime" : {
-        "realization" : "uu.app.auditlog.controller.SysAuditLogRecordController::deleteBeforeTime",
-        "httpMethod" : "POST",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/deleteImportMappings" : {
-        "realization" : "uu.app.workspace.controller.DataStoreDumpController::deleteImportMappings",
-        "httpMethod" : "POST",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/deletePermission" : {
-        "realization" : "uu.app.workspace.controller.PermissionController::deletePermission",
-        "httpMethod" : "POST",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/dropDataStores" : {
-        "realization" : "uu.app.workspace.controller.DataStoreController::dropDataStores",
-        "httpMethod" : "POST",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/dump" : {
-        "realization" : "uu.app.workspace.controller.DataStoreDumpController::dump",
+        "realization" : "uu.app.workspace.api.controller.AppClientTokenController::listKeys",
         "httpMethod" : "GET",
         "type" : "CMD",
         "primary" : false,
@@ -275,63 +171,15 @@
         "produces" : "application/*"
       },
       "sys/generateDiagnosticReport" : {
-        "realization" : "uu.app.monitoring.controller.DiagnosticReportController::generateDiagnosticReport",
+        "realization" : "uu.app.monitoring.api.controller.DiagnosticReportController::generateDiagnosticReport",
         "httpMethod" : "POST",
         "type" : "CMD",
         "primary" : false,
         "consumes" : "*/*",
         "produces" : "application/*"
       },
-      "sys/getAppConfig" : {
-        "realization" : "uu.app.workspace.controller.AppConfigController::getAppConfig",
-        "httpMethod" : "GET",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/getAppRuntimeMode" : {
-        "realization" : "uu.app.workspace.controller.AppConfigController::getAppRuntimeMode",
-        "httpMethod" : "GET",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/getAppWorkspace" : {
-        "realization" : "uu.app.workspace.controller.WorkspaceController::getAppWorkspace",
-        "httpMethod" : "GET",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/getAppWorkspaceConfig" : {
-        "realization" : "uu.app.workspace.controller.WorkspaceConfigController::getAppWorkspaceConfig",
-        "httpMethod" : "GET",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/getAwidRuntimeMode" : {
-        "realization" : "uu.app.workspace.controller.WorkspaceController::getAwidRuntimeMode",
-        "httpMethod" : "GET",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
       "sys/getConfiguration" : {
-        "realization" : "uu.app.monitoring.controller.ConfigurationController::getConfiguration",
-        "httpMethod" : "GET",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/getDataStoreStats" : {
-        "realization" : "uu.app.workspace.controller.DataStoreStatsController::getDataStoreStats",
+        "realization" : "uu.app.monitoring.api.controller.ConfigurationController::getConfiguration",
         "httpMethod" : "GET",
         "type" : "CMD",
         "primary" : false,
@@ -339,7 +187,7 @@
         "produces" : "application/*"
       },
       "sys/getEnvironment" : {
-        "realization" : "uu.app.monitoring.controller.EnviromentController::getEnvironment",
+        "realization" : "uu.app.monitoring.api.controller.EnviromentController::getEnvironment",
         "httpMethod" : "GET",
         "type" : "CMD",
         "primary" : false,
@@ -347,23 +195,7 @@
         "produces" : "application/*"
       },
       "sys/getHealth" : {
-        "realization" : "uu.app.monitoring.controller.HealthController::getHealth",
-        "httpMethod" : "GET",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/getLicenseOwner" : {
-        "realization" : "uu.app.workspace.controller.WorkspaceController::getLicenceOwner",
-        "httpMethod" : "GET",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/getProfile" : {
-        "realization" : "uu.app.workspace.controller.ProfileController::getProfile",
+        "realization" : "uu.app.monitoring.api.controller.HealthController::getHealth",
         "httpMethod" : "GET",
         "type" : "CMD",
         "primary" : false,
@@ -371,7 +203,7 @@
         "produces" : "application/*"
       },
       "sys/getStatistics" : {
-        "realization" : "uu.app.monitoring.controller.StatisticsController::getStatistics",
+        "realization" : "uu.app.monitoring.api.controller.StatisticsController::getStatistics",
         "httpMethod" : "GET",
         "type" : "CMD",
         "primary" : false,
@@ -379,79 +211,23 @@
         "produces" : "application/*"
       },
       "sys/getUseCases" : {
-        "realization" : "uu.app.monitoring.controller.UseCaseController::getUseCases",
+        "realization" : "uu.app.monitoring.api.controller.UseCaseController::getUseCases",
         "httpMethod" : "GET",
         "type" : "CMD",
         "primary" : false,
         "consumes" : "*/*",
         "produces" : "application/*"
       },
-      "sys/import" : {
-        "realization" : "uu.app.workspace.controller.DataStoreDumpController::awidImport",
+      "sys/logRecord/delete" : {
+        "realization" : "uu.app.auditlog.api.controller.SysAuditLogRecordController::deleteBeforeTime",
         "httpMethod" : "POST",
         "type" : "CMD",
         "primary" : false,
         "consumes" : "*/*",
         "produces" : "application/*"
       },
-      "sys/initApp" : {
-        "realization" : "uu.app.workspace.controller.AppConfigController::initApp",
-        "httpMethod" : "POST",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/initAppWorkspace" : {
-        "realization" : "uu.app.workspace.controller.WorkspaceController::initAppWorkspace",
-        "httpMethod" : "POST",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/listAuditLogRecordsByTimeAndSpp" : {
-        "realization" : "uu.app.auditlog.controller.SysAuditLogRecordController::listByTimeAndSpp",
-        "httpMethod" : "GET",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/listDataStoreStats" : {
-        "realization" : "uu.app.workspace.controller.DataStoreStatsController::listDataStoreStats",
-        "httpMethod" : "GET",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/listImportMappings" : {
-        "realization" : "uu.app.workspace.controller.DataStoreDumpController::listImportMappings",
-        "httpMethod" : "GET",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/listMyAuditLogRecordsByTime" : {
-        "realization" : "uu.app.auditlog.controller.SysAuditLogRecordController::listMyAuditLogRecordsByTime",
-        "httpMethod" : "GET",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/listPermissions" : {
-        "realization" : "uu.app.workspace.controller.PermissionController::listPermissions",
-        "httpMethod" : "GET",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/listProfiles" : {
-        "realization" : "uu.app.workspace.controller.ProfileController::listProfiles",
+      "sys/logRecord/list" : {
+        "realization" : "uu.app.auditlog.api.controller.SysAuditLogRecordController::listMyAuditLogRecordsByTime",
         "httpMethod" : "GET",
         "type" : "CMD",
         "primary" : false,
@@ -459,47 +235,7 @@
         "produces" : "application/*"
       },
       "sys/resetStatistics" : {
-        "realization" : "uu.app.monitoring.controller.StatisticsController::resetStatistics",
-        "httpMethod" : "POST",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/restore" : {
-        "realization" : "uu.app.workspace.controller.DataStoreDumpController::restore",
-        "httpMethod" : "POST",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/setAppConfig" : {
-        "realization" : "uu.app.workspace.controller.AppConfigController::setAppConfig",
-        "httpMethod" : "POST",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/setAppRuntimeMode" : {
-        "realization" : "uu.app.workspace.controller.AppConfigController::setAppRuntimeMode",
-        "httpMethod" : "POST",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/setAppWorkspaceConfig" : {
-        "realization" : "uu.app.workspace.controller.WorkspaceConfigController::setAppWorkspaceConfig",
-        "httpMethod" : "POST",
-        "type" : "CMD",
-        "primary" : false,
-        "consumes" : "*/*",
-        "produces" : "application/*"
-      },
-      "sys/setAppWorkspaceState" : {
-        "realization" : "uu.app.workspace.controller.WorkspaceController::setAppWorkspaceState",
+        "realization" : "uu.app.monitoring.api.controller.StatisticsController::resetStatistics",
         "httpMethod" : "POST",
         "type" : "CMD",
         "primary" : false,
@@ -514,24 +250,368 @@
         "consumes" : "*/*",
         "produces" : "application/*"
       },
-      "sys/setAwidRuntimeMode" : {
-        "realization" : "uu.app.workspace.controller.WorkspaceController::setAwidRuntimeMode",
+      "sys/uuAppDataStore/drop" : {
+        "realization" : "uu.app.workspace.api.controller.DataStoreController::drop",
         "httpMethod" : "POST",
         "type" : "CMD",
         "primary" : false,
         "consumes" : "*/*",
         "produces" : "application/*"
       },
-      "sys/setProfile" : {
-        "realization" : "uu.app.workspace.controller.ProfileController::setProfile",
+      "sys/uuAppDataStore/stats/calculate" : {
+        "realization" : "uu.app.workspace.api.controller.DataStoreStatsController::calculate",
         "httpMethod" : "POST",
         "type" : "CMD",
         "primary" : false,
         "consumes" : "*/*",
         "produces" : "application/*"
       },
-      "sys/updateProfiles" : {
-        "realization" : "uu.app.workspace.controller.ProfileController::updateProfiles",
+      "sys/uuAppDataStore/stats/get" : {
+        "realization" : "uu.app.workspace.api.controller.DataStoreStatsController::get",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppDataStore/stats/list" : {
+        "realization" : "uu.app.workspace.api.controller.DataStoreStatsController::list",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppSecretStore/getStatus" : {
+        "realization" : "uu.app.workspace.api.controller.SecretStoreController::getStatus",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/close" : {
+        "realization" : "uu.app.workspace.api.controller.WorkspaceController::close",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/connectArtifact" : {
+        "realization" : "uu.app.workspace.api.controller.WorkspaceController::connectArtifact",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/create" : {
+        "realization" : "uu.app.workspace.api.controller.WorkspaceController::create",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/delete" : {
+        "realization" : "uu.app.workspace.api.controller.WorkspaceController::delete",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/deleteImportMappings" : {
+        "realization" : "uu.app.workspace.api.controller.WorkspaceController::deleteImportMappings",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/dump" : {
+        "realization" : "uu.app.workspace.api.controller.WorkspaceController::dump",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/get" : {
+        "realization" : "uu.app.workspace.api.controller.WorkspaceController::getAppWorkspace",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/import" : {
+        "realization" : "uu.app.workspace.api.controller.WorkspaceController::awidImport",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/init" : {
+        "realization" : "uu.game.main.api.GameMainController::create",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/list" : {
+        "realization" : "uu.app.workspace.api.controller.WorkspaceController::list",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/listImportMappings" : {
+        "realization" : "uu.app.workspace.api.controller.WorkspaceController::listImportMappings",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/permission/create" : {
+        "realization" : "uu.app.workspace.api.controller.PermissionController::create",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/permission/delete" : {
+        "realization" : "uu.app.workspace.api.controller.PermissionController::delete",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/permission/list" : {
+        "realization" : "uu.app.workspace.api.controller.PermissionController::list",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/profile/get" : {
+        "realization" : "uu.app.workspace.api.controller.ProfileController::get",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/profile/list" : {
+        "realization" : "uu.app.workspace.api.controller.ProfileController::list",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/profile/set" : {
+        "realization" : "uu.app.workspace.api.controller.ProfileController::set",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/profile/update" : {
+        "realization" : "uu.app.workspace.api.controller.ProfileController::update",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/restore" : {
+        "realization" : "uu.app.workspace.api.controller.WorkspaceController::restore",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/resume" : {
+        "realization" : "uu.app.workspace.api.controller.WorkspaceController::resume",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/set" : {
+        "realization" : "uu.app.workspace.api.controller.WorkspaceController::set",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/setActiveSysState" : {
+        "realization" : "uu.app.workspace.api.controller.WorkspaceController::setActiveSysState",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/setAuthorizationStrategy" : {
+        "realization" : "uu.app.workspace.api.controller.WorkspaceController::setAuthorizationStrategy",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/setReadOnlySysState" : {
+        "realization" : "uu.app.workspace.api.controller.WorkspaceController::setReadOnlySysState",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/setRestrictedSysState" : {
+        "realization" : "uu.app.workspace.api.controller.WorkspaceController::setRestrictedSysState",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppWorkspace/suspend" : {
+        "realization" : "uu.app.workspace.api.controller.WorkspaceController::suspend",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuSubAppInstance/dump" : {
+        "realization" : "uu.app.workspace.api.controller.UuSubAppInstanceController::dump",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuSubAppInstance/get" : {
+        "realization" : "uu.app.workspace.api.controller.UuSubAppInstanceController::get",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuSubAppInstance/init" : {
+        "realization" : "uu.app.workspace.api.controller.UuSubAppInstanceController::init",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuSubAppInstance/permission/create" : {
+        "realization" : "uu.app.workspace.api.controller.PermissionController::create",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuSubAppInstance/permission/delete" : {
+        "realization" : "uu.app.workspace.api.controller.PermissionController::delete",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuSubAppInstance/permission/list" : {
+        "realization" : "uu.app.workspace.api.controller.PermissionController::list",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuSubAppInstance/profile/get" : {
+        "realization" : "uu.app.workspace.api.controller.ProfileController::get",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuSubAppInstance/profile/list" : {
+        "realization" : "uu.app.workspace.api.controller.ProfileController::list",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuSubAppInstance/profile/set" : {
+        "realization" : "uu.app.workspace.api.controller.ProfileController::set",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuSubAppInstance/restore" : {
+        "realization" : "uu.app.workspace.api.controller.UuSubAppInstanceController::restore",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuSubAppInstance/set" : {
+        "realization" : "uu.app.workspace.api.controller.UuSubAppInstanceController::set",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuSubAppInstance/setActiveSysState" : {
+        "realization" : "uu.app.workspace.api.controller.UuSubAppInstanceController::setActiveSysState",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuSubAppInstance/setRestrictedSysState" : {
+        "realization" : "uu.app.workspace.api.controller.UuSubAppInstanceController::setRestrictedSysState",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuSubAppInstance/upgrade" : {
+        "realization" : "uu.app.workspace.api.controller.UuSubAppInstanceController::upgrade",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuSubAppInstance/upgradeCleanup" : {
+        "realization" : "uu.app.workspace.api.controller.UuSubAppInstanceController::upgradeCleanup",
         "httpMethod" : "POST",
         "type" : "CMD",
         "primary" : false,

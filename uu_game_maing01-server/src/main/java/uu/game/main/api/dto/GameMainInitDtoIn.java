@@ -8,14 +8,14 @@ import uu.app.validation.ValidationType;
 @ValidationType("gameMainInitDtoInType")
 public final class GameMainInitDtoIn {
 
-  private String authoritiesUri;
+  private String uuAppProfileAuthorities;
 
-  public String getAuthoritiesUri() {
-    return authoritiesUri;
+  public String getUuAppProfileAuthorities() {
+    return uuAppProfileAuthorities;
    }
 
-  public void setAuthoritiesUri(String authoritiesUri) {
-    this.authoritiesUri = authoritiesUri;
+  public void setUuAppProfileAuthorities(String uuAppProfileAuthorities) {
+    this.uuAppProfileAuthorities = uuAppProfileAuthorities;
   }
 
   @Override

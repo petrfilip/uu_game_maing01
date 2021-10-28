@@ -1,8 +1,7 @@
 /* eslint-disable */
 
-
 const gameMainInitDtoInType = shape({
-  authoritiesUri: uri().isRequired()
+  uuAppProfileAuthorities: uri().isRequired()
 });
 
 

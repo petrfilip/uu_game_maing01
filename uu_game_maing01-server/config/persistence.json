@@ -14,21 +14,6 @@
           "realization" : "uu.game.main.dao.mongo.ScoreMongoDao",
           "maxSoi" : "16000000"
         },
-        "sysAppConfig" : {
-          "realization" : "uu.app.workspace.store.dao.SysAppConfigMongoDao",
-          "maxSoi" : "16000000",
-          "maxNoi" : "1"
-        },
-        "sysAppWorkspace" : {
-          "realization" : "uu.app.workspace.store.dao.SysAppWorkspaceMongoDao",
-          "maxSoi" : "16000000",
-          "maxNoi" : "1"
-        },
-        "sysAppWorkspaceConfig" : {
-          "realization" : "uu.app.workspace.store.dao.SysAppWorkspaceConfigMongoDao",
-          "maxSoi" : "16000000",
-          "maxNoi" : "1"
-        },
         "sysAuditLogConfig" : {
           "realization" : "uu.app.auditlog.dao.mongo.SysAuditLogConfigMongoDao",
           "maxSoi" : "8192"
@@ -37,28 +22,38 @@
           "realization" : "uu.app.auditlog.dao.mongo.SysAuditLogRecordMongoDao",
           "maxSoi" : "8192"
         },
-        "sysDataStoreStats" : {
-          "realization" : "uu.app.workspace.store.dao.SysDataStoreStatsMongoDao",
-          "maxSoi" : "16000000"
-        },
         "sysImportMapping" : {
-          "realization" : "uu.app.workspace.store.dao.SysImportMappingMongoDao",
+          "realization" : "uu.app.workspace.dao.mongo.SysImportMappingMongoDao",
           "maxSoi" : "16000000"
-        },
-        "sysKeyStore" : {
-          "realization" : "uu.app.workspace.store.dao.SysKeyStoreMongoDao",
-          "maxSoi" : "16000000",
-          "maxNoi" : "100000"
         },
         "sysPermission" : {
-          "realization" : "uu.app.workspace.store.dao.SysPermissionMongoDao",
+          "realization" : "uu.app.workspace.dao.mongo.SysPermissionMongoDao",
           "maxSoi" : "16000000",
           "maxNoi" : "1000"
         },
         "sysProfile" : {
-          "realization" : "uu.app.workspace.store.dao.SysProfileMongoDao",
+          "realization" : "uu.app.workspace.dao.mongo.SysProfileMongoDao",
           "maxSoi" : "16000000",
           "maxNoi" : "32"
+        },
+        "sysUuAppDataStoreStats" : {
+          "realization" : "uu.app.workspace.dao.mongo.SysUuAppDataStoreStatsMongoDao",
+          "maxSoi" : "16000000"
+        },
+        "sysUuAppSecret" : {
+          "realization" : "uu.app.workspace.dao.mongo.UuAppSecretMongoDao",
+          "maxSoi" : "16000000",
+          "maxNoi" : "100000"
+        },
+        "sysUuAppWorkspace" : {
+          "realization" : "uu.app.workspace.dao.mongo.SysUuAppWorkspaceMongoDao",
+          "maxSoi" : "16000000",
+          "maxNoi" : "1"
+        },
+        "sysUuSubAppInstance" : {
+          "realization" : "uu.app.workspace.dao.mongo.SysUuSubAppInstanceMongoDao",
+          "maxSoi" : "16000000",
+          "maxNoi" : "1"
         }
       }
     }

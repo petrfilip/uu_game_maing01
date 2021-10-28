@@ -6,6 +6,11 @@
         "httpMethod": "GET",
         "type": "UVE"
       }
+    },
+    "sys/uuAppWorkspace/initUve": {
+      "realization": "index.html",
+      "httpMethod": "GET",
+      "type": "UVE"
     }
   }
 }

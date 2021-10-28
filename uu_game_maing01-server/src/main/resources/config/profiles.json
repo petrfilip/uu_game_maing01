@@ -1,13 +1,11 @@
 {
   "{asid}": {
     "profileList": [
-      "AsidOwner"
+      "AsidAuthorities",
+      "AsidExecutives",
+      "AsidLicenseOwner",
+      "Public"
     ],
-    "permissionMap": {
-      "{asidOwner}": [
-        "AsidOwner"
-      ]
-    },
     "useCaseMap": {
     }
   },
@@ -15,40 +13,99 @@
     "profileList": [
       "Authorities",
       "Executives",
-      "AwidOwner"
+      "AwidLicenseOwner",
+      "Public"
     ],
     "useCaseMap": {
-      "polling/poll": [
-        "Public"
-      ],
-      "init": [
-        "AwidOwner"
-      ],
-      "defaultUve": [
-        "Public"
-      ],
-      "score/list": [
-        "Public"
-      ],
-      "room/list": [
-        "Public"
-      ],
-      "room/create": [
-        "Executives",
-        "Authorities"
-      ],
-      "room/join": [
-        "Executives",
-        "Authorities"
-      ],
-      "gameInstance/addPlayerMove": [
-        "Executives",
-        "Authorities"
-      ],
-      "gameInstance/startGame": [
-        "Executives",
-        "Authorities"
-      ]
+      "sys/uuAppWorkspace/init": {
+        "sysStateList": [
+          "created"
+        ],
+        "profileList": [
+          "AwidLicenseOwner"
+        ]
+      },
+      "defaultUve": {
+        "profileList": [
+          "Public"
+        ]
+      },
+      "sys/uuAppWorkspace/initUve": {
+        "sysStateList": [
+          "created"
+        ],
+        "profileList": [
+          "Public",
+          "AwidLicenseOwner"
+        ]
+      },
+      "polling/poll": {
+        "sysStateList": [
+          "active"
+        ],
+        "profileList": [
+          "Public",
+          "AwidLicenseOwner"
+        ]
+      },
+      "score/list": {
+        "sysStateList": [
+          "active"
+        ],
+        "profileList": [
+          "Public",
+          "AwidLicenseOwner"
+        ]
+      },
+      "room/list": {
+        "sysStateList": [
+          "active"
+        ],
+        "profileList": [
+          "Public",
+          "AwidLicenseOwner"
+        ]
+      },
+      "room/create": {
+        "sysStateList": [
+          "active"
+        ],
+        "profileList": [
+          "Executives",
+          "Authorities",
+          "AwidLicenseOwner"
+        ]
+      },
+      "room/join": {
+        "sysStateList": [
+          "active"
+        ],
+        "profileList": [
+          "Executives",
+          "Authorities",
+          "AwidLicenseOwner"
+        ]
+      },
+      "gameInstance/addPlayerMove": {
+        "sysStateList": [
+          "active"
+        ],
+        "profileList": [
+          "Executives",
+          "Authorities",
+          "AwidLicenseOwner"
+        ]
+      },
+      "gameInstance/startGame": {
+        "sysStateList": [
+          "active"
+        ],
+        "profileList": [
+          "Executives",
+          "Authorities",
+          "AwidLicenseOwner"
+        ]
+      }
     }
   }
 }

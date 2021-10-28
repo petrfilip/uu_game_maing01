@@ -5,20 +5,19 @@
   "description": "",
   "license": "License Commercial",
   "namespace": "UuGame",
-  "spec": "uu5-app; uu_appg01_devkit@4.0.1",
+  "spec": "uu5-app; uu_appg01_devkit@4.4.0",
   "dependencies": {
-    "systemjs": "0.19.47",
+    "uu5g04": "^1.50.0",
+    "uu5loaderg01": "^1.0.0",
     "uu_contentkitg01": "^2.0.0",
-    "uu_plus4u5g01": "^4.0.0",
-    "uu_territoryg01": "^1.0.0",
-    "uu5g04": "^1.19.0",
-    "uu5tilesg02": "^1.17.0"
+    "uu_plus4u5g01": "^4.23.0",
+    "uu_territoryg01": "^2.0.0"
   },
   "uuBuildSettings": {
     "externals": {}
   },
   "devDependencies": {
-    "uu_appg01_devkit": "^4.0.1"
+    "uu_appg01_devkit": "^4.4.0"
   },
   "engines": {
     "node": ">=12.0.0"

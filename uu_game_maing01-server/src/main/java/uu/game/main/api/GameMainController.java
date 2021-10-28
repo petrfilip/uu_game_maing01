@@ -14,10 +14,12 @@ import uu.game.main.abl.GameMainAbl;
 @CommandController
 public final class GameMainController {
 
+  public static final String WORKSPACE_INIT_CMD = "sys/uuAppWorkspace/init";
+
   @Inject
   private GameMainAbl gameMainAbl;
 
-  @Command(path = "init", method = POST)
+  @Command(path = WORKSPACE_INIT_CMD, method = POST)
   public GameMainInitDtoOut create(CommandContext<GameMainInitDtoIn> ctx) {
     GameMainInitDtoOut dtoOut = gameMainAbl.init(ctx.getUri().getAwid(), ctx.getDtoIn());
     return dtoOut;

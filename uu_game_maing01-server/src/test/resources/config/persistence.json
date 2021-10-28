@@ -1,0 +1,32 @@
+{
+  "maxNoa": 10,
+  "primary": "primaryObjectStore",
+  "uuSubAppDataStore": {
+    "primaryObjectStore": {
+      "realization": "MongoDB",
+      "type": "uuAppObjectStore",
+      "schemaMap": {
+        "sysUuAppWorkspace": {
+          "realization": "uu.app.workspace.store.dao.SysUuAppWorkspaceDaoImpl",
+          "maxSoi": "64000",
+          "maxNoi": "1"
+        },
+        "sysPermission": {
+          "realization": "uu.app.workspace.store.dao.SysPermissionDaoImpl",
+          "maxSoi": "64000",
+          "maxNoi": "1000"
+        },
+        "sysProfile": {
+          "realization": "uu.app.workspace.store.dao.SysProfileDaoImpl",
+          "maxSoi": "64000",
+          "maxNoi": "32"
+        },
+        "sysUuSubAppInstance": {
+          "realization": "uu.app.workspace.store.dao.SysUuSubAppInstanceMongoDao",
+          "maxSoi": "64000",
+          "maxNoi": "1"
+        }
+      }
+    }
+  }
+}

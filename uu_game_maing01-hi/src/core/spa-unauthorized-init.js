@@ -36,7 +36,7 @@ const CLASS_NAMES = {
   `,
   mall: () => Config.Css.css`
     display: inline-flex;
-  `
+  `,
 };
 
 export const SpaUnauthorizedInit = createVisualComponent({

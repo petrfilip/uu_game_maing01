@@ -7,15 +7,15 @@ import uu.app.exception.ErrorCode;
 
 public final class GameMainInitRuntimeException extends AppRuntimeException {
 
-  public GameMainInitRuntimeException(GameMainInitRuntimeException.Error code, Map<String, ?> paramMap, Throwable cause) {
+  public GameMainInitRuntimeException(Error code, Map<String, ?> paramMap, Throwable cause) {
     super(code.getCode(), code.getMessage(), (AppErrorMap) null, paramMap, cause);
   }
 
-  public GameMainInitRuntimeException(GameMainInitRuntimeException.Error code, String message, Object... params) {
+  public GameMainInitRuntimeException(Error code, String message, Object... params) {
     super(code.getCode(), message, params);
   }
 
-  public GameMainInitRuntimeException(GameMainInitRuntimeException.Error code, Map<String, ?> paramMap) {
+  public GameMainInitRuntimeException(Error code, Map<String, ?> paramMap) {
     super(code.getCode(), code.getMessage(), (AppErrorMap) null, paramMap, null);
   }
 

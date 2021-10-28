@@ -11,7 +11,7 @@ import uu.app.datastore.annotations.DataStoreConfiguration;
 import uu.app.datastore.mongodb.AbstractPersistenceMongoDbContextConfiguration;
 import uu.app.datastore.mongodb.DatastoreMongoDbContextConfiguration;
 import uu.app.objectstore.annotations.ObjectStore;
-import uu.app.workspace.store.WorkspaceStorageConfiguration;
+import uu.app.workspace.dao.WorkspaceStorageConfiguration;
 
 /**
  * Spring configuration of the application persistence.

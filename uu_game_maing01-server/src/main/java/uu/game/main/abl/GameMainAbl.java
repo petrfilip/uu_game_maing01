@@ -2,11 +2,11 @@ package uu.game.main.abl;
 
 import javax.inject.Inject;
 import org.springframework.stereotype.Component;
+import uu.app.exception.AppErrorMap;
 import uu.app.validation.ValidationResult;
 import uu.app.validation.Validator;
 import uu.app.validation.utils.ValidationResultUtils;
-import uu.app.workspace.Profile;
-import uu.app.workspace.dto.profile.SysSetProfileDtoIn;
+import uu.app.workspace.api.Profile;
 import uu.game.main.dao.GameMainDao;
 import uu.game.main.api.dto.GameMainInitDtoIn;
 import uu.game.main.api.dto.GameMainInitDtoOut;
@@ -36,16 +36,15 @@ public final class GameMainAbl {
     }
 
     // HDS 2
-    SysSetProfileDtoIn setProfileDtoIn = new SysSetProfileDtoIn();
-    setProfileDtoIn.setCode(AUTHORITIES_CODE);
-    setProfileDtoIn.setRoleUri(dtoIn.getAuthoritiesUri());
-    profile.setProfile(awid, setProfileDtoIn);
+    profile.set(awid, AUTHORITIES_CODE, dtoIn.getUuAppProfileAuthorities());
 
     // HDS 3 - HDS N
     // TODO Implement according to application needs...
 
     // HDS N+1
-    return new GameMainInitDtoOut();
+    GameMainInitDtoOut gameMainInitDtoOut = new GameMainInitDtoOut();
+    gameMainInitDtoOut.setUuAppErrorMap(new AppErrorMap());
+    return gameMainInitDtoOut;
   }
 
 }

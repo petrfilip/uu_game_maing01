@@ -26,11 +26,16 @@ const Game = createVisualComponent({
           console.log(props.params.roomId)
           const result = await Calls.poll({roomId: props.params.roomId});
           console.log(result)
+          if (fetch === false) {
+            return;
+          }
           if (result.eventType === 'RoomEvent') {
             setRoomState(oldValue => ({...oldValue, ...result}));
           } else if (result.eventType === 'GameEvent') {
             setGameState(oldValue => ({...oldValue, ...result}));
           }
+
+
         }
       }
 
@@ -41,9 +46,13 @@ const Game = createVisualComponent({
         setRoomState(room);
         poll(); //todo abort request when room changed
         setWaiting(false);
+
       }
       return () => {
         fetch = false;
+        setGameState({})
+        setRoomState({})
+        setWaiting(true)
       }
     }, [props?.params?.roomId]);
     //@viewOff:hooks
@@ -83,33 +92,71 @@ const Game = createVisualComponent({
     //@@viewOff:private
 
     //@@viewOn:render
+
+
+    if (waiting) {
+      return <UU5.Bricks.Loading/>
+    }
+
     return (
       <UU5.Bricks.Section level={1} header="Game" className={UU5.Common.Css.css`padding: 16px`}>
 
-        <UU5.Bricks.Container>
+
+        Connected players: {roomState?.output?.connectedPlayers?.map((p) => p.playerId)}
+
+
+        <UU5.Bricks.Card className="uu5-common-padding-s" style={{
+          border: "1px solid black",
+          height: "500px",
+          width: "100%"
+        }}>
+          {gameState?.output?.tick > 0 ?
+            <Canvas draw={draw}
+                    onMouseDown={() => document.addEventListener("mousemove", sendPosition)}
+                    onMouseUp={() => document.removeEventListener("mousemove", sendPosition)}
+            />
+            :
+            <>
+              Connected players: {roomState?.output?.connectedPlayers?.map((p) => p.playerId)}
+
+              {/*todo fix this*/}
+              {/*{roomState?.output?.connectedPlayers?.map((p) => <Plus4U5.Bricks.BusinessCard visual="micro" uuIdentity={p.playerId}/>)}*/}
+
+              <UU5.Bricks.Paragraph> GAME DESCRIPTION: Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Class aptent taciti sociosqu ad
+                litora torquent per conubia nostra, per inceptos hymenaeos. Donec ipsum massa, ullamcorper in,
+                auctor et, scelerisque sed, est. Vestibulum fermentum tortor id mi. Etiam commodo dui eget wisi.
+                Integer malesuada. Fusce consectetuer risus a nunc. Nullam eget nisl. In sem justo, commodo ut, suscipit at,
+                pharetra vitae, orci. Aenean placerat. Etiam neque. Fusce suscipit libero eget elit.
+              </UU5.Bricks.Paragraph>
+              <UU5.Bricks.TouchIcon content="Click" colorSchema="primary"/>
+              <UU5.Bricks.Button onClick={startGameHandler} colorSchema={"primary"}>Start new game<UU5.Bricks.Icon icon="mdi-apple"/></UU5.Bricks.Button>
+            </>
+          }
+
+        </UU5.Bricks.Card>
+
+
+        {gameState?.output?.tick > 0 &&
+          <UU5.Bricks.Button onClick={startGameHandler} colorSchema={"secondary"}>Restart game<UU5.Bricks.Icon icon="mdi-apple"/></UU5.Bricks.Button>}
+
+
+
+
+      <UU5.Bricks.Paragraph content={"debug"}/>
+
+    <UU5.Bricks.Panel header={props?.params?.roomId} content={<pre>
           RoomId :: {props?.params?.roomId}
-        </UU5.Bricks.Container>
+        </pre>}/>
 
-
-        <pre>
+        <UU5.Bricks.Panel header="gameState debug" content={<pre>
           GAME: {JSON.stringify(gameState, undefined, 2)}
-        </pre>
+        </pre>}/>
 
-        {/*<pre>*/}
-        {/*  ROOM: {JSON.stringify(roomState, undefined, 2)}*/}
-        {/*</pre>*/}
-
-
-        {roomState && <UU5.Bricks.Container>
-          <Canvas draw={draw}
-                  onMouseDown={() => document.addEventListener("mousemove", sendPosition)}
-                  onMouseUp={() => document.removeEventListener("mousemove", sendPosition)}
-          />
-          Game is running
-        </UU5.Bricks.Container>}
+        <UU5.Bricks.Panel header="roomState debug" content={<pre>
+          ROOM: {JSON.stringify(roomState, undefined, 2)}
+        </pre>}/>
 
 
-        <UU5.Bricks.Button onClick={startGameHandler}>Start game<UU5.Bricks.Icon icon="mdi-apple"/></UU5.Bricks.Button>
       </UU5.Bricks.Section>
     );
     //@@viewOff:render

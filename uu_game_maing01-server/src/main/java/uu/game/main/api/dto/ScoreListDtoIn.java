@@ -9,7 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import uu.app.validation.ValidationType;
-import uu.app.workspace.dto.common.PageInfoDto;
+import uu.app.workspace.api.dto.common.PageInfoDto;
 
 @ValidationType("scoreListDtoInType")
 public final class ScoreListDtoIn {

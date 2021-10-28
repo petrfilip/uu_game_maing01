@@ -30,27 +30,32 @@ export const Left = createVisualComponent({
   render(props) {
 
     //@@viewOn:hooks
-    let listDataValues = useDataList({
-      pageSize: 335,
+    const dataListResult = useDataList({
       handlerMap: {
         load: Calls.roomList,
-        createList: Calls.roomCreate,
-        deleteList: Calls.roomDelete,
+        createItem: Calls.roomCreate,
       },
+      itemHandlerMap: {
+        delete: Calls.roomDelete,
+      }
     });
 
-    let {state, data, newData, pendingData, errorData, handlerMap} = listDataValues;
+    let {state, data, newData, errorData, pendingData, handlerMap} = dataListResult;
     //@@viewOff:hooks
 
     //@@viewOn:private
     function getListComponent(item) {
       return (
-        <RoomList
-          key={item?.id}
-          list={item}
-          onDelete={handlerMap.deleteList}
-          onCreate={handlerMap.createList}
-        />
+        <>
+
+
+          <RoomList
+            key={item?.id}
+            list={item}
+            onCreate={handlerMap.createItem}
+            onDelete={item?.handlerMap?.delete}
+          />
+        </>
       );
     }
 
@@ -83,7 +88,6 @@ export const Left = createVisualComponent({
         aboutItems={[{content: <UU5.Bricks.Lsi lsi={Lsi.left.about}/>, href: "about"}]}
         helpHref={null}
       >
-
         <Plus4U5.App.MenuTree
           borderBottom
           // NOTE Item "id" equals to useCase so that item gets automatically selected when route changes (see spa-autheticated.js).

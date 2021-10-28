@@ -39,7 +39,7 @@ public class RoomMemoryDao implements RoomDao {
     entity.setId(generatedIdentifier());
     entity.getSys().setCts(ZonedDateTime.now());
     entity.getSys().setMts(ZonedDateTime.now());
-    entity.getSys().setRevision(0);
+    entity.getSys().setRev(0);
     Map<String, Room> roomByAwid = rooms.getOrDefault(entity.getAwid(), new HashMap<>());
     roomByAwid.put(entity.getId(), entity);
     rooms.put(entity.getAwid(), roomByAwid);
@@ -66,7 +66,7 @@ public class RoomMemoryDao implements RoomDao {
   public Room update(Room entity) throws DatastoreRuntimeException, DatastoreUnexpectedRuntimeException, DatastoreConcurrencyRuntimeException {
     Map<String, Room> idRoomMap = rooms.get(entity.getAwid());
     entity.getSys().setMts(ZonedDateTime.now());
-    entity.getSys().setRevision(entity.getSys().getRevision() + 1);
+    entity.getSys().setRev(entity.getSys().getRev() + 1);
     idRoomMap.put(entity.getId(), entity);
     return entity;
   }
@@ -94,7 +94,7 @@ public class RoomMemoryDao implements RoomDao {
 
     List<Room> list = list(awid, page);
     pageInfo.setTotal(list.size());
-    return new PagedResult(list, pageInfo);
+    return new PagedResult<>(list, pageInfo);
   }
 
   private String generatedIdentifier() {
