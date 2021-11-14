@@ -1,10 +1,13 @@
 package uu.game.main.domain;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import uu.game.main.abl.dto.Player;
+import uu.game.main.game.common.GameRuleEvent;
 
 public class GameState<STATE> {
 
@@ -17,6 +20,8 @@ public class GameState<STATE> {
   private Collection<Player> players = new HashSet<>();
 
   private STATE game;
+
+  private List<GameRuleEvent> gameEvents = new ArrayList<>();
 
   public Integer getTick() {
     return tick;
@@ -56,6 +61,14 @@ public class GameState<STATE> {
 
   public void setGame(STATE game) {
     this.game = game;
+  }
+
+  public List<GameRuleEvent> getGameEvents() {
+    return gameEvents;
+  }
+
+  public void setGameEvents(List<GameRuleEvent> gameEvents) {
+    this.gameEvents = gameEvents;
   }
 
   @Override

@@ -6,6 +6,7 @@ import java.util.List;
 import uu.game.main.game.bulanci.ammo.AmmoDamagable;
 import uu.game.main.game.bulanci.ammo.AmmoHitable;
 import uu.game.main.game.common.GameRectangle;
+import uu.game.main.game.common.GameRuleEvent;
 
 public class Obstacle implements AmmoDamagable, AmmoHitable {
 
@@ -46,8 +47,9 @@ public class Obstacle implements AmmoDamagable, AmmoHitable {
   }
 
   @Override
-  public void applyAmmoDamage(Integer damage) {
+  public List<GameRuleEvent> applyAmmoDamage(Integer damage) {
     //todo
+    return new ArrayList<>();
   }
 
   @Override

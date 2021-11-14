@@ -14,7 +14,7 @@ See following guidelines:
 
 ## demo
 
-![Ukázka hry](demo.gif)
+![Ukázka hry](demo2.gif)
 
 ## Inicializace
 V insomnii a v application.properties upravit údaje a `asidLicenseOwnerList`, `awidLicenseOwner` a `token`.
@@ -117,3 +117,7 @@ Pro vývoj GUI je potřeba ještě spustit `npm start` v adresáři `*-hi`.
   "eventType": "GameEvent"
 }
 ```
+
+
+Hudba: https://gamesounds.xyz/?dir=OpenBundle/Background%20Music%20and%20Loops
+Assety: https://opengameart.org/ & https://remos.itch.io/timbered-house

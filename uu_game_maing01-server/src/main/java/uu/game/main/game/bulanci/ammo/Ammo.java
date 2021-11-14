@@ -1,9 +1,11 @@
 package uu.game.main.game.bulanci.ammo;
 
 import java.util.Collection;
+import java.util.List;
 import uu.game.main.game.bulanci.BulanciMove;
 import uu.game.main.game.bulanci.BulanciPlayer;
 import uu.game.main.game.common.GameRectangle;
+import uu.game.main.game.common.GameRuleEvent;
 
 public abstract class Ammo extends GameRectangle {
 
@@ -24,7 +26,7 @@ public abstract class Ammo extends GameRectangle {
     return type;
   }
 
-  public abstract void applyEffect(Collection<? extends AmmoDamagable> value, Integer tick);
+  public abstract List<GameRuleEvent> applyEffect(Collection<? extends AmmoDamagable> value, Integer tick);
 
   public boolean isUsed() {
     return isUsed;
@@ -34,5 +36,5 @@ public abstract class Ammo extends GameRectangle {
     isUsed = used;
   }
 
-  public abstract void init(BulanciPlayer bulanciPlayer, BulanciMove bulanciMove);
+  public abstract List<GameRuleEvent> init(BulanciPlayer bulanciPlayer, BulanciMove bulanciMove);
 }

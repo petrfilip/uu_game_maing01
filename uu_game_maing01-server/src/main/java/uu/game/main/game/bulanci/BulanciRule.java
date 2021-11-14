@@ -18,6 +18,7 @@ import uu.game.main.game.bulanci.ammo.Bullet;
 import uu.game.main.game.bulanci.ammo.Mine;
 import uu.game.main.game.common.Direction;
 import uu.game.main.game.common.GameRectangle;
+import uu.game.main.game.common.GameRuleEvent;
 import uu.game.main.helper.Utils;
 
 @Service("bulanci")
@@ -55,10 +56,12 @@ public class BulanciRule implements IRule<BulanciBoard, BulanciMove> {
   private List<Obstacle> generateObstacles() {
     List<Obstacle> obstacles = new ArrayList<>(); //todo if generate ; add support to load predefined maps
     for (int i = 0; i < 3; i++) {
-      obstacles.add(new Obstacle(ObstacleTypeEnum.TREE, Utils.getRandomNumber(0, 500), Utils.getRandomNumber(0, 500), 30, 30));
+      obstacles.add(new Obstacle(ObstacleTypeEnum.TREE, Utils.getRandomNumber(0, 500), Utils.getRandomNumber(0, 500), Utils.getRandomNumber(100,150), Utils.getRandomNumber(100,150)));
     }
 
     obstacles.add(new Obstacle(ObstacleTypeEnum.MUSHROOM, new GameRectangle(0, 0, 100, 20), new GameRectangle(0, 100, 100, 20)));
+    obstacles.add(new Obstacle(ObstacleTypeEnum.HOUSE, new GameRectangle(250, 250, 200, 200)));
+    obstacles.add(new Obstacle(ObstacleTypeEnum.TAVERN, new GameRectangle(450, 50, 250, 250)));
 
     return obstacles;
   }
@@ -68,6 +71,9 @@ public class BulanciRule implements IRule<BulanciBoard, BulanciMove> {
 
     BulanciBoard game = newGameState.getGame();
 
+    final List<GameRuleEvent> events = new ArrayList<>();
+
+
     // player moves
     for (Player player : newGameState.getGame().getPlayers().keySet()) {
       BulanciMove bulanciMove = unprocessedMoves.getOrDefault(player, new BulanciMove());
@@ -75,7 +81,7 @@ public class BulanciRule implements IRule<BulanciBoard, BulanciMove> {
       calculateNextStep(bulanciPlayer, bulanciMove);
 
       if (bulanciMove.getFired() != null) {
-        bulanciMove.getFired().init(bulanciPlayer, bulanciMove);
+        events.addAll(bulanciMove.getFired().init(bulanciPlayer, bulanciMove));
         game.getAmmo().add(bulanciMove.getFired()); //todo check if has this kind of amo
       }
       game.getPlayers().put(player, bulanciPlayer);
@@ -86,9 +92,10 @@ public class BulanciRule implements IRule<BulanciBoard, BulanciMove> {
     damagable.addAll(game.getPlayers().values());
     damagable.addAll(game.getObstacles());
     game.setAmmo(game.getAmmo().stream()
-      .peek(ammo -> ammo.applyEffect(damagable, newGameState.getTick()))
+      .peek(ammo -> events.addAll(ammo.applyEffect(damagable, newGameState.getTick())))
       .filter(ammo -> !ammo.isUsed()).collect(Collectors.toList()));
 
+    newGameState.setGameEvents(events);
     return newGameState;
   }
 

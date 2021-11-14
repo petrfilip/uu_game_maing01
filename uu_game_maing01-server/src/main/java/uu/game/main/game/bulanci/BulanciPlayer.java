@@ -2,12 +2,14 @@ package uu.game.main.game.bulanci;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import uu.game.main.game.bulanci.ammo.Ammo;
 import uu.game.main.game.bulanci.ammo.AmmoDamagable;
 import uu.game.main.game.bulanci.helper.PlayerAmmoSerialization;
 import uu.game.main.game.common.Direction;
 import uu.game.main.game.common.GameRectangle;
+import uu.game.main.game.common.GameRuleEvent;
 
 public class BulanciPlayer extends GameRectangle implements AmmoDamagable {
 
@@ -23,8 +25,13 @@ public class BulanciPlayer extends GameRectangle implements AmmoDamagable {
   }
 
   @Override
-  public void applyAmmoDamage(Integer damage) {
+  public List<GameRuleEvent> applyAmmoDamage(Integer damage) {
     this.lives = this.lives - damage;
+    if ( lives > 0) {
+      return Collections.singletonList(new GameRuleEvent("liveDecreased", this.getClass().getSimpleName(), this));
+    } else {
+      return Collections.singletonList(new GameRuleEvent("death", this.getClass().getSimpleName(), this));
+    }
   }
 
   public Integer getSpeed() {

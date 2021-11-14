@@ -4,7 +4,9 @@ import {createVisualComponent, useEffect, useState} from "uu5g04-hooks";
 import Config from "./config/config";
 import Calls from "../calls";
 import Canvas from "../bricks/canvas";
+import RenderHelper from "../bricks/render-helper";
 //@@viewOff:imports
+const themeMusic = new Audio("../assets/theme.mp3");
 
 const Game = createVisualComponent({
   //@@viewOn:statics
@@ -16,7 +18,9 @@ const Game = createVisualComponent({
     const [roomState, setRoomState] = useState();
     const [gameState, setGameState] = useState();
     const [waiting, setWaiting] = useState(false);
-
+    const [connectionError, setConnectionError] = useState(null);
+    const [themeMusicPlays, setThemeMusicPlays] = useState(false);
+    const {addExplosion} = RenderHelper()
 
     useEffect(() => {
       let fetch = true;
@@ -24,9 +28,15 @@ const Game = createVisualComponent({
       async function poll() {
         while (fetch) {
           console.log(props.params.roomId)
-          const result = await Calls.poll({roomId: props.params.roomId});
+          let result = null;
+          try {
+            result = await Calls.poll({roomId: props.params.roomId});
+            connectionError && setConnectionError(null);
+          } catch (e) {
+            setConnectionError("Connection error")
+          }
           console.log(result)
-          if (fetch === false) {
+          if (fetch === false || result === null) {
             return;
           }
           if (result.eventType === 'RoomEvent') {
@@ -34,8 +44,6 @@ const Game = createVisualComponent({
           } else if (result.eventType === 'GameEvent') {
             setGameState(oldValue => ({...oldValue, ...result}));
           }
-
-
         }
       }
 
@@ -60,11 +68,26 @@ const Game = createVisualComponent({
         fetch = false;
         setGameState({})
         setRoomState({})
+        themeMusic.pause()
+        setThemeMusicPlays(false)
         setWaiting(true)
         document.removeEventListener("keydown", sendPosition)
 
       }
     }, [props?.params?.roomId]);
+
+    useEffect(() => {
+
+      if (themeMusic && !themeMusicPlays && roomState?.state === "ACTIVE") {
+        themeMusic.loop = true;
+        themeMusic.currentTime = 0;
+        themeMusic.play();
+        setThemeMusicPlays(true);
+      }
+
+    }, [themeMusicPlays, roomState?.state]);
+
+
     //@viewOff:hooks
 
     //@@viewOn:private
@@ -152,8 +175,22 @@ const Game = createVisualComponent({
       for (let i = 0; i < obstacles.length; i++) {
         const obstacle = obstacles[i]
         for (const wall of obstacle.walls) {
-          ctx.fillStyle = "purple" // todo obstacle.type
-          ctx.fillRect(wall.x, wall.y, wall.width, wall.height);
+          if (obstacle.type === "TREE") {
+            const img = new Image();
+            img.src = "../assets/tree.png"
+            ctx.drawImage(img, wall.x, wall.y, wall.width, wall.height);
+          } else if (obstacle.type === "HOUSE") {
+            const img = new Image();
+            img.src = "../assets/house.png"
+            ctx.drawImage(img, wall.x, wall.y, wall.width, wall.height);
+          } else if (obstacle.type === "TAVERN") {
+            const img = new Image();
+            img.src = "../assets/tavern.png"
+            ctx.drawImage(img, wall.x, wall.y, wall.width, wall.height);
+          } else {
+            ctx.fillStyle = "purple" // todo obstacle.type
+            ctx.fillRect(wall.x, wall.y, wall.width, wall.height);
+          }
         }
         // for (const wall of obstacle) {
         //
@@ -161,24 +198,53 @@ const Game = createVisualComponent({
       }
     }
 
+
+    function renderEvents(ctx, events) {
+      for (let i = 0; i < events?.length; i++) {
+        const event = events[i]
+        if (event.objectName === "Bullet") {
+          if (event.action === "used") {
+            const bulletStopSound = new Audio("../assets/fired.mp3");
+            bulletStopSound.play();
+            addExplosion(ctx, event.data.x, event.data.y)
+          }
+
+          if (event.action === "fired") {
+            const firedSound = new Audio("../assets/fired.mp3");
+            firedSound.play();
+          }
+        }
+
+      }
+    }
+ 
+
     const draw = (ctx, frameCount) => {
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
       ctx.fillStyle = '#000000'
 
-      ctx.fillStyle = "lightgreen";
-      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      const grass = new Image();
+      grass.src = "../assets/grass.png"
+      ctx.drawImage(grass, 0, 0, ctx.canvas.width, ctx.canvas.height);
 
       const game = gameState?.output?.game ?? []
 
 
       if (game) {
+
+        // render state
         drawPlayers(ctx, Object.values(game.players))
         drawAmmo(ctx, game.ammo)
         drawObstacles(ctx, game.obstacles);
+
+        // render events
+        renderEvents(ctx, gameState?.output?.gameEvents)
       }
 
       ctx.fill()
     }
+
+
     //@@viewOff:private
 
     //@@viewOn:render
@@ -208,6 +274,7 @@ const Game = createVisualComponent({
             :
             <>
               Connected players: {roomState?.output?.connectedPlayers?.map((p) => p.playerId)}
+              {connectionError}
 
               {/*todo fix this*/}
               {/*{roomState?.output?.connectedPlayers?.map((p) => <Plus4U5.Bricks.BusinessCard visual="micro" uuIdentity={p.playerId}/>)}*/}
