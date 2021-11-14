@@ -40,9 +40,9 @@ let Calls = {
         return Calls.call("post", commandUri, dtoInData);
     },
 
-    roomJoin(dtoInData) {
+    async roomJoin(dtoInData) {
         let commandUri = Calls.getCommandUri("room/join");
-        return Calls.call("post", commandUri, dtoInData);
+        return await Calls.call("post", commandUri, dtoInData);
     },
 
     gameInstanceAddPlayerMove(dtoInData) {

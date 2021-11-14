@@ -39,15 +39,20 @@ const Game = createVisualComponent({
         }
       }
 
+      async function joinToRoom() {
+        const room = await Calls.roomJoin({roomId: props.params.roomId})
+        setRoomState(room);
+      }
+
+
       document.addEventListener("keydown", sendPosition)
 
       if (props?.params?.roomId) {
 
 
         setWaiting(true);
-        const room = Calls.roomJoin({roomId: props.params.roomId})
-        setRoomState(room);
-        poll(); //todo abort request when room changed
+        joinToRoom();
+        poll();
         setWaiting(false);
 
       }
@@ -79,23 +84,30 @@ const Game = createVisualComponent({
       let sprinting = false;
       let fired = null;
       let reload = false;
+      let gameMoved = false;
       switch (event.key) {
         case 'ArrowLeft':
+          gameMoved = true;
           direction = "LEFT";
           break;
         case 'ArrowRight':
+          gameMoved = true;
           direction = "RIGHT";
           break;
         case 'ArrowUp':
+          gameMoved = true;
           direction = "UP";
           break
         case 'ArrowDown':
+          gameMoved = true;
           direction = "DOWN";
           break;
         case "R":
+          gameMoved = true;
           reload = true;
           break;
         case ' ':
+          gameMoved = true;
           fired = "BULLET"
           break;
 
@@ -104,14 +116,10 @@ const Game = createVisualComponent({
         sprinting = true;
         fired = null;
       }
-      console.log(event.key);
-      console.log("direction: " + direction);
-      console.log("sprinting: " + sprinting);
-      console.log("fire: " + fired);
-      console.log("reload: " + reload);
-      console.log(event.clientX + " " + event.clientY);
-      Calls.gameInstanceAddPlayerMove({roomId: props.params.roomId, playerMoves: {move: direction, fired: fired}})
-      event.preventDefault();
+      if (gameMoved) {
+        Calls.gameInstanceAddPlayerMove({roomId: props.params.roomId, playerMoves: {move: direction, fired: fired}})
+        event.preventDefault();
+      }
     }
 
 
@@ -144,7 +152,6 @@ const Game = createVisualComponent({
       for (let i = 0; i < obstacles.length; i++) {
         const obstacle = obstacles[i]
         for (const wall of obstacle.walls) {
-          console.log(wall)
           ctx.fillStyle = "purple" // todo obstacle.type
           ctx.fillRect(wall.x, wall.y, wall.width, wall.height);
         }
@@ -167,7 +174,7 @@ const Game = createVisualComponent({
       if (game) {
         drawPlayers(ctx, Object.values(game.players))
         drawAmmo(ctx, game.ammo)
-        drawObstacles(ctx,game.obstacles);
+        drawObstacles(ctx, game.obstacles);
       }
 
       ctx.fill()
