@@ -154,6 +154,14 @@
         "consumes" : "*/*",
         "produces" : "application/*"
       },
+      "sse" : {
+        "realization" : "uu.game.main.api.BroadcastController::sse",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
       "sys/appClientToken/initKeys" : {
         "realization" : "uu.app.workspace.api.controller.AppClientTokenController::initKeys",
         "httpMethod" : "POST",

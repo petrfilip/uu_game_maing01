@@ -48,6 +48,15 @@
           "AwidLicenseOwner"
         ]
       },
+      "sse": {
+        "sysStateList": [
+          "active"
+        ],
+        "profileList": [
+          "Public",
+          "AwidLicenseOwner"
+        ]
+      },
       "score/list": {
         "sysStateList": [
           "active"

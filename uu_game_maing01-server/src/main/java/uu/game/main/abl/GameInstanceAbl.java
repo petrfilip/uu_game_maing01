@@ -10,6 +10,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import uu.game.main.abl.dto.GameCallback;
@@ -22,6 +24,9 @@ import uu.game.main.domain.IRule;
 @Component
 @Scope(scopeName = SCOPE_PROTOTYPE)
 public class GameInstanceAbl {
+
+  private static final Logger LOGGER = LogManager.getLogger(GameInstanceAbl.class);
+
 
   @Inject
   private ObjectMapper objectMapper;
@@ -111,7 +116,13 @@ public class GameInstanceAbl {
     currentState.setParams(gameParameters);
     rule.init(currentState, players.values());
     ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
-    scheduledFuture = executor.scheduleAtFixedRate(this::calculateNextState, 0, 50, TimeUnit.MILLISECONDS);
+    scheduledFuture = executor.scheduleAtFixedRate(() -> {
+      try {
+        calculateNextState();
+      } catch (Exception e) {
+        LOGGER.error("Failed to calculate next state", e);
+      }
+    }, 0, 50, TimeUnit.MILLISECONDS);
     return currentState;
   }
 

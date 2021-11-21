@@ -25,18 +25,14 @@ const Game = createVisualComponent({
     useEffect(() => {
       let fetch = true;
 
+      let eventSource;
+
       async function poll() {
-        while (fetch) {
-          console.log(props.params.roomId)
-          let result = null;
-          try {
-            result = await Calls.poll({roomId: props.params.roomId});
-            connectionError && setConnectionError(null);
-          } catch (e) {
-            setConnectionError("Connection error")
-          }
+        eventSource = new EventSource(`${Calls.getCommandUri("sse")}?roomId=${props.params.roomId}`);
+        eventSource.onmessage = (event) => {
+          const result = JSON.parse(event.data);
           console.log(result)
-          if (fetch === false || result === null) {
+          if (fetch === false) {
             return;
           }
           if (result.eventType === 'RoomEvent') {
@@ -44,7 +40,15 @@ const Game = createVisualComponent({
           } else if (result.eventType === 'GameEvent') {
             setGameState(oldValue => ({...oldValue, ...result}));
           }
-        }
+        };
+        eventSource.onopen = (event) => {
+          console.log("Open", event);
+        };
+        eventSource.onerror = (event) => {
+          console.log("Error", event);
+        };
+
+
       }
 
       async function joinToRoom() {
@@ -66,6 +70,7 @@ const Game = createVisualComponent({
       }
       return () => {
         fetch = false;
+        eventSource && eventSource.close();
         setGameState({})
         setRoomState({})
         themeMusic.pause()
@@ -188,7 +193,7 @@ const Game = createVisualComponent({
             img.src = "../assets/tavern.png"
             ctx.drawImage(img, wall.x, wall.y, wall.width, wall.height);
           } else {
-            ctx.fillStyle = "purple" // todo obstacle.type
+            ctx.fillStyle = "yellow" // todo obstacle.type
             ctx.fillRect(wall.x, wall.y, wall.width, wall.height);
           }
         }

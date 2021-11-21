@@ -11,7 +11,7 @@ const RenderHelper = createComponent({
     let ctx = null;
     let particlesPerExplosion = 20;
     let particlesMinSpeed = 3;
-    let particlesMaxSpeed = 6;
+    let particlesMaxSpeed = 20;
     let particlesMinSize = 1;
     let particlesMaxSize = 10;
     let explosions = [];
@@ -59,6 +59,7 @@ const RenderHelper = createComponent({
           ctx.arc(particle.x, particle.y, particle.size, Math.PI * 2, 0, false);
           ctx.closePath();
           ctx.fillStyle = 'rgb(' + particle.r + ',' + particle.g + ',' + particle.b + ')';
+          ctx.fillStyle = "blue" // todo obstacle.type
           ctx.fill();
           // Update
           particle.x += particle.xv;
