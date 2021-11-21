@@ -13,6 +13,7 @@ import uu.game.main.game.common.GameRuleEvent;
 public class Bullet extends Ammo {
 
   private Direction direction;
+  private Integer bulletSpeed = 20;
 
   public Bullet() {
     super(null, null, 10, 10);
@@ -21,7 +22,7 @@ public class Bullet extends Ammo {
   @Override
   public List<GameRuleEvent> applyEffect(Collection<? extends AmmoDamagable> players, Integer tick) {
 
-    nextAmmoMove(20); // todo speed as attribute
+    nextAmmoMove(bulletSpeed);
 
     for (AmmoDamagable damagable : players) {
       if (
@@ -77,5 +78,13 @@ public class Bullet extends Ammo {
 
   public void setDirection(Direction direction) {
     this.direction = direction;
+  }
+
+  public Integer getBulletSpeed() {
+    return bulletSpeed;
+  }
+
+  public void setBulletSpeed(Integer bulletSpeed) {
+    this.bulletSpeed = bulletSpeed;
   }
 }

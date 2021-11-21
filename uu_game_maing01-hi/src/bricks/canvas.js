@@ -30,9 +30,9 @@ const Canvas = createVisualComponent({
       let animationFrameId
 
       const render = () => {
+        animationFrameId = window.requestAnimationFrame(render)
         frameCount++
         draw(context, frameCount)
-        animationFrameId = window.requestAnimationFrame(render)
       }
       render()
 

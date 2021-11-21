@@ -119,11 +119,11 @@ const Game = createVisualComponent({
           break;
         case 'ArrowUp':
           gameMoved = true;
-          direction = "UP";
+          direction = "DOWN"; // this is switched with DOWN because axes translation
           break
         case 'ArrowDown':
           gameMoved = true;
-          direction = "DOWN";
+          direction = "UP"; // this is switched with DOWN because axes translation
           break;
         case "R":
           gameMoved = true;
@@ -199,7 +199,11 @@ const Game = createVisualComponent({
     }
 
 
-    function renderEvents(ctx, events) {
+    function renderEvents(ctx, frameCount, events) {
+      if (frameCount !== 1) {
+        return
+      }
+
       for (let i = 0; i < events?.length; i++) {
         const event = events[i]
         if (event.objectName === "Bullet") {
@@ -217,7 +221,7 @@ const Game = createVisualComponent({
 
       }
     }
- 
+
 
     const draw = (ctx, frameCount) => {
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
@@ -227,18 +231,44 @@ const Game = createVisualComponent({
       grass.src = "../assets/grass.png"
       ctx.drawImage(grass, 0, 0, ctx.canvas.width, ctx.canvas.height);
 
-      const game = gameState?.output?.game ?? []
+      const keyGameState = gameState?.output?.game ?? []
+      let amoState = keyGameState.ammo;
+
+      if (frameCount !== 1) {
+        const gameInterval = 50
+        const framePaint = 16
+        for (let i = 0; i < amoState.length; i++) {
+          const interpolation = (amoState[i].bulletSpeed) * (framePaint / gameInterval)
+
+          switch (amoState[i].direction) {
+            case 'RIGHT':
+              amoState[i].x = amoState[i].x + interpolation
+              break;
+            case 'LEFT':
+              amoState[i].x = amoState[i].x - interpolation
+              break;
+            case 'UP':
+              amoState[i].y = amoState[i].y + interpolation
+              break;
+            case 'DOWN':
+              amoState[i].y = amoState[i].y - interpolation
+              break;
+          }
 
 
-      if (game) {
+        }
+      }
+
+
+      if (keyGameState) {
 
         // render state
-        drawPlayers(ctx, Object.values(game.players))
-        drawAmmo(ctx, game.ammo)
-        drawObstacles(ctx, game.obstacles);
+        drawPlayers(ctx, Object.values(keyGameState.players))
+        drawAmmo(ctx, amoState)
+        drawObstacles(ctx, keyGameState.obstacles);
 
         // render events
-        renderEvents(ctx, gameState?.output?.gameEvents)
+        renderEvents(ctx, frameCount, gameState?.output?.gameEvents)
       }
 
       ctx.fill()
