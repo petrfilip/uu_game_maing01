@@ -48,22 +48,33 @@ public class BulanciRule implements IRule<BulanciBoard, BulanciMove> {
       currentState.getGame().getPlayers().put(player, bulanciPlayer);
     }
 
-    currentState.getGame().setObstacles(generateObstacles());
+    currentState.getGame().setObstacles(generateObstacles(currentState.getGame().getPlayers().values()));
 
     return currentState;
   }
 
-  private List<Obstacle> generateObstacles() {
+  private List<Obstacle> generateObstacles(Collection<BulanciPlayer> players) {
     List<Obstacle> obstacles = new ArrayList<>(); //todo if generate ; add support to load predefined maps
-    for (int i = 0; i < 3; i++) {
-      obstacles.add(new Obstacle(ObstacleTypeEnum.TREE, Utils.getRandomNumber(0, 500), Utils.getRandomNumber(0, 500), Utils.getRandomNumber(100,150), Utils.getRandomNumber(100,150)));
-    }
 
     obstacles.add(new Obstacle(ObstacleTypeEnum.MUSHROOM, new GameRectangle(0, 0, 100, 20), new GameRectangle(0, 100, 100, 20)));
     obstacles.add(new Obstacle(ObstacleTypeEnum.HOUSE, new GameRectangle(250, 250, 200, 200)));
     obstacles.add(new Obstacle(ObstacleTypeEnum.TAVERN, new GameRectangle(450, 50, 250, 250)));
 
+
+    for (int i = 0; i < 3; i++) {
+      Obstacle obstacle;
+      do {
+        obstacle = new Obstacle(ObstacleTypeEnum.TREE, Utils.getRandomNumber(0, 500), Utils.getRandomNumber(0, 500), Utils.getRandomNumber(100, 150), Utils.getRandomNumber(100, 150));
+      } while(obstacleIntersected(obstacle, obstacles) || obstacle.intersects(players));
+      obstacles.add(obstacle);
+    }
+
+
     return obstacles;
+  }
+
+  private boolean obstacleIntersected(Obstacle obstacle, List<Obstacle> obstacles) {
+    return obstacles.stream().anyMatch((o -> o.intersects(obstacle.getWalls())));
   }
 
   @Override

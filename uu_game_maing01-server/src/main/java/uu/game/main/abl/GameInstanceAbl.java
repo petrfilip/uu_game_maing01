@@ -91,7 +91,7 @@ public class GameInstanceAbl {
     // save state
     currentState = gameState;
     try {
-      System.out.println("Current tick:" + gameState.getTick() + " :: " + objectMapper.writeValueAsString(currentState));
+      LOGGER.info("Current tick: {} :: {}", gameState.getTick(), objectMapper.writeValueAsString(currentState));
     } catch (JsonProcessingException e) {
       e.printStackTrace();
     }

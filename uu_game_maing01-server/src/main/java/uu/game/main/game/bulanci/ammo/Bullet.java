@@ -7,7 +7,6 @@ import java.util.List;
 import uu.game.main.game.bulanci.BulanciMove;
 import uu.game.main.game.bulanci.BulanciPlayer;
 import uu.game.main.game.common.Direction;
-import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
 
 public class Bullet extends Ammo {
@@ -25,10 +24,7 @@ public class Bullet extends Ammo {
     nextAmmoMove(bulletSpeed);
 
     for (AmmoDamagable damagable : players) {
-      if (
-        damagable instanceof AmmoHitable && ((AmmoHitable) damagable).hit(this) ||
-        damagable instanceof GameRectangle && this.getRectangle().intersects(((GameRectangle) damagable).getRectangle())
-      ) {
+      if (damagable instanceof Intersectable && ((Intersectable) damagable).intersects(this)) {
         List<GameRuleEvent> gameRuleEvents = damagable.applyAmmoDamage(-1);
         gameRuleEvents.add(new GameRuleEvent("used", this.getClass().getSimpleName(), this));
         setUsed(true);

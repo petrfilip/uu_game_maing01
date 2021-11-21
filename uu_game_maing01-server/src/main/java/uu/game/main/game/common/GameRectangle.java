@@ -2,8 +2,9 @@ package uu.game.main.game.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.awt.Rectangle;
+import uu.game.main.game.bulanci.ammo.Intersectable;
 
-public class GameRectangle {
+public class GameRectangle implements Intersectable {
 
   private Integer x;
   private Integer y;
@@ -52,5 +53,10 @@ public class GameRectangle {
 
   public void setHeight(Integer height) {
     this.height = height;
+  }
+
+  @Override
+  public boolean intersects(GameRectangle hitArea) {
+    return this.getRectangle().intersects(hitArea.getRectangle());
   }
 }

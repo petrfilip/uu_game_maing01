@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import uu.game.main.game.bulanci.ammo.AmmoDamagable;
-import uu.game.main.game.bulanci.ammo.AmmoHitable;
+import uu.game.main.game.bulanci.ammo.Intersectable;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
 
-public class Obstacle implements AmmoDamagable, AmmoHitable {
+public class Obstacle implements AmmoDamagable, Intersectable {
 
   private ObstacleTypeEnum type;
 
@@ -53,7 +53,7 @@ public class Obstacle implements AmmoDamagable, AmmoHitable {
   }
 
   @Override
-  public boolean hit(GameRectangle hitArea) {
+  public boolean intersects(GameRectangle hitArea) {
     for (GameRectangle wall : walls) {
       if (wall.getRectangle().intersects(hitArea.getRectangle())) {
         return true;
