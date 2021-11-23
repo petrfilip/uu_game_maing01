@@ -121,4 +121,4 @@ Pro vývoj GUI je potřeba ještě spustit `npm start` v adresáři `*-hi`.
 
 Hudba: https://gamesounds.xyz/?dir=OpenBundle/Background%20Music%20and%20Loops
 
-Assety: https://opengameart.org/ & https://remos.itch.io/timbered-house
+Assety: https://opengameart.org/ & https://remos.itch.io/timbered-house | https://itch.io/game-assets/free/tag-animation | https://www.gamedevmarket.net/category/2d/page/2/?type=free | https://tokegameart.net/category/freebies/

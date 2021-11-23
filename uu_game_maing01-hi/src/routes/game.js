@@ -1,10 +1,11 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
-import {createVisualComponent, useEffect, useState} from "uu5g04-hooks";
+import {createVisualComponent, useEffect, useRef, useState} from "uu5g04-hooks";
 import Config from "./config/config";
 import Calls from "../calls";
 import Canvas from "../bricks/canvas";
 import RenderHelper from "../bricks/render-helper";
+import ShakeHelper from "../bricks/shake-helper";
 //@@viewOff:imports
 const themeMusic = new Audio("../assets/theme.mp3");
 
@@ -20,7 +21,10 @@ const Game = createVisualComponent({
     const [waiting, setWaiting] = useState(false);
     const [connectionError, setConnectionError] = useState(null);
     const [themeMusicPlays, setThemeMusicPlays] = useState(false);
+    const canvasRef = useRef()
     const {addExplosion} = RenderHelper()
+    const {shake} = ShakeHelper()
+
 
     useEffect(() => {
       let fetch = true;
@@ -31,7 +35,6 @@ const Game = createVisualComponent({
         eventSource = new EventSource(`${Calls.getCommandUri("sse")}?roomId=${props.params.roomId}`);
         eventSource.onmessage = (event) => {
           const result = JSON.parse(event.data);
-          console.log(result)
           if (fetch === false) {
             return;
           }
@@ -165,6 +168,21 @@ const Game = createVisualComponent({
         const player = players[i]
         ctx.fillStyle = "blue";
         ctx.fillRect(player.x, player.y, player.width, player.height);
+        ctx.fillStyle = "red";
+        switch (player.direction) {
+          case 'RIGHT':
+            ctx.fillRect(player.x + player.width, player.y + (player.height / 2), 5, 5);
+            break;
+          case 'LEFT':
+            ctx.fillRect(player.x - 5, player.y + (player.height / 2), 5, 5);
+            break;
+          case 'UP':
+            ctx.fillRect(player.x + (player.width / 2), player.y + player.width, 5, 5);
+            break;
+          case 'DOWN':
+            ctx.fillRect(player.x + (player.width / 2), player.y - 5, 5, 5);
+            break;
+        }
       }
     }
 
@@ -221,6 +239,7 @@ const Game = createVisualComponent({
           if (event.action === "fired") {
             const firedSound = new Audio("../assets/fired.mp3");
             firedSound.play();
+            canvasRef && canvasRef.current && shake(canvasRef) //todo make it works - nejde mi použít ref
           }
         }
 
@@ -296,7 +315,7 @@ const Game = createVisualComponent({
         Connected players: {roomState?.output?.connectedPlayers?.map((p) => p.playerId)}
 
 
-        <UU5.Bricks.Card className="uu5-common-padding-s" style={{
+        <UU5.Bricks.Card className="uu5-common-padding-s" ref={canvasRef} style={{
           border: "1px solid black",
           minHeight: "550px",
           width: "100%"
