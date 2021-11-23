@@ -9,12 +9,21 @@ import ShakeHelper from "../bricks/shake-helper";
 //@@viewOff:imports
 const themeMusic = new Audio("../assets/theme.mp3");
 let moveList = [];
+let gameUpdateRate = new Date().getTime();
+let lastServerUpdateTimestamp = new Date().getTime();
+let currentServerUpdateTimestamp = new Date().getTime();
+
+const interpolate = (min, max, fract) => max + (min - max) * fract;
+const extrapolate = (first, second) => (second-first) + second
+
 
 
 const Game = createVisualComponent({
   //@@viewOn:statics
   displayName: Config.TAG + "Game",
   //@@viewOff:statics
+
+
 
   render: function (props) {
     //@@viewOn:hooks
@@ -46,6 +55,11 @@ const Game = createVisualComponent({
             setRoomState(oldValue => ({...oldValue, ...result}));
           } else if (result.eventType === 'GameEvent') {
             setGameState(oldValue => ({...oldValue, ...result}));
+
+            lastServerUpdateTimestamp = currentServerUpdateTimestamp;
+            currentServerUpdateTimestamp = new Date().getTime();
+            gameUpdateRate = (currentServerUpdateTimestamp - lastServerUpdateTimestamp)///1000.0;
+
 
             async function sendMoves(moves) {
               await Calls.gameInstanceAddPlayerMove({roomId: props.params.roomId, playerMoves: moves})
@@ -286,10 +300,9 @@ const Game = createVisualComponent({
       let playersState = JSON.parse(JSON.stringify(keyGameState.players));
 
       if (frameCount !== 1) {
-        const gameInterval = 500
         const framePaint = 16
         for (let i = 0; i < amoState.length; i++) {
-          const interpolation = (amoState[i].bulletSpeed) * (framePaint / gameInterval)
+          const interpolation = (amoState[i].bulletSpeed) * (framePaint / gameUpdateRate)
 
           switch (amoState[i].direction) {
             case 'RIGHT':
@@ -341,6 +354,10 @@ const Game = createVisualComponent({
 
       }
       playersState[JSON.stringify(UU5.Environment.getSession().getIdentity().uuIdentity)] = currentPlayer;
+
+      //todo extrapolate move - do only once
+
+      //todo intrapolate move - do for every frame
 
 
       if (keyGameState) {
