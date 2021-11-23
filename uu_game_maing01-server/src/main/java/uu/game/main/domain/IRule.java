@@ -1,6 +1,7 @@
 package uu.game.main.domain;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import uu.game.main.abl.dto.Player;
 
@@ -10,5 +11,5 @@ public interface IRule<STATE, MOVE> {
 
   GameState<STATE> init(GameState<STATE> currentState, Collection<Player> players);
 
-  GameState<STATE> getNextGameState(GameState<STATE> newGameState, Map<Player, MOVE> unprocessedMoves);
+  GameState<STATE> getNextGameState(GameState<STATE> newGameState, Map<Player, List<MOVE>> unprocessedMoves);
 }

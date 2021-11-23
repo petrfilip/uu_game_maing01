@@ -3,8 +3,10 @@ package uu.game.main.abl;
 import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROTOTYPE;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -20,6 +22,7 @@ import uu.game.main.abl.dto.PlayerStateEnum;
 import uu.game.main.domain.GameState;
 import uu.game.main.domain.GameStateEnum;
 import uu.game.main.domain.IRule;
+import uu.game.main.game.bulanci.BulanciMove;
 
 @Component
 @Scope(scopeName = SCOPE_PROTOTYPE)
@@ -63,7 +66,7 @@ public class GameInstanceAbl {
     return currentState;
   }
 
-  public void addPlayerMove(String playerId, Map<String, Object> playerMove) {
+  public void addPlayerMove(String playerId, List<Object> playerMove) {
     if (currentState == null || currentState.getState().equals(GameStateEnum.WAITING) || currentState.getState().equals(GameStateEnum.FINISHED)) {
       throw new RuntimeException("Game is not running!");
     }
@@ -74,7 +77,8 @@ public class GameInstanceAbl {
       return;
     }
 
-    Object move = objectMapper.convertValue(playerMove, rule.getMoveClass());
+    Object move = objectMapper.convertValue(playerMove, new TypeReference<List<BulanciMove>>() {
+    });
 
     unprocessedMoves.put(player, move);
     try {
@@ -122,7 +126,7 @@ public class GameInstanceAbl {
       } catch (Exception e) {
         LOGGER.error("Failed to calculate next state", e);
       }
-    }, 0, 50, TimeUnit.MILLISECONDS);
+    }, 0, 500, TimeUnit.MILLISECONDS);
     return currentState;
   }
 

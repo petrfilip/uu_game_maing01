@@ -1,13 +1,13 @@
 package uu.game.main.api.dto;
 
-import java.util.Map;
+import java.util.List;
 
 public class AddPlayerMoveDtoIn {
 
   private Integer tick;
   private String roomId;
   private String playerId;
-  private Map<String, Object> playerMoves;
+  private List<Object> playerMoves;
 
   public Integer getTick() {
     return tick;
@@ -33,11 +33,11 @@ public class AddPlayerMoveDtoIn {
     this.playerId = playerId;
   }
 
-  public Map<String, Object> getPlayerMoves() {
+  public List<Object> getPlayerMoves() {
     return playerMoves;
   }
 
-  public void setPlayerMoves(Map<String, Object> playerMoves) {
+  public void setPlayerMoves(List<Object> playerMoves) {
     this.playerMoves = playerMoves;
   }
 }

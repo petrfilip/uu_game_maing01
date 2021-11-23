@@ -45,7 +45,7 @@ let Calls = {
         return await Calls.call("post", commandUri, dtoInData);
     },
 
-    gameInstanceAddPlayerMove(dtoInData) {
+     async gameInstanceAddPlayerMove(dtoInData) {
         let commandUri = Calls.getCommandUri("gameInstance/addPlayerMove");
         return Calls.call("post", commandUri, dtoInData);
     },

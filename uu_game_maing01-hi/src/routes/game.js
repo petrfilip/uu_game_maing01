@@ -8,13 +8,15 @@ import RenderHelper from "../bricks/render-helper";
 import ShakeHelper from "../bricks/shake-helper";
 //@@viewOff:imports
 const themeMusic = new Audio("../assets/theme.mp3");
+let moveList = [];
+
 
 const Game = createVisualComponent({
   //@@viewOn:statics
   displayName: Config.TAG + "Game",
   //@@viewOff:statics
 
-  render(props) {
+  render: function (props) {
     //@@viewOn:hooks
     const [roomState, setRoomState] = useState();
     const [gameState, setGameState] = useState();
@@ -31,6 +33,8 @@ const Game = createVisualComponent({
 
       let eventSource;
 
+      let movesInTick = []
+
       async function poll() {
         eventSource = new EventSource(`${Calls.getCommandUri("sse")}?roomId=${props.params.roomId}`);
         eventSource.onmessage = (event) => {
@@ -42,10 +46,27 @@ const Game = createVisualComponent({
             setRoomState(oldValue => ({...oldValue, ...result}));
           } else if (result.eventType === 'GameEvent') {
             setGameState(oldValue => ({...oldValue, ...result}));
+
+            async function sendMoves(moves) {
+              await Calls.gameInstanceAddPlayerMove({roomId: props.params.roomId, playerMoves: moves})
+            }
+
+
+            if (moveList.length) {
+              const oldMoves = movesInTick[result.output.tick]
+              oldMoves && moveList.splice(0, oldMoves.length);
+              movesInTick[result.output.tick + 1] = [...moveList];
+              sendMoves(movesInTick[result.output.tick + 1])
+            }
+
           }
+
+
         };
         eventSource.onopen = (event) => {
           console.log("Open", event);
+          moveList = [];
+          movesInTick = []
         };
         eventSource.onerror = (event) => {
           console.log("Error", event);
@@ -148,7 +169,12 @@ const Game = createVisualComponent({
         fired = null;
       }
       if (gameMoved) {
-        Calls.gameInstanceAddPlayerMove({roomId: props.params.roomId, playerMoves: {move: direction, fired: fired}})
+        const newMove = {}
+        newMove.move = direction;
+        if (fired) {
+          newMove.fired = fired
+        }
+        moveList.push(newMove)
         event.preventDefault();
       }
     }
@@ -256,10 +282,11 @@ const Game = createVisualComponent({
       ctx.drawImage(grass, 0, 0, ctx.canvas.width, ctx.canvas.height);
 
       const keyGameState = gameState?.output?.game ?? []
-      let amoState = keyGameState.ammo;
+      let amoState = [...keyGameState.ammo];
+      let playersState = JSON.parse(JSON.stringify(keyGameState.players));
 
       if (frameCount !== 1) {
-        const gameInterval = 50
+        const gameInterval = 500
         const framePaint = 16
         for (let i = 0; i < amoState.length; i++) {
           const interpolation = (amoState[i].bulletSpeed) * (framePaint / gameInterval)
@@ -284,10 +311,42 @@ const Game = createVisualComponent({
       }
 
 
+      const currentPlayer = playersState[JSON.stringify(UU5.Environment.getSession().getIdentity().uuIdentity)]
+      for (let i = 0; i < moveList.length; i++) {
+
+        // if (moveList[i].move !== currentPlayer.direction) {
+        //   debugger
+        //   currentPlayer.direction = moveList[i].move;
+        // }
+
+        switch (moveList[i].move) {
+          case 'RIGHT':
+            currentPlayer.direction = moveList[i].move;
+            currentPlayer.x = currentPlayer.x + currentPlayer.speed
+            break;
+          case 'LEFT':
+            currentPlayer.direction = moveList[i].move;
+            currentPlayer.x = currentPlayer.x - currentPlayer.speed
+            break;
+          case 'UP':
+            currentPlayer.direction = moveList[i].move;
+            currentPlayer.y = currentPlayer.y + currentPlayer.speed
+            break;
+          case 'DOWN':
+            currentPlayer.direction = moveList[i].move;
+            currentPlayer.y = currentPlayer.y - currentPlayer.speed
+            break;
+        }
+
+
+      }
+      playersState[JSON.stringify(UU5.Environment.getSession().getIdentity().uuIdentity)] = currentPlayer;
+
+
       if (keyGameState) {
 
         // render state
-        drawPlayers(ctx, Object.values(keyGameState.players))
+        drawPlayers(ctx, Object.values(playersState))
         drawAmmo(ctx, amoState)
         drawObstacles(ctx, keyGameState.obstacles);
 

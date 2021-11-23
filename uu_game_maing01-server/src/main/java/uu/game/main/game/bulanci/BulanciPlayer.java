@@ -13,7 +13,7 @@ import uu.game.main.game.common.GameRuleEvent;
 
 public class BulanciPlayer extends GameRectangle implements AmmoDamagable {
 
-  private Integer speed = 10;
+  private Integer speed = 3;
   @JsonSerialize(using = PlayerAmmoSerialization.class)
   private List<Ammo> ammoList = new ArrayList<>();
   private Integer lives = 1;

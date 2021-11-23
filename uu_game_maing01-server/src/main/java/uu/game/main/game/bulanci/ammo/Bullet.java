@@ -64,7 +64,7 @@ public class Bullet extends Ammo {
     this.setY(bulanciPlayer.getY());
     this.setWidth(10);
     this.setWidth(10);
-    nextAmmoMove(100);
+    nextAmmoMove(bulletSpeed);
     return Collections.singletonList(new GameRuleEvent("fired", this.getClass().getSimpleName(), this));
   }
 

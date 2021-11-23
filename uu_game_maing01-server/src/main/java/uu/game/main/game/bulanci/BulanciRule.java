@@ -25,7 +25,7 @@ import uu.game.main.helper.Utils;
 @Scope(scopeName = SCOPE_PROTOTYPE)
 public class BulanciRule implements IRule<BulanciBoard, BulanciMove> {
 
-  private static final Integer SPRINT_KOEF = 2;
+  private static final Integer SPRINT_KOEF = 1;
 
   @Override
   public Class<BulanciMove> getMoveClass() {
@@ -60,15 +60,13 @@ public class BulanciRule implements IRule<BulanciBoard, BulanciMove> {
     obstacles.add(new Obstacle(ObstacleTypeEnum.HOUSE, new GameRectangle(250, 250, 200, 200)));
     obstacles.add(new Obstacle(ObstacleTypeEnum.TAVERN, new GameRectangle(450, 50, 250, 250)));
 
-
     for (int i = 0; i < 3; i++) {
       Obstacle obstacle;
       do {
         obstacle = new Obstacle(ObstacleTypeEnum.TREE, Utils.getRandomNumber(0, 500), Utils.getRandomNumber(0, 500), Utils.getRandomNumber(100, 150), Utils.getRandomNumber(100, 150));
-      } while(obstacleIntersected(obstacle, obstacles) || obstacle.intersects(players));
+      } while (obstacleIntersected(obstacle, obstacles) || obstacle.intersects(players));
       obstacles.add(obstacle);
     }
-
 
     return obstacles;
   }
@@ -78,24 +76,26 @@ public class BulanciRule implements IRule<BulanciBoard, BulanciMove> {
   }
 
   @Override
-  public GameState<BulanciBoard> getNextGameState(GameState<BulanciBoard> newGameState, Map<Player, BulanciMove> unprocessedMoves) {
+  public GameState<BulanciBoard> getNextGameState(GameState<BulanciBoard> newGameState, Map<Player, List<BulanciMove>> unprocessedMoves) {
 
     BulanciBoard game = newGameState.getGame();
 
     final List<GameRuleEvent> events = new ArrayList<>();
 
-
     // player moves
     for (Player player : newGameState.getGame().getPlayers().keySet()) {
-      BulanciMove bulanciMove = unprocessedMoves.getOrDefault(player, new BulanciMove());
-      BulanciPlayer bulanciPlayer = game.getPlayers().get(player);
-      calculateNextStep(bulanciPlayer, bulanciMove);
+      List<BulanciMove> bulanciMoveList = unprocessedMoves.getOrDefault(player, new ArrayList<>());
+      for (BulanciMove bulanciMove : bulanciMoveList) {
 
-      if (bulanciMove.getFired() != null) {
-        events.addAll(bulanciMove.getFired().init(bulanciPlayer, bulanciMove));
-        game.getAmmo().add(bulanciMove.getFired()); //todo check if has this kind of amo
+        BulanciPlayer bulanciPlayer = game.getPlayers().get(player);
+        calculateNextStep(bulanciPlayer, bulanciMove);
+
+        if (bulanciMove.getFired() != null) {
+          events.addAll(bulanciMove.getFired().init(bulanciPlayer, bulanciMove));
+          game.getAmmo().add(bulanciMove.getFired()); //todo check if has this kind of amo
+        }
+        game.getPlayers().put(player, bulanciPlayer);
       }
-      game.getPlayers().put(player, bulanciPlayer);
     }
 
     // affect damagable with ammo
