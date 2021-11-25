@@ -9,6 +9,7 @@ import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
 import uu.game.main.game.common.Player2D;
 import uu.game.main.game.common.ammo.AmmoDamagable;
+import uu.game.main.helper.Utils;
 
 public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player2D<SoldatPlayer, SoldatMove, SoldatBoard> {
 
@@ -52,6 +53,8 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
     if(respawnTime != null && respawnTime.isAfter(ZonedDateTime.now())){
       respawnTime = null;
       lives = INIT_LIVES;
+      setX(Utils.getRandomNumber(0, 500));
+      setY(Utils.getRandomNumber(0, 500));
     }
 
     if (move.getMove() != null && !move.getMove().equals(getDirection())) {
