@@ -1,10 +1,9 @@
 package uu.game.main.game.soldat;
 
+import java.time.ZonedDateTime;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import uu.game.main.game.bulanci.Obstacle;
 import uu.game.main.game.common.Direction;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
@@ -15,13 +14,15 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
 
   public static final Integer JUMP_DURATION = 220;
   public static final Integer JUMP_SPEED = 1;
+  public static final Integer INIT_LIVES = 5;
 
-  private Integer lives = 1;
+  private Integer lives = INIT_LIVES;
   private Direction direction;
   private Integer speed = 1;
   private Direction jumping;
   private Integer jumpUpStarted = 0;
   private boolean sprint;
+  private ZonedDateTime respawnTime;
 
 
   public SoldatPlayer(Direction direction, Integer x, Integer y, Integer width, Integer height) {
@@ -35,6 +36,7 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
     if (lives > 0) {
       return new GameRuleEvent("liveDecreased", this.getClass().getSimpleName(), this).asList();
     } else {
+      this.respawnTime = ZonedDateTime.now().plusSeconds(6);
       return new GameRuleEvent("death", this.getClass().getSimpleName(), this).asList();
     }
   }
@@ -46,6 +48,11 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
 
   @Override
   public SoldatPlayer movePlayer(SoldatMove move, SoldatBoard soldatBoard) {
+
+    if(respawnTime != null && respawnTime.isAfter(ZonedDateTime.now())){
+      respawnTime = null;
+      lives = INIT_LIVES;
+    }
 
     if (move.getMove() != null && !move.getMove().equals(getDirection())) {
       setDirection(move.getMove());
@@ -169,5 +176,13 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
 
   public void setSprint(boolean sprint) {
     this.sprint = sprint;
+  }
+
+  public ZonedDateTime getRespawnTime() {
+    return respawnTime;
+  }
+
+  public void setRespawnTime(ZonedDateTime respawnTime) {
+    this.respawnTime = respawnTime;
   }
 }
