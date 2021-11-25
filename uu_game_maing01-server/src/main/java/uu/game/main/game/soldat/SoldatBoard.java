@@ -8,10 +8,11 @@ import java.util.Map;
 import uu.game.main.abl.dto.Player;
 import uu.game.main.game.bulanci.BulanciPlayer;
 import uu.game.main.game.bulanci.Obstacle;
+import uu.game.main.game.common.GameBoard;
 import uu.game.main.game.common.ammo.Ammo;
 import uu.game.main.helper.PlayerSerializer;
 
-public class SoldatBoard {
+public class SoldatBoard implements GameBoard {
 
   @JsonSerialize(keyUsing = PlayerSerializer.class)
   private Map<Player, SoldatPlayer> players = new HashMap<>();

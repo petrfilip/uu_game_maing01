@@ -87,7 +87,7 @@ public class BulanciRule implements IRule<BulanciBoard, BulanciMove> {
       for (BulanciMove bulanciMove : bulanciMoveList) {
 
         BulanciPlayer bulanciPlayer = game.getPlayers().get(player);
-        bulanciPlayer.movePlayer(bulanciPlayer, bulanciMove);
+        bulanciPlayer.movePlayer(bulanciMove, game);
 
         if (bulanciMove.getFired() != null) {
           events.addAll(bulanciMove.getFired().init(bulanciPlayer));

@@ -1,9 +1,6 @@
 package uu.game.main.game.common;
 
-import uu.game.main.game.soldat.SoldatMove;
-import uu.game.main.game.soldat.SoldatPlayer;
-
-public interface Player2D<PLAYER,  MOVE> {
+public interface Player2D<PLAYER,  MOVE, GAMEBOARD extends GameBoard> {
 
 
   Integer getX();
@@ -19,5 +16,5 @@ public interface Player2D<PLAYER,  MOVE> {
   void setDirection(Direction direction);
 
 
-  PLAYER movePlayer(PLAYER player,  MOVE move);
+  PLAYER movePlayer(MOVE move, GAMEBOARD gameBoard);
 }

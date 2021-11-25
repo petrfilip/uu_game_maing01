@@ -6,10 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import uu.game.main.abl.dto.Player;
+import uu.game.main.game.common.GameBoard;
 import uu.game.main.game.common.ammo.Ammo;
 import uu.game.main.helper.PlayerSerializer;
 
-public class BulanciBoard {
+public class BulanciBoard implements GameBoard {
 
   @JsonSerialize(keyUsing = PlayerSerializer.class)
   private Map<Player, BulanciPlayer> players = new HashMap<>();

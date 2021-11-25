@@ -12,7 +12,7 @@ import uu.game.main.game.common.Direction;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
 
-public class BulanciPlayer extends GameRectangle implements AmmoDamagable, Player2D<BulanciPlayer, BulanciMove> {
+public class BulanciPlayer extends GameRectangle implements AmmoDamagable, Player2D<BulanciPlayer, BulanciMove, BulanciBoard> {
 
   private static final Integer SPRINT_KOEF = 1;
 
@@ -70,34 +70,34 @@ public class BulanciPlayer extends GameRectangle implements AmmoDamagable, Playe
   }
 
   @Override
-  public BulanciPlayer movePlayer(BulanciPlayer player, BulanciMove move) {
+  public BulanciPlayer movePlayer(BulanciMove move, BulanciBoard bulanciBoard) {
     //todo check for collision with wall or another players
     //todo add sprint
 
     if (move.getMove() == null) {
-      return player;
+      return this;
     }
 
-    if (!move.getMove().equals(player.getDirection())) {
-      player.setDirection(move.getMove());
-      return player;
+    if (!move.getMove().equals(getDirection())) {
+      setDirection(move.getMove());
+      return this;
     }
 
     switch (move.getMove()) {
       case RIGHT:
-        player.setX(player.getX() + (player.getSpeed() * SPRINT_KOEF));
+        setX(getX() + (getSpeed() * SPRINT_KOEF));
         break;
       case LEFT:
-        player.setX(player.getX() - (player.getSpeed() * SPRINT_KOEF));
+        setX(getX() - (getSpeed() * SPRINT_KOEF));
         break;
       case UP:
-        player.setY(player.getY() + (player.getSpeed() * SPRINT_KOEF));
+        setY(getY() + (getSpeed() * SPRINT_KOEF));
         break;
       case DOWN:
-        player.setY(player.getY() - (player.getSpeed() * SPRINT_KOEF));
+        setY(getY() - (getSpeed() * SPRINT_KOEF));
         break;
     }
 
-    return player;
+    return this;
   }
 }

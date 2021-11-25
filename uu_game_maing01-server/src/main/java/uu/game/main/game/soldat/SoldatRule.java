@@ -2,35 +2,40 @@ package uu.game.main.game.soldat;
 
 import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROTOTYPE;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import uu.game.main.abl.ScoreAbl;
 import uu.game.main.abl.dto.Player;
 import uu.game.main.domain.GameState;
 import uu.game.main.domain.GameStateEnum;
 import uu.game.main.domain.IRule;
-import uu.game.main.game.bulanci.BulanciBoard;
-import uu.game.main.game.bulanci.BulanciMove;
-import uu.game.main.game.bulanci.BulanciPlayer;
 import uu.game.main.game.bulanci.Obstacle;
 import uu.game.main.game.bulanci.ObstacleTypeEnum;
 import uu.game.main.game.common.Direction;
+import uu.game.main.game.common.GamePlayMode;
+import uu.game.main.game.common.GameplayModeEnum;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
+import uu.game.main.game.common.TimeLimitGameplayMode;
 import uu.game.main.game.common.ammo.AmmoDamagable;
-import uu.game.main.game.common.ammo.Bullet;
-import uu.game.main.game.common.ammo.Mine;
 import uu.game.main.helper.Utils;
 
 @Service("soldat")
 @Scope(scopeName = SCOPE_PROTOTYPE)
 public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
 
-  private static final Integer SPRINT_KOEF = 1;
+  private GamePlayMode gameplayMode;
+
+  @Inject
+  private ScoreAbl scoreAbl;
 
   @Override
   public Class<SoldatMove> getMoveClass() {
@@ -39,6 +44,13 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
 
   @Override
   public GameState<SoldatBoard> init(GameState<SoldatBoard> currentState, Collection<Player> players) {
+
+
+    GameplayModeEnum gameplayModeEnum = getGamePlayMode((String)currentState.getParams().get("gameMode"));
+    if (gameplayModeEnum.equals(GameplayModeEnum.TIME_LIMIT)) {
+      gameplayMode = new TimeLimitGameplayMode(ZonedDateTime.now().plusMinutes(2));
+    }
+
     currentState.setState(GameStateEnum.RUNNING);
     currentState.setGame(currentState.getGame() != null ? currentState.getGame() : new SoldatBoard());
 
@@ -50,6 +62,10 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
     currentState.getGame().setObstacles(generateObstacles(currentState.getGame().getPlayers().values()));
 
     return currentState;
+  }
+
+  private GameplayModeEnum getGamePlayMode(String gameMode) {
+    return GameplayModeEnum.find(gameMode, GameplayModeEnum.TIME_LIMIT);
   }
 
   private List<Obstacle> generateObstacles(Collection<SoldatPlayer> players) {
@@ -75,7 +91,7 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
       for (SoldatMove move : moveList) {
 
         SoldatPlayer soldatPlayer = game.getPlayers().get(player);
-        soldatPlayer.movePlayer(soldatPlayer, move);
+        soldatPlayer.movePlayer(move, game);
 
         if (move.getFired() != null) {
           events.addAll(move.getFired().init(soldatPlayer));
@@ -92,6 +108,12 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
     game.setAmmo(game.getAmmo().stream()
       .peek(ammo -> events.addAll(ammo.applyEffect(damagable, newGameState.getTick())))
       .filter(ammo -> !ammo.isUsed()).collect(Collectors.toList()));
+
+    if (gameplayMode.isGameFinished()) {
+      //todo scoreAbl.calculateEloAndPersist
+      newGameState.setState(GameStateEnum.FINISHED);
+      events.add(new GameRuleEvent("finished", "game", ZonedDateTime.now()));
+    }
 
     newGameState.setGameEvents(events);
     return newGameState;
