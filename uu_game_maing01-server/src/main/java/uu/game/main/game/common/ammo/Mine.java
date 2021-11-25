@@ -4,6 +4,7 @@ package uu.game.main.game.common.ammo;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import uu.game.main.abl.dto.Player;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
 import uu.game.main.game.common.Player2D;
@@ -36,6 +37,7 @@ public class Mine extends Ammo {
         List<GameRuleEvent> gameRuleEvents = damagable.applyAmmoDamage(10);
         gameRuleEvents.add(new GameRuleEvent("used", damagable.getClass().getSimpleName(), damagable));
         setUsed(true);
+        getOwner().setScore(getOwner().getScore()+1);
         return gameRuleEvents;
       }
     }
@@ -44,7 +46,9 @@ public class Mine extends Ammo {
   }
 
   @Override
-  public List<GameRuleEvent> init(Player2D player2D, PlayerMove playerMove) {
+  public List<GameRuleEvent> init(Player userPlayer, Player2D player2D, PlayerMove playerMove) {
+    this.setOwner(userPlayer);
+
     this.setX(player2D.getX());
     this.setY(player2D.getY());
     this.setWidth(40);

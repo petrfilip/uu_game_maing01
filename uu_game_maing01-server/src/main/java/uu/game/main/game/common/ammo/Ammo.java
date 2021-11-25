@@ -2,6 +2,7 @@ package uu.game.main.game.common.ammo;
 
 import java.util.Collection;
 import java.util.List;
+import uu.game.main.abl.dto.Player;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
 import uu.game.main.game.common.Player2D;
@@ -10,6 +11,7 @@ import uu.game.main.game.common.PlayerMove;
 public abstract class Ammo extends GameRectangle {
 
   private boolean isUsed = false;
+  private Player owner;
 
   public Ammo() {
     this(null, null, null, null);
@@ -33,5 +35,13 @@ public abstract class Ammo extends GameRectangle {
     isUsed = used;
   }
 
-  public abstract List<GameRuleEvent> init(Player2D player2D, PlayerMove playerMove);
+  public abstract List<GameRuleEvent> init(Player userPlayer, Player2D player2D, PlayerMove playerMove);
+
+  public Player getOwner() {
+    return owner;
+  }
+
+  public void setOwner(Player owner) {
+    this.owner = owner;
+  }
 }

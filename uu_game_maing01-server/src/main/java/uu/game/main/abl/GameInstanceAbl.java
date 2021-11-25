@@ -5,6 +5,7 @@ import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROT
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,7 +124,7 @@ public class GameInstanceAbl {
     unprocessedMoves = new HashMap<>();
     currentState = new GameState();
     currentState.setParams(gameParameters);
-    rule.init(currentState, players.values());
+    rule.init(currentState, new ArrayList<>(players.values()));
     ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
     scheduledFuture = executor.scheduleAtFixedRate(() -> {
       try {

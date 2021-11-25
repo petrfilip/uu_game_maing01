@@ -3,6 +3,7 @@ package uu.game.main.game.common.ammo;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import uu.game.main.abl.dto.Player;
 import uu.game.main.game.common.GameRuleEvent;
 import uu.game.main.game.common.Player2D;
 import uu.game.main.game.common.PlayerMove;
@@ -35,6 +36,7 @@ public class Bullet extends Projectile {
           List<GameRuleEvent> gameRuleEvents = damagable.applyAmmoDamage(-1);
           gameRuleEvents.add(new GameRuleEvent("used", this.getClass().getSimpleName(), this));
           setUsed(true);
+          getOwner().setScore(getOwner().getScore()+1);
           return gameRuleEvents;
         }
       }
@@ -49,7 +51,8 @@ public class Bullet extends Projectile {
   }
 
   @Override
-  public List<GameRuleEvent> init(Player2D player2D, PlayerMove playerMove) {
+  public List<GameRuleEvent> init(Player userPlayer, Player2D player2D, PlayerMove playerMove) {
+    this.setOwner(userPlayer);
     this.setAngle(playerMove.getFiredAngle());
 
     double r = Math.sqrt(Math.pow(player2D.getWidth(), 2) + Math.pow(player2D.getWidth(), 2));

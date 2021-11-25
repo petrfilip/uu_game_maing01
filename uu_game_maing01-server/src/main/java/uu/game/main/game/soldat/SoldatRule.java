@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import uu.game.main.abl.ScoreAbl;
 import uu.game.main.abl.dto.Player;
+import uu.game.main.abl.dto.PlayerStateEnum;
 import uu.game.main.domain.GameState;
 import uu.game.main.domain.GameStateEnum;
 import uu.game.main.domain.IRule;
@@ -44,12 +45,19 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
 
   @Override
   public GameState<SoldatBoard> init(GameState<SoldatBoard> currentState, Collection<Player> players) {
+    if(players != null){
+      Player botPlayer = new Player();
+      botPlayer.setPlayerId("0-0");
+      botPlayer.setPlayerName("bot");
+      botPlayer.setState(PlayerStateEnum.ACTIVE);
+      players.add(botPlayer);
+    }
 
     currentState.getParams().putIfAbsent("gameMode", GameplayModeEnum.TIME_LIMIT.name());
 
     GameplayModeEnum gameplayModeEnum = getGamePlayMode((String) currentState.getParams().get("gameMode"));
     if (gameplayModeEnum.equals(GameplayModeEnum.TIME_LIMIT)) {
-      gameplayMode = new TimeLimitGameplayMode(ZonedDateTime.now().plusSeconds((Long) currentState.getParams().getOrDefault("gameModeSecondLimit", 3000L)));
+      gameplayMode = new TimeLimitGameplayMode(ZonedDateTime.now().plusSeconds((Long) currentState.getParams().getOrDefault("gameModeSecondLimit", 30L)));
     } else {
       gameplayMode = new ScoreLimitGameplayMode((Integer) currentState.getParams().getOrDefault("gameModeStopAtScore", 5));
     }
@@ -103,7 +111,7 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
         soldatPlayer.movePlayer(move, game);
 
         if (move.getFired() != null) {
-          events.addAll(move.getFired().init(soldatPlayer, move));
+          events.addAll(move.getFired().init(player, soldatPlayer, move));
           game.getAmmo().add(move.getFired()); //todo check if has this kind of amo
         }
         game.getPlayers().put(player, soldatPlayer);
@@ -119,6 +127,7 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
       .filter(ammo -> !ammo.isUsed()).collect(Collectors.toList()));
 
     if (gameplayMode.isGameFinished(newGameState.getGame().getPlayers().keySet())) {
+      scoreAbl.calculateEloAndPersist(((String) newGameState.getParams().get("awid")), newGameState.getGame().getPlayers().keySet());
       //todo scoreAbl.calculateEloAndPersist
       newGameState.setState(GameStateEnum.FINISHED);
       events.add(new GameRuleEvent("finished", "game", ZonedDateTime.now()));

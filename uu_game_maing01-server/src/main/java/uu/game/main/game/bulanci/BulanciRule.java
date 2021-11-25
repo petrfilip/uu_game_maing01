@@ -90,7 +90,7 @@ public class BulanciRule implements IRule<BulanciBoard, BulanciMove> {
         bulanciPlayer.movePlayer(bulanciMove, game);
 
         if (bulanciMove.getFired() != null) {
-          events.addAll(bulanciMove.getFired().init(bulanciPlayer, bulanciMove));
+          events.addAll(bulanciMove.getFired().init(player, bulanciPlayer, bulanciMove));
           game.getAmmo().add(bulanciMove.getFired()); //todo check if has this kind of amo
         }
         game.getPlayers().put(player, bulanciPlayer);

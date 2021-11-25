@@ -118,6 +118,8 @@ public class RoomAbl {
       game.addPlayer(connectedPlayer);
     }
 
+    dtoIn.getGameParameters().put("awid", awid);
+
     GameState gameState = game.startGame(new GameCallback() {
       @Override
       public void onNextRound(GameState gameState) {

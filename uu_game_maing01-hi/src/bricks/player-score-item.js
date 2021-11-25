@@ -3,7 +3,6 @@ import "uu5g04-bricks";
 import "uu5g04-forms";
 import {createVisualComponent} from "uu5g04-hooks";
 
-
 const PlayerScoreItem = createVisualComponent({
   //@@viewOn:statics
   displayName: "Uu5TilesDemo.CustomTile",
@@ -46,22 +45,19 @@ const PlayerScoreItem = createVisualComponent({
     mainAttrs.className = (mainAttrs.className + " " || "") + classNames.main;
     //@@viewOff:private
 
+    console.log(data)
     //@@viewOn:render
     return (
       <div {...mainAttrs}>
         <div className={classNames.divContainer}>
           <div className={UU5.Common.Css.css`padding-bottom: 8px`}>
-            <UU5.Bricks.Icon icon="mdi-paw" className={UU5.Common.Css.css`margin-right: 8px`}/>
             <strong className={UU5.Common.Css.css`margin-right: 8px`}>
-              <UU5.Bricks.Lsi lsi={data.playerName}/>
+              <UU5.Bricks.Lsi lsi={data.data.playerName}/>
             </strong>
-            <Plus4U5.Bricks.BusinessCard visual="micro" elevation="0" elevationHover="1" uuIdentity={data.uuIdentity}/>
-            <em>
-              <small>({data.uuIdentity})</small>
-            </em>
+            <Plus4U5.Bricks.BusinessCard visual="micro" elevation="0" elevationHover="1" uuIdentity={data.data.uuIdentity}/>
           </div>
           <div>
-            {data.score}
+            {`Score: ${data.data.score}`}
           </div>
         </div>
       </div>
