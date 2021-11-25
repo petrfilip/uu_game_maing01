@@ -6,5 +6,7 @@ public enum ObstacleTypeEnum {
   HOUSE,
   TAVERN,
   CONCRETE_BLOCK,
-  WOODEN_BOX
+  WOODEN_BOX,
+  METAL_BOX,
+  WALL
 }

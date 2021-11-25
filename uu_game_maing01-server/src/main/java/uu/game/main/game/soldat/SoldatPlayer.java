@@ -3,6 +3,8 @@ package uu.game.main.game.soldat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import uu.game.main.game.bulanci.Obstacle;
 import uu.game.main.game.common.Direction;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
@@ -11,8 +13,8 @@ import uu.game.main.game.common.ammo.AmmoDamagable;
 
 public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player2D<SoldatPlayer, SoldatMove, SoldatBoard> {
 
-  public static final Integer JUMP_DURATION = 60;
-  public static final Integer JUMP_SPEED = 2;
+  public static final Integer JUMP_DURATION = 120;
+  public static final Integer JUMP_SPEED = 3;
 
   private Integer lives = 1;
   private Direction direction;
@@ -52,12 +54,12 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
     boolean isCollisionWithObstacle = checkCollisionWithObstacle(soldatBoard);
 
     // move to left
-    if (Direction.LEFT.equals(direction) && !isCollisionWithObstacle) {
+    if (move.getMove() != null && Direction.LEFT.equals(direction) && !isCollisionWithObstacle) {
       setX(getX() - getSpeed());
     }
 
     // move to right
-    if (Direction.RIGHT.equals(direction) && !isCollisionWithObstacle) {
+    if (move.getMove() != null && Direction.RIGHT.equals(direction) && !isCollisionWithObstacle) {
       setX(getX() + getSpeed());
     }
 
@@ -65,22 +67,22 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
     if (Direction.UP.equals(direction) && jumping == null) {
       jumpUpStarted = 0;
       jumping = Direction.UP;
-      setY(getY() + JUMP_SPEED);
+      setY(getY() - JUMP_SPEED);
       return this;
     }
 
     // continue in jump
     if (Direction.UP.equals(jumping) && jumpUpStarted < JUMP_DURATION) {
       jumpUpStarted = jumpUpStarted + JUMP_SPEED;
-      setY(getY() + JUMP_SPEED);
+      setY(getY() - JUMP_SPEED);
       return this;
     }
 
     // stop jump when jump duration is over or collision with obstacle detected
-    if (Direction.UP.equals(jumping) && (jumpUpStarted > JUMP_DURATION || isCollisionWithObstacle)) {
+    if (Direction.UP.equals(jumping) && (jumpUpStarted >= JUMP_DURATION || isCollisionWithObstacle)) {
       jumping = Direction.DOWN;
       jumpUpStarted = 0;
-      setY(getY() - JUMP_SPEED);
+      setY(getY() + JUMP_SPEED);
       return this;
 
     }
@@ -91,11 +93,24 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
       return this;
     }
 
-    // start falling when no obstacle below
+    // start falling when no obstacle below or continue in falling down
     GameRectangle bellowPlayer = new GameRectangle(getX(), getY() - 3, getWidth(), getHeight());
-    boolean noObstacleBelowPlayer = soldatBoard.getObstacles().stream().anyMatch(obstacle -> obstacle.intersects(bellowPlayer));
-    if (jumping == null && noObstacleBelowPlayer) {
+    boolean obstacleBellow = soldatBoard.getObstacles().stream().anyMatch(obstacle -> obstacle.intersects(bellowPlayer));
+    if ((jumping == null || Direction.DOWN.equals(jumping)) && !obstacleBellow) {
       jumping = Direction.DOWN;
+      setY(getY() + JUMP_SPEED);
+      return this;
+    }
+
+    if ((jumping == null || Direction.DOWN.equals(jumping)) && obstacleBellow) {
+      jumping = Direction.DOWN;
+      GameRectangle obstacle = soldatBoard.getObstacles()
+        .stream().map(o -> o.intersectsWith(bellowPlayer))
+        .filter(Objects::nonNull)
+        .findFirst().get();
+
+
+      setY(obstacle.getY() - getHeight());
       return this;
     }
 

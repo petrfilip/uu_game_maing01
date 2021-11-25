@@ -1,18 +1,19 @@
 package uu.game.main.game.common;
 
 import java.time.ZonedDateTime;
-import java.util.Date;
+import java.util.Set;
+import uu.game.main.abl.dto.Player;
 
 public class TimeLimitGameplayMode implements GamePlayMode {
 
-  private ZonedDateTime endTime;
+  private final ZonedDateTime endTime;
 
   public TimeLimitGameplayMode(ZonedDateTime endTime) {
     this.endTime = endTime;
   }
 
   @Override
-  public boolean isGameFinished() {
+  public boolean isGameFinished(Set<Player> players) {
     return ZonedDateTime.now().compareTo(endTime) > 0;
   }
 }

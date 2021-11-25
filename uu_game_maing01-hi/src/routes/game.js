@@ -555,7 +555,7 @@ const Game = createVisualComponent({
           minHeight: "550px",
           width: "100%"
         }}>
-          {gameState?.output?.tick > 0 ?
+          {gameState?.output?.state === "RUNNING" && gameState?.output?.tick > 0 ?
             <div ref={canvasRef}>
               <Canvas draw={draw}
 
@@ -569,13 +569,11 @@ const Game = createVisualComponent({
               {/*todo fix this*/}
               {/*{roomState?.output?.connectedPlayers?.map((p) => <Plus4U5.Bricks.BusinessCard visual="micro" uuIdentity={p.playerId}/>)}*/}
 
-              <UU5.Bricks.Paragraph> GAME DESCRIPTION: Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Class
-                aptent taciti sociosqu ad
-                litora torquent per conubia nostra, per inceptos hymenaeos. Donec ipsum massa, ullamcorper in,
-                auctor et, scelerisque sed, est. Vestibulum fermentum tortor id mi. Etiam commodo dui eget wisi.
-                Integer malesuada. Fusce consectetuer risus a nunc. Nullam eget nisl. In sem justo, commodo ut, suscipit
-                at,
-                pharetra vitae, orci. Aenean placerat. Etiam neque. Fusce suscipit libero eget elit.
+              <UU5.Bricks.Paragraph>
+                {gameState?.output?.state === "WAITING" && "Waiting for next players"}
+                {gameState?.output?.state === "FINISHED" && "Game is finished"}
+                {gameState?.output?.state === "FINISHED" && gameState?.output?.game?.players?.map((p) =>
+                  (<UU5.Bricks.Paragraph>{p.playerId} - {p.score}</UU5.Bricks.Paragraph>))}
               </UU5.Bricks.Paragraph>
               <UU5.Bricks.TouchIcon content="Click" colorSchema="primary"/>
               <UU5.Bricks.Button onClick={startGameHandler} colorSchema={"primary"}>Start new game<UU5.Bricks.Icon

@@ -67,8 +67,13 @@ public class GameInstanceAbl {
   }
 
   public void addPlayerMove(String playerId, List<Object> playerMove) {
-    if (currentState == null || currentState.getState().equals(GameStateEnum.WAITING) || currentState.getState().equals(GameStateEnum.FINISHED)) {
-      throw new RuntimeException("Game is not running!");
+    if (currentState == null) {
+      return;
+    }
+
+    if (currentState.getState().equals(GameStateEnum.WAITING) || currentState.getState().equals(GameStateEnum.FINISHED)) {
+      LOGGER.warn("Game is not running!");
+      return;
     }
 
     // check if player can do something new

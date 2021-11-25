@@ -23,6 +23,7 @@ import uu.game.main.game.common.GamePlayMode;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
 import uu.game.main.game.common.GameplayModeEnum;
+import uu.game.main.game.common.ScoreLimitGameplayMode;
 import uu.game.main.game.common.TimeLimitGameplayMode;
 import uu.game.main.game.common.ammo.AmmoDamagable;
 import uu.game.main.helper.Utils;
@@ -44,11 +45,17 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
   @Override
   public GameState<SoldatBoard> init(GameState<SoldatBoard> currentState, Collection<Player> players) {
 
+    currentState.getParams().putIfAbsent("gameMode", GameplayModeEnum.TIME_LIMIT.name());
 
-    GameplayModeEnum gameplayModeEnum = getGamePlayMode((String)currentState.getParams().get("gameMode"));
+    GameplayModeEnum gameplayModeEnum = getGamePlayMode((String) currentState.getParams().get("gameMode"));
     if (gameplayModeEnum.equals(GameplayModeEnum.TIME_LIMIT)) {
-      gameplayMode = new TimeLimitGameplayMode(ZonedDateTime.now().plusMinutes(2));
+      gameplayMode = new TimeLimitGameplayMode(ZonedDateTime.now().plusSeconds((Long) currentState.getParams().getOrDefault("gameModeSecondLimit", 3000L)));
+    } else {
+      gameplayMode = new ScoreLimitGameplayMode((Integer) currentState.getParams().getOrDefault("gameModeStopAtScore", 5));
     }
+
+    currentState.getParams().putIfAbsent("areaWidth", 800);
+    currentState.getParams().putIfAbsent("areaHeight", 600);
 
     currentState.setState(GameStateEnum.RUNNING);
     currentState.setGame(currentState.getGame() != null ? currentState.getGame() : new SoldatBoard());
@@ -70,9 +77,9 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
   private List<Obstacle> generateObstacles(Collection<SoldatPlayer> players) {
     List<Obstacle> obstacles = new ArrayList<>(); //todo if generate ; add support to load predefined maps
 
-    obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(0, 500, 500, 5)));
-    obstacles.add(new Obstacle(ObstacleTypeEnum.CONCRETE_BLOCK, new GameRectangle(200, 500, 500, 5)));
-    obstacles.add(new Obstacle(ObstacleTypeEnum.CONCRETE_BLOCK, new GameRectangle(500, 500, 500, 50)));
+    obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(100, 100, 50, 50)));
+    obstacles.add(new Obstacle(ObstacleTypeEnum.METAL_BOX, new GameRectangle(300, 300, 100, 100)));
+    obstacles.add(new Obstacle(ObstacleTypeEnum.WALL, new GameRectangle(400, 500, 500, 50)));
 
     return obstacles;
   }
@@ -88,7 +95,7 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
     for (Player player : newGameState.getGame().getPlayers().keySet()) {
       List<SoldatMove> moveList = unprocessedMoves.getOrDefault(player, new ArrayList<>(0));
 
-      for (int i = 0; i < 10; i++) {
+      for (int i = 0; i < 60; i++) {
 
         SoldatMove move = moveList.size() > i ? moveList.get(i) : new SoldatMove();
 
@@ -111,7 +118,7 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
       .peek(ammo -> events.addAll(ammo.applyEffect(damagable, newGameState.getTick())))
       .filter(ammo -> !ammo.isUsed()).collect(Collectors.toList()));
 
-    if (gameplayMode.isGameFinished()) {
+    if (gameplayMode.isGameFinished(newGameState.getGame().getPlayers().keySet())) {
       //todo scoreAbl.calculateEloAndPersist
       newGameState.setState(GameStateEnum.FINISHED);
       events.add(new GameRuleEvent("finished", "game", ZonedDateTime.now()));

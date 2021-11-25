@@ -62,4 +62,14 @@ public class Obstacle implements AmmoDamagable, Intersectable {
 
     return false;
   }
+
+  public GameRectangle intersectsWith(GameRectangle hitArea) {
+    for (GameRectangle wall : walls) {
+      if (wall.getRectangle().intersects(hitArea.getRectangle())) {
+        return wall;
+      }
+    }
+
+    return null;
+  }
 }
