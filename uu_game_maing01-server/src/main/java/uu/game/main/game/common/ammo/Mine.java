@@ -49,6 +49,6 @@ public class Mine extends Ammo {
     this.setY(player2D.getY());
     this.setWidth(40);
     this.setWidth(40);
-    return Collections.singletonList(new GameRuleEvent("fired", this.getClass().getSimpleName(), this));
+    return new GameRuleEvent("fired", this.getClass().getSimpleName(), this).asList();
   }
 }

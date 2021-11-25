@@ -22,7 +22,7 @@ import uu.game.main.abl.dto.PlayerStateEnum;
 import uu.game.main.domain.GameState;
 import uu.game.main.domain.GameStateEnum;
 import uu.game.main.domain.IRule;
-import uu.game.main.game.bulanci.BulanciMove;
+import uu.game.main.game.soldat.SoldatMove;
 
 @Component
 @Scope(scopeName = SCOPE_PROTOTYPE)
@@ -77,7 +77,7 @@ public class GameInstanceAbl {
       return;
     }
 
-    Object move = objectMapper.convertValue(playerMove, new TypeReference<List<BulanciMove>>() {
+    Object move = objectMapper.convertValue(playerMove, new TypeReference<List<SoldatMove>>() {
     });
 
     unprocessedMoves.put(player, move);

@@ -59,7 +59,7 @@ public class RoomAbl {
     room.setAwid(awid);
     room.setRoomName(dtoIn.getRoomName());
     room.setRoomOwner(new Player(dtoIn.getRoomOwner()));
-    room.setGame(createGameInstance("bulanci"));
+    room.setGame(createGameInstance("soldat"));
     room.setState(RoomStateEnum.WAITING);
 
     room = roomDao.create(room);

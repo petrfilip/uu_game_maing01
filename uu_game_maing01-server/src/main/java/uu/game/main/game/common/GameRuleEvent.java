@@ -1,5 +1,8 @@
 package uu.game.main.game.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameRuleEvent {
 
   private String action;
@@ -15,6 +18,12 @@ public class GameRuleEvent {
     this.action = action;
     this.objectName = objectName;
     this.data = data;
+  }
+
+  public List<GameRuleEvent> asList() {
+    List<GameRuleEvent> eventList = new ArrayList<>();
+    eventList.add(this);
+    return eventList;
   }
 
   public String getAction() {

@@ -83,12 +83,15 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
 
     SoldatBoard game = newGameState.getGame();
 
-    final List<GameRuleEvent> events = new ArrayList<>();
+    final List<GameRuleEvent> events = new ArrayList<>(100);
 
     // player moves
     for (Player player : newGameState.getGame().getPlayers().keySet()) {
-      List<SoldatMove> moveList = unprocessedMoves.getOrDefault(player, new ArrayList<>());
-      for (SoldatMove move : moveList) {
+      List<SoldatMove> moveList = unprocessedMoves.getOrDefault(player, new ArrayList<>(0));
+
+      for (int i = 0; i < 10; i++) {
+
+        SoldatMove move = moveList.size() > i ? moveList.get(i) : new SoldatMove();
 
         SoldatPlayer soldatPlayer = game.getPlayers().get(player);
         soldatPlayer.movePlayer(move, game);

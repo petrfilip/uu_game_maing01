@@ -11,12 +11,12 @@ import uu.game.main.game.common.ammo.AmmoDamagable;
 
 public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player2D<SoldatPlayer, SoldatMove, SoldatBoard> {
 
-  public static final Integer JUMP_DURATION = 600;
-  public static final Integer JUMP_SPEED = 20;
+  public static final Integer JUMP_DURATION = 60;
+  public static final Integer JUMP_SPEED = 2;
 
   private Integer lives = 1;
   private Direction direction;
-  private Integer speed = 3;
+  private Integer speed = 1;
   private Direction jumping;
   private Integer jumpUpStarted = 0;
   private boolean sprint;
@@ -31,9 +31,9 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
   public List<GameRuleEvent> applyAmmoDamage(Integer damage) {
     this.lives = this.lives - damage;
     if (lives > 0) {
-      return Collections.singletonList(new GameRuleEvent("liveDecreased", this.getClass().getSimpleName(), this));
+      return new GameRuleEvent("liveDecreased", this.getClass().getSimpleName(), this).asList();
     } else {
-      return Collections.singletonList(new GameRuleEvent("death", this.getClass().getSimpleName(), this));
+      return new GameRuleEvent("death", this.getClass().getSimpleName(), this).asList();
     }
   }
 
@@ -45,13 +45,9 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
   @Override
   public SoldatPlayer movePlayer(SoldatMove move, SoldatBoard soldatBoard) {
 
-    if (move.getMove() == null) {
-      return this;
-    }
-
-    if (!move.getMove().equals(getDirection())) {
+    if (move.getMove() != null && !move.getMove().equals(getDirection())) {
       setDirection(move.getMove());
-      return this;
+      //return this;
     }
     boolean isCollisionWithObstacle = checkCollisionWithObstacle(soldatBoard);
 

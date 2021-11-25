@@ -49,7 +49,7 @@ public class Bullet extends Projectile {
 
     computeNextPosition();
 
-    return Collections.singletonList(new GameRuleEvent("fired", this.getClass().getSimpleName(), this));
+    return new GameRuleEvent("fired", this.getClass().getSimpleName(), this).asList();
   }
 
   @Override
