@@ -329,7 +329,19 @@ const Game = createVisualComponent({
         //ctx.rotate(30*Math.PI/180.0);
         //img.setAttribute("style", "transform: rotate(" + 30 + "deg)");
 
+
         ctx.drawImage(img, player.x, player.y, player.width, player.height);
+
+
+
+        let freezed = player.speed === 0;
+        if (freezed) {
+          ctx.globalAlpha = 0.65;
+          const imgIce = new Image();
+          imgIce.src = `../assets/iceBlock.png`;
+          ctx.drawImage(imgIce, player.x - 13, player.y - 20, player.width + 20, player.height + 25);
+          ctx.globalAlpha = 1;
+        }
 
         // todo draw gun separatly with current angle rotation
         //drawGuns(ctx, player);
@@ -405,7 +417,7 @@ const Game = createVisualComponent({
             ctx.drawImage(img, wall.x, wall.y, wall.width, wall.height);
           } else if (obstacle.type === "WALL") {
             const img = new Image();
-            img.src = "../assets/wall.png"
+            img.src = "../assets/wall2.png"
             ctx.drawImage(img, wall.x, wall.y, wall.width, wall.height);
           } else {
             ctx.fillStyle = "yellow" // todo obstacle.type
@@ -438,6 +450,8 @@ const Game = createVisualComponent({
             firedSound.play();
             // canvasRef && canvasRef.current && shake(canvasRef) //todo make it works - nejde mi použít ref
           }
+
+
         }
 
       }

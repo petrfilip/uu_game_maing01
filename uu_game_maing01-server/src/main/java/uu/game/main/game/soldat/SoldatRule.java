@@ -85,11 +85,22 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
   private List<Obstacle> generateObstacles(Collection<SoldatPlayer> players) {
     List<Obstacle> obstacles = new ArrayList<>(); //todo if generate ; add support to load predefined maps
 
-    obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(100, 100, 50, 50)));
+    obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(100, 200, 50, 50)));
     obstacles.add(new Obstacle(ObstacleTypeEnum.METAL_BOX, new GameRectangle(300, 300, 100, 100)));
-    obstacles.add(new Obstacle(ObstacleTypeEnum.WALL, new GameRectangle(400, 500, 500, 50)));
+
+    obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(500, 300, 50, 50)));
+    obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(550, 300, 50, 50)));
+
+    addWall(obstacles, 400, 500,8);
+    addWall(obstacles, 50, 350,4);
 
     return obstacles;
+  }
+
+  private void addWall(List<Obstacle> obstacles, int x, int y, int count) {
+    for (int i = 0 ; i < count ; i++ ){
+      obstacles.add(new Obstacle(ObstacleTypeEnum.WALL, new GameRectangle(x+(i*50), y, 50, 50)));
+    }
   }
 
   @Override
