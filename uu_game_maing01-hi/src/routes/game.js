@@ -224,10 +224,10 @@ const Game = createVisualComponent({
           gameMoved = true;
           direction = "UP";
           break
-        case 'ArrowDown':
-          gameMoved = true;
-          direction = "DOWN";
-          break;
+        // case 'ArrowDown':
+        //   gameMoved = true;
+        //   direction = "DOWN";
+        //   break;
 
         // case "R":
         //   gameMoved = true;
@@ -319,14 +319,18 @@ const Game = createVisualComponent({
            case 'LEFT':
              img.src = `../assets/gun_idle/E_E_Gun__Idle_000_left.png`;
              break;
-          case 'UP':
-            img.src = `../assets/gun_idle/E_E_Gun__Idle_000_up.png`;
-            break;
-          case 'DOWN':
-            img.src = `../assets/gun_idle/E_E_Gun__Idle_000_down.png`;
-            break;
+          // case 'UP':
+          //   img.src = `../assets/gun_idle/E_E_Gun__Idle_000_up.png`;
+          //   break;
+          // case 'DOWN':
+          //   img.src = `../assets/gun_idle/E_E_Gun__Idle_000_left.png`;
+          //   break;
          }
-        ctx.drawImage(img, player.x, player.y, player.width, player.height);
+
+         //ctx.rotate(30*Math.PI/180.0);
+         //img.setAttribute("style", "transform: rotate(" + 30 + "deg)");
+
+         ctx.drawImage(img, player.x, player.y, player.width, player.height);
         // todo draw gun
         drawGuns(ctx, player);
 
@@ -359,9 +363,19 @@ const Game = createVisualComponent({
 
     function drawAmmo(ctx, ammos) {
       for (let i = 0; i < ammos.length; i++) {
-        const ammo = ammos[i]
-        ctx.fillStyle = "red"
-        ctx.fillRect(ammo.x, ammo.y, ammo.width, ammo.height);
+        const ammo = ammos[i];
+
+        const img = new Image();
+        if(ammo.type === "Bullet"){
+          img.src = `../assets/Bullet.png`;
+        }
+        if(ammo.type === "Granate"){
+          img.src = `../assets/Bomb.png`;
+        }
+
+        ctx.drawImage(img, ammo.x, ammo.y, ammo.width, ammo.height);
+
+
       }
     }
 
@@ -380,6 +394,18 @@ const Game = createVisualComponent({
           } else if (obstacle.type === "TAVERN") {
             const img = new Image();
             img.src = "../assets/tavern.png"
+            ctx.drawImage(img, wall.x, wall.y, wall.width, wall.height);
+          } else if (obstacle.type === "WOOD_BOX") {
+            const img = new Image();
+            img.src = "../assets/wood_box.png"
+            ctx.drawImage(img, wall.x, wall.y, wall.width, wall.height);
+          } else if (obstacle.type === "METAL_BOX") {
+            const img = new Image();
+            img.src = "../assets/metal_box.png"
+            ctx.drawImage(img, wall.x, wall.y, wall.width, wall.height);
+          } else if (obstacle.type === "WALL") {
+            const img = new Image();
+            img.src = "../assets/wall.png"
             ctx.drawImage(img, wall.x, wall.y, wall.width, wall.height);
           } else {
             ctx.fillStyle = "yellow" // todo obstacle.type
@@ -423,7 +449,7 @@ const Game = createVisualComponent({
       ctx.fillStyle = '#000000'
 
       const grass = new Image();
-      grass.src = "../assets/background.jpg"
+      grass.src = "../assets/background_clouds.png"
       ctx.drawImage(grass, 0, 0, ctx.canvas.width, ctx.canvas.height);
 
       const keyGameState = gameState?.output?.game ?? []
@@ -442,12 +468,12 @@ const Game = createVisualComponent({
             case 'LEFT':
               amoState[i].x = amoState[i].x - interpolation
               break;
-            case 'UP':
-              amoState[i].y = amoState[i].y + interpolation
-              break;
-            case 'DOWN':
-              amoState[i].y = amoState[i].y - interpolation
-              break;
+            // case 'UP':
+            //   amoState[i].y = amoState[i].y + interpolation
+            //   break;
+            // case 'DOWN':
+            //   amoState[i].y = amoState[i].y - interpolation
+            //   break;
           }
 
 
@@ -472,14 +498,14 @@ const Game = createVisualComponent({
             currentPlayer.direction = moveList[i].move;
             currentPlayer.x = currentPlayer.x - currentPlayer.speed
             break;
-          case 'UP':
-            currentPlayer.direction = moveList[i].move;
-            currentPlayer.y = currentPlayer.y + currentPlayer.speed
-            break;
-          case 'DOWN':
-            currentPlayer.direction = moveList[i].move;
-            currentPlayer.y = currentPlayer.y - currentPlayer.speed
-            break;
+          // case 'DOWN':
+          //   currentPlayer.direction = moveList[i].move;
+          //   currentPlayer.y = currentPlayer.y + currentPlayer.speed
+          //   break;
+          // case 'UP':
+          //   currentPlayer.direction = moveList[i].move;
+          //   currentPlayer.y = currentPlayer.y - currentPlayer.speed
+          //   break;
         }
 
 
