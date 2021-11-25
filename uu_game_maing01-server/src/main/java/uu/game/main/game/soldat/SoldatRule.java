@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import uu.game.main.abl.ScoreAbl;
@@ -27,6 +28,9 @@ import uu.game.main.game.common.GameplayModeEnum;
 import uu.game.main.game.common.ScoreLimitGameplayMode;
 import uu.game.main.game.common.TimeLimitGameplayMode;
 import uu.game.main.game.common.ammo.AmmoDamagable;
+import uu.game.main.game.soldat.specialability.BonusItem;
+import uu.game.main.game.soldat.specialability.BonusItemService;
+import uu.game.main.game.soldat.specialability.SpecialAbility;
 import uu.game.main.helper.Utils;
 
 @Service("soldat")
@@ -38,6 +42,11 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
   @Inject
   private ScoreAbl scoreAbl;
 
+  @Inject
+  private BonusItemService bonusItemService;
+
+  private ZonedDateTime nextBonusItemDrop;
+
   @Override
   public Class<SoldatMove> getMoveClass() {
     return SoldatMove.class;
@@ -45,7 +54,8 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
 
   @Override
   public GameState<SoldatBoard> init(GameState<SoldatBoard> currentState, Collection<Player> players) {
-    if(players != null){
+    nextBonusItemDrop = ZonedDateTime.now().plusSeconds(15);
+    if (players != null) {
       Player botPlayer = new Player();
       botPlayer.setPlayerId("0-0");
       botPlayer.setPlayerName("bot");
@@ -57,7 +67,7 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
 
     GameplayModeEnum gameplayModeEnum = getGamePlayMode((String) currentState.getParams().get("gameMode"));
     if (gameplayModeEnum.equals(GameplayModeEnum.TIME_LIMIT)) {
-      gameplayMode = new TimeLimitGameplayMode(ZonedDateTime.now().plusSeconds((Long) currentState.getParams().getOrDefault("gameModeSecondLimit", 30L)));
+      gameplayMode = new TimeLimitGameplayMode(ZonedDateTime.now().plusSeconds((Long) currentState.getParams().getOrDefault("gameModeSecondLimit", 300L)));
     } else {
       gameplayMode = new ScoreLimitGameplayMode((Integer) currentState.getParams().getOrDefault("gameModeStopAtScore", 5));
     }
@@ -129,6 +139,13 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
       }
     }
 
+    // remove special ability from board
+    game.setBonusItemList(game.getBonusItemList().stream().filter(item -> !item.isUsed()).collect(Collectors.toList()));
+    if (nextBonusItemDrop.isAfter(ZonedDateTime.now())) {
+      game.getBonusItemList().add(bonusItemService.generate());
+      nextBonusItemDrop = ZonedDateTime.now().plusSeconds(20);
+    }
+
     // affect damagable with ammo
     Collection<AmmoDamagable> damagable = new ArrayList<>();
     damagable.addAll(game.getPlayers().values());
@@ -147,6 +164,4 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
     newGameState.setGameEvents(events);
     return newGameState;
   }
-
-
 }

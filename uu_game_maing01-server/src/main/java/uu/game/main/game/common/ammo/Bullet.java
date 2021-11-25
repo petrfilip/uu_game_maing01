@@ -2,6 +2,7 @@ package uu.game.main.game.common.ammo;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import uu.game.main.abl.dto.Player;
 import uu.game.main.game.common.GameRuleEvent;
@@ -14,7 +15,7 @@ public class Bullet extends Projectile {
   /**
    * bullet speed
    */
-  private final static int SPEED = 3;
+  private static final int SPEED = 3;
 
   public Bullet() {
     super(0, 0, 10, 10, 0);
@@ -34,7 +35,11 @@ public class Bullet extends Projectile {
       for (AmmoDamagable damagable : players) {
         if (damagable instanceof Intersectable && ((Intersectable) damagable).intersects(this)) {
           List<GameRuleEvent> gameRuleEvents = damagable.applyAmmoDamage(-1);
-          gameRuleEvents.add(new GameRuleEvent("used", this.getClass().getSimpleName(), this));
+
+          HashMap<Object, Object> sourceTargetMap = new HashMap<>();
+          sourceTargetMap.put("source", this);
+          sourceTargetMap.put("target", damagable);
+          gameRuleEvents.add(new GameRuleEvent("used", this.getClass().getSimpleName(), sourceTargetMap));
           setUsed(true);
           getOwner().setScore(getOwner().getScore()+1);
           return gameRuleEvents;

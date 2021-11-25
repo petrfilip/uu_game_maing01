@@ -568,7 +568,7 @@ const Game = createVisualComponent({
       <UU5.Bricks.Section level={1} header="Game" className={UU5.Common.Css.css`padding: 16px`}>
 
 
-        Connected players: {roomState?.output?.connectedPlayers?.map((p) => p.playerId)}
+        Connected players: {roomState?.connectedPlayers?.map((p) => p.playerId)}
 
 
         <UU5.Bricks.Card className="uu5-common-padding-s" ref={canvasRef} style={{

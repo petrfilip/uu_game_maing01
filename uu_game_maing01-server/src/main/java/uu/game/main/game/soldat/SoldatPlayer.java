@@ -1,14 +1,17 @@
 package uu.game.main.game.soldat;
 
+import java.util.ArrayList;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import uu.game.main.game.common.Direction;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
 import uu.game.main.game.common.Player2D;
 import uu.game.main.game.common.ammo.AmmoDamagable;
+import uu.game.main.game.soldat.specialability.SpecialAbility;
 import uu.game.main.helper.Utils;
 
 public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player2D<SoldatPlayer, SoldatMove, SoldatBoard> {
@@ -16,19 +19,30 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
   public static final Integer JUMP_DURATION = 220;
   public static final Integer JUMP_SPEED = 1;
   public static final Integer INIT_LIVES = 5;
+  public static final Integer INIT_SPEED = 1;
 
   private Integer lives = INIT_LIVES;
   private Direction direction;
-  private Integer speed = 1;
+  private Integer speed = INIT_SPEED;
   private Direction jumping;
   private Integer jumpUpStarted = 0;
   private boolean sprint;
   private ZonedDateTime respawnTime;
 
+  private List<SpecialAbility> specialAbilityList = new ArrayList<>();
+
 
   public SoldatPlayer(Direction direction, Integer x, Integer y, Integer width, Integer height) {
     super(x, y, width, height);
     this.direction = direction;
+  }
+
+  public List<GameRuleEvent> applySpecialAbility(Collection<SoldatPlayer> players, SpecialAbility specialAbility) {
+    List<SoldatPlayer> opponents = players.stream().filter(p -> p != this).collect(Collectors.toList());
+
+    specialAbility.applyAbility(this, opponents);
+    this.specialAbilityList.add(specialAbility);
+    return new ArrayList<>();
   }
 
   @Override
@@ -50,7 +64,14 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
   @Override
   public SoldatPlayer movePlayer(SoldatMove move, SoldatBoard soldatBoard) {
 
-    if(respawnTime != null && respawnTime.isAfter(ZonedDateTime.now())){
+    for (SpecialAbility specialAbility : specialAbilityList) {
+      if (specialAbility.isDone()) {
+        specialAbility.applyAbilityFinished();
+      }
+    }
+
+
+    if (respawnTime != null && respawnTime.isAfter(ZonedDateTime.now())) {
       respawnTime = null;
       lives = INIT_LIVES;
       setX(Utils.getRandomNumber(0, 500));
@@ -118,7 +139,6 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
         .stream().map(o -> o.intersectsWith(bellowPlayer))
         .filter(Objects::nonNull)
         .findFirst().get();
-
 
       setY(obstacle.getY() - getHeight());
       return this;

@@ -10,6 +10,7 @@ import uu.game.main.game.bulanci.BulanciPlayer;
 import uu.game.main.game.bulanci.Obstacle;
 import uu.game.main.game.common.GameBoard;
 import uu.game.main.game.common.ammo.Ammo;
+import uu.game.main.game.soldat.specialability.BonusItem;
 import uu.game.main.helper.PlayerSerializer;
 
 public class SoldatBoard implements GameBoard {
@@ -18,7 +19,8 @@ public class SoldatBoard implements GameBoard {
   private Map<Player, SoldatPlayer> players = new HashMap<>();
   private List<Obstacle> obstacles = new ArrayList<>();
   private List<Ammo> ammo = new ArrayList<>();
-  // todo bonus
+
+  private List<BonusItem> bonusItemList = new ArrayList<>();
 
 
   public Map<Player, SoldatPlayer> getPlayers() {
@@ -44,5 +46,13 @@ public class SoldatBoard implements GameBoard {
 
   public void setAmmo(List<Ammo> ammo) {
     this.ammo = ammo;
+  }
+
+  public List<BonusItem> getBonusItemList() {
+    return bonusItemList;
+  }
+
+  public void setBonusItemList(List<BonusItem> bonusItemList) {
+    this.bonusItemList = bonusItemList;
   }
 }
