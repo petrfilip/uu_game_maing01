@@ -13,9 +13,10 @@ let gameUpdateRate = new Date().getTime();
 let lastServerUpdateTimestamp = new Date().getTime();
 let currentServerUpdateTimestamp = new Date().getTime();
 
-const interpolate = (min, max, fract) => max + (min - max) * fract;
-const extrapolate = (first, second) => (second-first) + second
+let angle = 0;
 
+const interpolate = (min, max, fract) => max + (min - max) * fract;
+const extrapolate = (first, second) => (second - first) + second
 
 
 const Game = createVisualComponent({
@@ -24,20 +25,23 @@ const Game = createVisualComponent({
   //@@viewOff:statics
 
 
-
   render: function (props) {
     //@@viewOn:hooks
     const [roomState, setRoomState] = useState();
     const [gameState, setGameState] = useState();
+    let currentGameState = useRef(gameState);
     const [waiting, setWaiting] = useState(false);
     const [connectionError, setConnectionError] = useState(null);
     const [themeMusicPlays, setThemeMusicPlays] = useState(false);
-    const canvasRef = useRef()
+    const [currentUser, setCurrentUser] = useState(false);
+    const canvasRef = useRef();
     const {addExplosion} = RenderHelper()
     const {shake} = ShakeHelper()
 
 
     useEffect(() => {
+
+      setCurrentUser()
       let fetch = true;
 
       let eventSource;
@@ -54,7 +58,13 @@ const Game = createVisualComponent({
           if (result.eventType === 'RoomEvent') {
             setRoomState(oldValue => ({...oldValue, ...result}));
           } else if (result.eventType === 'GameEvent') {
-            setGameState(oldValue => ({...oldValue, ...result}));
+            setGameState(oldValue => {
+              currentGameState = {
+                ...oldValue,
+                ...result
+              };
+              return currentGameState;
+            });
 
             lastServerUpdateTimestamp = currentServerUpdateTimestamp;
             currentServerUpdateTimestamp = new Date().getTime();
@@ -95,7 +105,9 @@ const Game = createVisualComponent({
       }
 
 
-      document.addEventListener("keydown", sendPosition)
+      document.body.addEventListener("keydown", sendPosition);
+      document.body.addEventListener("mousemove", mouseMove);
+      document.body.addEventListener("mousedown", mouseDown);
 
       if (props?.params?.roomId) {
 
@@ -144,8 +156,64 @@ const Game = createVisualComponent({
       const result = await Calls.gameInstanceStartGame({roomId: props.params.roomId})
     }
 
+    function getAngle(cx, cy, ex, ey) {
+      let dy = ey - cy;
+      let dx = ex - cx;
+      let theta = Math.atan2(dy, dx); // range (-PI, PI]
+      theta *= 180 / Math.PI; // rads to degs, range (-180, 180]
+      //if (theta < 0) theta = 360 + theta; // range [0, 360)
+      return theta;
+    }
+
+
+    function mouseMove(e) {
+
+      // console.info(`mouseEvent!`);
+
+
+      // todo mouse events
+
+      // get current player
+      const keyGameState = currentGameState?.output?.game ?? []
+      let playersState = JSON.parse(JSON.stringify(keyGameState.players));
+      const currentPlayer = playersState[JSON.stringify(UU5.Environment.getSession().getIdentity().uuIdentity)]
+
+      let canvasRect = canvasRef.current.getBoundingClientRect();
+
+      currentPlayer.x;
+      currentPlayer.y;
+      currentPlayer.width;
+      currentPlayer.height;
+      // get player X and Y
+      let x1 = currentPlayer.x + (currentPlayer.width / 2);
+      let y1 = currentPlayer.y + (currentPlayer.height / 2);
+      let x2 = e.x - canvasRect.left; //- leftOffset;
+      let y2 = e.y - canvasRect.top; //- topOffset;
+      // console.info("===================");
+      // console.info(x1);
+      // console.info(y1);
+      // console.info(x2);
+      // console.info(y2);
+
+      angle = getAngle(x1, y1, x2, y2); // * (Math.PI / 180);
+
+      // console.info(angle);
+      // console.info("===================");
+
+    }
+
+    function mouseDown(event) {
+      if (!event.shiftKey) {
+        const newMove = {}
+        newMove.fired = "BULLET"; // TODO - fire proper projectile type
+        newMove.firedAngle = angle;
+        moveList.push(newMove);
+        console.info("fired");
+      }
+    }
 
     function sendPosition(event) {
+      //console.log(currentGameState);
       let direction;
       let sprinting = false;
       let fired = null;
@@ -168,27 +236,27 @@ const Game = createVisualComponent({
           gameMoved = true;
           direction = "UP"; // this is switched with DOWN because axes translation
           break;
-        case "R":
-          gameMoved = true;
-          reload = true;
-          break;
-        case ' ':
-          gameMoved = true;
-          fired = "BULLET"
-          break;
 
+        // case "R":
+        //   gameMoved = true;
+        //   reload = true;
+        //   break;
       }
-      if (event.shiftKey) {
-        sprinting = true;
-        fired = null;
-      }
+
       if (gameMoved) {
         const newMove = {}
         newMove.move = direction;
-        if (fired) {
-          newMove.fired = fired
+
+        if (event.shiftKey) {
+          newMove.sprinting = true;
+          fired = null;
         }
-        moveList.push(newMove)
+        if (fired) {
+          newMove.fired = fired;
+          newMove.firedAngle = angle;
+        }
+
+        moveList.push(newMove);
         event.preventDefault();
       }
     }
@@ -279,7 +347,7 @@ const Game = createVisualComponent({
           if (event.action === "fired") {
             const firedSound = new Audio("../assets/fired.mp3");
             firedSound.play();
-            canvasRef && canvasRef.current && shake(canvasRef) //todo make it works - nejde mi použít ref
+            // canvasRef && canvasRef.current && shake(canvasRef) //todo make it works - nejde mi použít ref
           }
         }
 
@@ -397,10 +465,11 @@ const Game = createVisualComponent({
           width: "100%"
         }}>
           {gameState?.output?.tick > 0 ?
-            <Canvas draw={draw}
-              // onMouseDown={() => document.addEventListener("mousemove", sendPosition)}
-              // onMouseUp={() => document.removeEventListener("mousemove", sendPosition)}
-            />
+            <div ref={canvasRef}>
+              <Canvas draw={draw}
+
+              />
+            </div>
             :
             <>
               Connected players: {roomState?.output?.connectedPlayers?.map((p) => p.playerId)}
@@ -409,14 +478,17 @@ const Game = createVisualComponent({
               {/*todo fix this*/}
               {/*{roomState?.output?.connectedPlayers?.map((p) => <Plus4U5.Bricks.BusinessCard visual="micro" uuIdentity={p.playerId}/>)}*/}
 
-              <UU5.Bricks.Paragraph> GAME DESCRIPTION: Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Class aptent taciti sociosqu ad
+              <UU5.Bricks.Paragraph> GAME DESCRIPTION: Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Class
+                aptent taciti sociosqu ad
                 litora torquent per conubia nostra, per inceptos hymenaeos. Donec ipsum massa, ullamcorper in,
                 auctor et, scelerisque sed, est. Vestibulum fermentum tortor id mi. Etiam commodo dui eget wisi.
-                Integer malesuada. Fusce consectetuer risus a nunc. Nullam eget nisl. In sem justo, commodo ut, suscipit at,
+                Integer malesuada. Fusce consectetuer risus a nunc. Nullam eget nisl. In sem justo, commodo ut, suscipit
+                at,
                 pharetra vitae, orci. Aenean placerat. Etiam neque. Fusce suscipit libero eget elit.
               </UU5.Bricks.Paragraph>
               <UU5.Bricks.TouchIcon content="Click" colorSchema="primary"/>
-              <UU5.Bricks.Button onClick={startGameHandler} colorSchema={"primary"}>Start new game<UU5.Bricks.Icon icon="mdi-apple"/></UU5.Bricks.Button>
+              <UU5.Bricks.Button onClick={startGameHandler} colorSchema={"primary"}>Start new game<UU5.Bricks.Icon
+                icon="mdi-apple"/></UU5.Bricks.Button>
             </>
           }
 
@@ -424,7 +496,8 @@ const Game = createVisualComponent({
 
 
         {gameState?.output?.tick > 0 &&
-          <UU5.Bricks.Button onClick={startGameHandler} colorSchema={"secondary"}>Restart game<UU5.Bricks.Icon icon="mdi-apple"/></UU5.Bricks.Button>}
+        <UU5.Bricks.Button onClick={startGameHandler} colorSchema={"secondary"}>Restart game<UU5.Bricks.Icon
+          icon="mdi-apple"/></UU5.Bricks.Button>}
 
 
         <UU5.Bricks.Paragraph content={"debug"}/>
