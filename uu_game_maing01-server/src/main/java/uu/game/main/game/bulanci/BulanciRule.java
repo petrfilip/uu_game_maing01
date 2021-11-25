@@ -13,12 +13,12 @@ import uu.game.main.abl.dto.Player;
 import uu.game.main.domain.GameState;
 import uu.game.main.domain.GameStateEnum;
 import uu.game.main.domain.IRule;
-import uu.game.main.game.common.ammo.AmmoDamagable;
-import uu.game.main.game.common.ammo.Bullet;
-import uu.game.main.game.common.ammo.Mine;
 import uu.game.main.game.common.Direction;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
+import uu.game.main.game.common.ammo.AmmoDamagable;
+import uu.game.main.game.common.ammo.Bullet;
+import uu.game.main.game.common.ammo.Mine;
 import uu.game.main.helper.Utils;
 
 @Service("bulanci")
@@ -90,7 +90,7 @@ public class BulanciRule implements IRule<BulanciBoard, BulanciMove> {
         bulanciPlayer.movePlayer(bulanciMove, game);
 
         if (bulanciMove.getFired() != null) {
-          events.addAll(bulanciMove.getFired().init(bulanciPlayer));
+          events.addAll(bulanciMove.getFired().init(bulanciPlayer, bulanciMove));
           game.getAmmo().add(bulanciMove.getFired()); //todo check if has this kind of amo
         }
         game.getPlayers().put(player, bulanciPlayer);

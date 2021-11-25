@@ -5,6 +5,7 @@ import java.util.List;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
 import uu.game.main.game.common.Player2D;
+import uu.game.main.game.common.PlayerMove;
 
 public abstract class Ammo extends GameRectangle {
 
@@ -32,5 +33,5 @@ public abstract class Ammo extends GameRectangle {
     isUsed = used;
   }
 
-  public abstract List<GameRuleEvent> init(Player2D player2D);
+  public abstract List<GameRuleEvent> init(Player2D player2D, PlayerMove playerMove);
 }

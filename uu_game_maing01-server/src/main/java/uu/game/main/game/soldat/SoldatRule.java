@@ -5,7 +5,6 @@ import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROT
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,9 +20,9 @@ import uu.game.main.game.bulanci.Obstacle;
 import uu.game.main.game.bulanci.ObstacleTypeEnum;
 import uu.game.main.game.common.Direction;
 import uu.game.main.game.common.GamePlayMode;
-import uu.game.main.game.common.GameplayModeEnum;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
+import uu.game.main.game.common.GameplayModeEnum;
 import uu.game.main.game.common.TimeLimitGameplayMode;
 import uu.game.main.game.common.ammo.AmmoDamagable;
 import uu.game.main.helper.Utils;
@@ -97,7 +96,7 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
         soldatPlayer.movePlayer(move, game);
 
         if (move.getFired() != null) {
-          events.addAll(move.getFired().init(soldatPlayer));
+          events.addAll(move.getFired().init(soldatPlayer, move));
           game.getAmmo().add(move.getFired()); //todo check if has this kind of amo
         }
         game.getPlayers().put(player, soldatPlayer);

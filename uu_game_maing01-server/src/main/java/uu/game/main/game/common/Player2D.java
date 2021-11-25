@@ -1,7 +1,6 @@
 package uu.game.main.game.common;
 
-public interface Player2D<PLAYER,  MOVE, GAMEBOARD extends GameBoard> {
-
+public interface Player2D<PLAYER extends GameRectangle, MOVE extends PlayerMove, GAMEBOARD extends GameBoard> {
 
   Integer getX();
 
@@ -14,7 +13,6 @@ public interface Player2D<PLAYER,  MOVE, GAMEBOARD extends GameBoard> {
   Direction getDirection();
 
   void setDirection(Direction direction);
-
 
   PLAYER movePlayer(MOVE move, GAMEBOARD gameBoard);
 }

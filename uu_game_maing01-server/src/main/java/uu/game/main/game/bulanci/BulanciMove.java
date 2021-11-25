@@ -1,11 +1,12 @@
 package uu.game.main.game.bulanci;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import uu.game.main.game.common.ammo.Ammo;
 import uu.game.main.game.bulanci.helper.AmmoDeserializer;
 import uu.game.main.game.common.Direction;
+import uu.game.main.game.common.PlayerMove;
+import uu.game.main.game.common.ammo.Ammo;
 
-public class BulanciMove {
+public class BulanciMove implements PlayerMove {
 
   private Direction move;
 
@@ -13,6 +14,7 @@ public class BulanciMove {
   private Ammo fired; //todo only ammo name
 
   private boolean sprint;
+  private int fireAngle;
 
   public Direction getMove() {
     return move;
@@ -36,5 +38,15 @@ public class BulanciMove {
 
   public void setSprint(boolean sprint) {
     this.sprint = sprint;
+  }
+
+  @Override
+  public int getFireAngle() {
+    return fireAngle;
+  }
+
+  @Override
+  public void setFireAngle(int fireAngle) {
+    this.fireAngle = fireAngle;
   }
 }

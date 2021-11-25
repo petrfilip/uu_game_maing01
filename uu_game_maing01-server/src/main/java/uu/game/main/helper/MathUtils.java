@@ -12,4 +12,8 @@ public class MathUtils {
     return Math.cos(angleDegrees * Math.PI / 180);
   }
 
+  public static int roundUp(double toRound) {
+    return (int) ((toRound >= 0 ? 1 : -1) * Math.round(Math.abs(toRound)));
+  }
+
 }
