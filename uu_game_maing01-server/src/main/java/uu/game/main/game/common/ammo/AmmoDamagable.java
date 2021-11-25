@@ -1,4 +1,4 @@
-package uu.game.main.game.bulanci.ammo;
+package uu.game.main.game.common.ammo;
 
 import java.util.List;
 import uu.game.main.game.common.GameRuleEvent;

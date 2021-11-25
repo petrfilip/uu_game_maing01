@@ -3,8 +3,8 @@ package uu.game.main.game.bulanci;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import uu.game.main.game.bulanci.ammo.AmmoDamagable;
-import uu.game.main.game.bulanci.ammo.Intersectable;
+import uu.game.main.game.common.ammo.AmmoDamagable;
+import uu.game.main.game.common.ammo.Intersectable;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
 

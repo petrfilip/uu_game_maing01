@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import uu.game.main.abl.dto.Player;
-import uu.game.main.game.bulanci.ammo.Ammo;
+import uu.game.main.game.common.ammo.Ammo;
 import uu.game.main.helper.PlayerSerializer;
 
 public class BulanciBoard {

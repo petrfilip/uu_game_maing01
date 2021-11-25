@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.google.common.reflect.ClassPath;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import uu.game.main.game.bulanci.ammo.Ammo;
+import uu.game.main.game.common.ammo.Ammo;
 
 public class AmmoDeserializer extends StdDeserializer<Ammo> {
 

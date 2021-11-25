@@ -2,7 +2,7 @@ package uu.game.main.game.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.awt.Rectangle;
-import uu.game.main.game.bulanci.ammo.Intersectable;
+import uu.game.main.game.common.ammo.Intersectable;
 
 public class GameRectangle implements Intersectable {
 
