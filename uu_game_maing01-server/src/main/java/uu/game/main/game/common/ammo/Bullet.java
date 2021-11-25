@@ -4,25 +4,25 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import uu.game.main.game.bulanci.BulanciMove;
-import uu.game.main.game.bulanci.BulanciPlayer;
-import uu.game.main.game.common.Direction;
 import uu.game.main.game.common.GameRuleEvent;
 import uu.game.main.game.common.Player2D;
+import uu.game.main.helper.MathUtils;
 
-public class Bullet extends Ammo {
+public class Bullet extends Projectile {
 
-  private Direction direction;
-  private Integer bulletSpeed = 20;
+  /**
+   * bullet speed
+   */
+  private final static int SPEED = 20;
 
   public Bullet() {
-    super(null, null, 10, 10);
+    super(0, 0, 10, 10, 0);
   }
 
   @Override
   public List<GameRuleEvent> applyEffect(Collection<? extends AmmoDamagable> players, Integer tick) {
 
-    nextAmmoMove(bulletSpeed);
+   computeNextPosition();
 
     for (AmmoDamagable damagable : players) {
       if (damagable instanceof Intersectable && ((Intersectable) damagable).intersects(this)) {
@@ -41,47 +41,28 @@ public class Bullet extends Ammo {
 
   }
 
-  private void nextAmmoMove(Integer bulletSpeed) {
-    switch (direction) {
-      case RIGHT:
-        setX(getX() + bulletSpeed);
-        break;
-      case LEFT:
-        setX(getX() - bulletSpeed);
-        break;
-      case UP:
-        setY(getY() + bulletSpeed);
-        break;
-      case DOWN:
-        setY(getY() - bulletSpeed);
-        break;
-    }
-  }
-
   @Override
-  public List<GameRuleEvent> init(Player2D bulanciPlayer) {
-    this.setDirection(bulanciPlayer.getDirection());
-    this.setX(bulanciPlayer.getX());
-    this.setY(bulanciPlayer.getY());
-    this.setWidth(10);
-    this.setWidth(10);
-    nextAmmoMove(bulletSpeed);
+  public List<GameRuleEvent> init(Player2D player2D) {
+    this.setAngle(player2D.getDirection().getAngle());
+    this.setX(player2D.getX());
+    this.setY(player2D.getY());
+
+    computeNextPosition();
+
     return Collections.singletonList(new GameRuleEvent("fired", this.getClass().getSimpleName(), this));
   }
 
-  public Direction getDirection() {
-    return direction;
+  @Override
+  public int getSpeed() {
+    return SPEED;
   }
 
-  public void setDirection(Direction direction) {
-    this.direction = direction;
-  }
+  @Override
+  public void computeNextPosition() {
+    double posX = getX() + getSpeed() * MathUtils.cos(getAngle());
+    double posY = getY() + getSpeed() * MathUtils.sin(getAngle());
 
-  public Integer getBulletSpeed() {
-    return bulletSpeed;
-  }
-
-  public void setBulletSpeed(Integer bulletSpeed) {
-    this.bulletSpeed = bulletSpeed;
+    setX((int) posX);
+    setY((int) posY);
   }
 }

@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import uu.game.main.game.bulanci.BulanciMove;
-import uu.game.main.game.bulanci.BulanciPlayer;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
 import uu.game.main.game.common.Player2D;
@@ -46,9 +44,9 @@ public class Mine extends Ammo {
   }
 
   @Override
-  public List<GameRuleEvent> init(Player2D bulanciPlayer) {
-    this.setX(bulanciPlayer.getX());
-    this.setY(bulanciPlayer.getY());
+  public List<GameRuleEvent> init(Player2D player2D) {
+    this.setX(player2D.getX());
+    this.setY(player2D.getY());
     this.setWidth(40);
     this.setWidth(40);
     return Collections.singletonList(new GameRuleEvent("fired", this.getClass().getSimpleName(), this));
