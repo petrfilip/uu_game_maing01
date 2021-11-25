@@ -109,28 +109,27 @@ const Game = createVisualComponent({
       }
 
 
-      document.body.addEventListener("keydown", sendPosition);
+      document.body.addEventListener("keydown", sendPositionDown);
+      document.body.addEventListener("keyup", sendPositionUp);
       document.body.addEventListener("mousemove", mouseMove);
       document.body.addEventListener("mousedown", mouseDown);
 
       if (props?.params?.roomId) {
-
-
         setWaiting(true);
         joinToRoom();
         poll();
         setWaiting(false);
-
       }
       return () => {
         fetch = false;
         eventSource && eventSource.close();
-        setGameState({})
-        setRoomState({})
-        themeMusic.pause()
-        setThemeMusicPlays(false)
-        setWaiting(true)
-        document.removeEventListener("keydown", sendPosition)
+        setGameState({});
+        setRoomState({});
+        themeMusic.pause();
+        setThemeMusicPlays(false);
+        setWaiting(true);
+        document.removeEventListener("keydown", sendPositionDown);
+        document.removeEventListener("keyup", sendPositionUp);
 
       }
     }, [props?.params?.roomId]);
@@ -204,13 +203,11 @@ const Game = createVisualComponent({
       }
     }
 
-    function sendPosition(event) {
-      //console.log(currentGameState);
+    function sendPositionCore(event) {
       let direction;
-      let sprinting = false;
       let fired = null;
-      let reload = false;
       let gameMoved = false;
+
       switch (event.key) {
         case 'ArrowLeft':
           gameMoved = true;
@@ -224,15 +221,6 @@ const Game = createVisualComponent({
           gameMoved = true;
           direction = "UP";
           break
-        // case 'ArrowDown':
-        //   gameMoved = true;
-        //   direction = "DOWN";
-        //   break;
-
-        // case "R":
-        //   gameMoved = true;
-        //   reload = true;
-        //   break;
       }
 
       if (gameMoved) {
@@ -249,6 +237,14 @@ const Game = createVisualComponent({
       }
     }
 
+    function sendPositionDown(event) {
+      console.info("downEvent");
+      sendPositionCore(event);
+    }
+      function sendPositionUp(event) {
+        console.info("upEvent");
+      sendPositionCore(event);
+      }
 
     const playerColors = [];
 
@@ -260,15 +256,22 @@ const Game = createVisualComponent({
     }
 
     let debug = 0;
-    let dubugInterval;
+    let debugInterval;
+    let debugFlag = true;
 
-    // function animatePlayer(debug, ctx, player){
-    //   const img = new Image();
-    //   let i = debug % 9;
-    //   img.src = `../assets/gun_idle/E_E_Gun__Idle_00${i}.png`;
-    //   ctx.drawImage(img, player.x, player.y, 60, 60);
-    //   debug++;
-    // }
+    function animatePlayer(debug, ctx, player) {
+      const img = new Image();
+      let i = debug % 9;
+
+      let path = `../assets/gun_idle/E_E_Gun__Idle_00${i}.png`;
+
+      console.info("animate player:");
+      console.info(path);
+
+      img.src = path;
+      ctx.drawImage(img, player.x, player.y, 60, 60);
+      debug++;
+    }
 
     function drawPlayers(ctx, players, playerIds, state) {
       for (let i = 0; i < players.length; i++) {
@@ -276,8 +279,13 @@ const Game = createVisualComponent({
         const playerId = playerIds[i];
 
 
-
         // todo  if animation interval for this user exits, clear it
+
+        //
+        // if(debugFlag){
+        //   setInterval(animatePlayer.bind(null, debug, ctx, player),33)
+        //   debugFlag = false;
+        // }
 
 
         // todo create new animation interval and store it to playerAnimation array
@@ -289,10 +297,10 @@ const Game = createVisualComponent({
 
         const img = new Image();
         img.src = `../assets/gun_idle/E_E_Gun__Idle_000.png`;
-        //ctx.drawImage(img, player.x, player.y, 60, 60);
 
-          // dubugInterval = setInterval(function(playerId) {
-        //   // todo
+
+        // dubugInterval = setInterval(function(playerId) {
+        //
         //   const img = new Image();
         //   let i = debug % 9;
         //   img.src = `../assets/gun_idle/E_E_Gun__Idle_00${i}.png`;
@@ -331,8 +339,9 @@ const Game = createVisualComponent({
          //img.setAttribute("style", "transform: rotate(" + 30 + "deg)");
 
          ctx.drawImage(img, player.x, player.y, player.width, player.height);
-        // todo draw gun
-        drawGuns(ctx, player);
+
+         // todo draw gun separatly with current angle rotation
+        //drawGuns(ctx, player);
 
       }
     }
@@ -375,7 +384,6 @@ const Game = createVisualComponent({
 
         ctx.drawImage(img, ammo.x, ammo.y, ammo.width, ammo.height);
 
-
       }
     }
 
@@ -395,9 +403,10 @@ const Game = createVisualComponent({
             const img = new Image();
             img.src = "../assets/tavern.png"
             ctx.drawImage(img, wall.x, wall.y, wall.width, wall.height);
-          } else if (obstacle.type === "WOOD_BOX") {
+          } else if (obstacle.type === "WOODEN_BOX") {
             const img = new Image();
             img.src = "../assets/wood_box.png"
+            //img.src = "../assets/Portal.gif"
             ctx.drawImage(img, wall.x, wall.y, wall.width, wall.height);
           } else if (obstacle.type === "METAL_BOX") {
             const img = new Image();
