@@ -3,11 +3,11 @@ package uu.game.main.game.common.ammo;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
 import uu.game.main.game.common.Player2D;
+import uu.game.main.game.common.PlayerMove;
 
 public class Mine extends Ammo {
 
@@ -44,7 +44,7 @@ public class Mine extends Ammo {
   }
 
   @Override
-  public List<GameRuleEvent> init(Player2D player2D) {
+  public List<GameRuleEvent> init(Player2D player2D, PlayerMove playerMove) {
     this.setX(player2D.getX());
     this.setY(player2D.getY());
     this.setWidth(40);
