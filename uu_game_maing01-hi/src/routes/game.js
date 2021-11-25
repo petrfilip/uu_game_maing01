@@ -200,7 +200,7 @@ const Game = createVisualComponent({
         newMove.fired = "BULLET"; // TODO - fire proper projectile type
         newMove.firedAngle = angle;
         moveList.push(newMove);
-        console.info("fired");
+
       }
     }
 
@@ -262,13 +262,13 @@ const Game = createVisualComponent({
     let debug = 0;
     let dubugInterval;
 
-    function animatePlayer(debug, ctx, player){
-      const img = new Image();
-      let i = debug % 9;
-      img.src = `../assets/gun_idle/E_E_Gun__Idle_00${i}.png`;
-      ctx.drawImage(img, player.x, player.y, 60, 60);
-      debug++;
-    }
+    // function animatePlayer(debug, ctx, player){
+    //   const img = new Image();
+    //   let i = debug % 9;
+    //   img.src = `../assets/gun_idle/E_E_Gun__Idle_00${i}.png`;
+    //   ctx.drawImage(img, player.x, player.y, 60, 60);
+    //   debug++;
+    // }
 
     function drawPlayers(ctx, players, playerIds, state) {
       for (let i = 0; i < players.length; i++) {
@@ -289,7 +289,7 @@ const Game = createVisualComponent({
 
         const img = new Image();
         img.src = `../assets/gun_idle/E_E_Gun__Idle_000.png`;
-        ctx.drawImage(img, player.x, player.y, 60, 60);
+        //ctx.drawImage(img, player.x, player.y, 60, 60);
 
           // dubugInterval = setInterval(function(playerId) {
         //   // todo
@@ -312,21 +312,21 @@ const Game = createVisualComponent({
         // ctx.fillStyle = "blue";
         // ctx.fillRect(player.x, player.y, player.width, player.height);
         // ctx.fillStyle = "red";
-        // switch (player.direction) {
-        //   case 'RIGHT':
-        //     ctx.fillRect(player.x + player.width, player.y + (player.height / 2), 5, 5);
-        //     break;
-        //   case 'LEFT':
-        //     ctx.fillRect(player.x - 5, player.y + (player.height / 2), 5, 5);
-        //     break;
-        //   case 'UP':
-        //     ctx.fillRect(player.x + (player.width / 2), player.y + player.width, 5, 5);
-        //     break;
-        //   case 'DOWN':
-        //     ctx.fillRect(player.x + (player.width / 2), player.y - 5, 5, 5);
-        //     break;
-        // }
-
+         switch (player.direction) {
+           case 'RIGHT':
+             img.src = `../assets/gun_idle/E_E_Gun__Idle_000.png`;
+             break;
+           case 'LEFT':
+             img.src = `../assets/gun_idle/E_E_Gun__Idle_000_left.png`;
+             break;
+          case 'UP':
+            img.src = `../assets/gun_idle/E_E_Gun__Idle_000_up.png`;
+            break;
+          case 'DOWN':
+            img.src = `../assets/gun_idle/E_E_Gun__Idle_000_down.png`;
+            break;
+         }
+        ctx.drawImage(img, player.x, player.y, player.width, player.height);
         // todo draw gun
         drawGuns(ctx, player);
 
@@ -423,7 +423,7 @@ const Game = createVisualComponent({
       ctx.fillStyle = '#000000'
 
       const grass = new Image();
-      grass.src = "../assets/grass.png"
+      grass.src = "../assets/background.jpg"
       ctx.drawImage(grass, 0, 0, ctx.canvas.width, ctx.canvas.height);
 
       const keyGameState = gameState?.output?.game ?? []
