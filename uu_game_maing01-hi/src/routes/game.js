@@ -15,9 +15,9 @@ let lastServerUpdateTimestamp = new Date().getTime();
 let currentServerUpdateTimestamp = new Date().getTime();
 
 let angle = 0;
-const gunW = 5;
-const gunH = 10;
 
+let moving = false;
+let direction = "RIGHT";
 
 const interpolate = (min, max, fract) => max + (min - max) * fract;
 const extrapolate = (first, second) => (second - first) + second
@@ -203,48 +203,39 @@ const Game = createVisualComponent({
       }
     }
 
-    function sendPositionCore(event) {
-      let direction;
-      let fired = null;
-      let gameMoved = false;
+
+    function sendPositionDown(event) {
+
+      console.info("downEvent");
 
       switch (event.key) {
         case 'ArrowLeft':
-          gameMoved = true;
           direction = "LEFT";
+          moving = true;
+          event.preventDefault();
           break;
         case 'ArrowRight':
-          gameMoved = true;
           direction = "RIGHT";
+          moving = true;
+          event.preventDefault();
           break;
         case 'ArrowUp':
-          gameMoved = true;
-          direction = "UP";
-          break
+          const newMove = {}
+          newMove.move = "UP";
+          moveList.push(newMove);
+          event.preventDefault();
+          break;
       }
 
-      if (gameMoved) {
-        const newMove = {}
-        newMove.move = direction;
-
-        if (event.shiftKey) {
-          newMove.sprinting = true;
-          fired = null;
-        }
-
-        moveList.push(newMove);
-        event.preventDefault();
-      }
-    }
-
-    function sendPositionDown(event) {
-      console.info("downEvent");
       sendPositionCore(event);
     }
-      function sendPositionUp(event) {
-        console.info("upEvent");
-      sendPositionCore(event);
+
+    function sendPositionUp(event) {
+      console.info("upEvent");
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        moving = false;
       }
+    }
 
     const playerColors = [];
 
@@ -320,54 +311,54 @@ const Game = createVisualComponent({
         // ctx.fillStyle = "blue";
         // ctx.fillRect(player.x, player.y, player.width, player.height);
         // ctx.fillStyle = "red";
-         switch (player.direction) {
-           case 'RIGHT':
-             img.src = `../assets/gun_idle/E_E_Gun__Idle_000.png`;
-             break;
-           case 'LEFT':
-             img.src = `../assets/gun_idle/E_E_Gun__Idle_000_left.png`;
-             break;
+        switch (player.direction) {
+          case 'RIGHT':
+            img.src = `../assets/gun_idle/E_E_Gun__Idle_000.png`;
+            break;
+          case 'LEFT':
+            img.src = `../assets/gun_idle/E_E_Gun__Idle_000_left.png`;
+            break;
           // case 'UP':
           //   img.src = `../assets/gun_idle/E_E_Gun__Idle_000_up.png`;
           //   break;
           // case 'DOWN':
           //   img.src = `../assets/gun_idle/E_E_Gun__Idle_000_left.png`;
           //   break;
-         }
+        }
 
-         //ctx.rotate(30*Math.PI/180.0);
-         //img.setAttribute("style", "transform: rotate(" + 30 + "deg)");
+        //ctx.rotate(30*Math.PI/180.0);
+        //img.setAttribute("style", "transform: rotate(" + 30 + "deg)");
 
-         ctx.drawImage(img, player.x, player.y, player.width, player.height);
+        ctx.drawImage(img, player.x, player.y, player.width, player.height);
 
-         // todo draw gun separatly with current angle rotation
+        // todo draw gun separatly with current angle rotation
         //drawGuns(ctx, player);
 
       }
     }
 
     function drawGuns(ctx, player) {
-      // todo - check if this player is current player
-      ctx.fillStyle = "red";
-      //ctx.fillRect(player.x + player.width, player.y + (player.height / 2), 5, 10);
-      if (player.id === JSON.stringify(UU5.Environment.getSession().getIdentity().uuIdentity)) {
-        // current user
-        // draw gun by local angle
-        let x1 = player.x + (player.width / 2);
-        let y1 = player.y + (player.height / 2);
-
-        let angle = angle * (Math.PI / 180);
-        let x2 = x1 + gunH * Math.cos(angle);
-        let y2 = y1 + gunH * Math.sin(angle);
-
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        gun.x = x2;
-        gun.y = y2;
-        ctx.lineWidth = gunW;
-        ctx.stroke();
-      }
+      // // todo - check if this player is current player
+      // ctx.fillStyle = "red";
+      // //ctx.fillRect(player.x + player.width, player.y + (player.height / 2), 5, 10);
+      // if (player.id === JSON.stringify(UU5.Environment.getSession().getIdentity().uuIdentity)) {
+      //   // current user
+      //   // draw gun by local angle
+      //   let x1 = player.x + (player.width / 2);
+      //   let y1 = player.y + (player.height / 2);
+      //
+      //   let angle = angle * (Math.PI / 180);
+      //   let x2 = x1 + gunH * Math.cos(angle);
+      //   let y2 = y1 + gunH * Math.sin(angle);
+      //
+      //   ctx.beginPath();
+      //   ctx.moveTo(x1, y1);
+      //   ctx.lineTo(x2, y2);
+      //   gun.x = x2;
+      //   gun.y = y2;
+      //   ctx.lineWidth = gunW;
+      //   ctx.stroke();
+      // }
     }
 
     function drawAmmo(ctx, ammos) {
@@ -375,10 +366,10 @@ const Game = createVisualComponent({
         const ammo = ammos[i];
 
         const img = new Image();
-        if(ammo.type === "Bullet"){
+        if (ammo.type === "Bullet") {
           img.src = `../assets/Bullet.png`;
         }
-        if(ammo.type === "Granate"){
+        if (ammo.type === "Granate") {
           img.src = `../assets/Bomb.png`;
         }
 
@@ -454,6 +445,13 @@ const Game = createVisualComponent({
 
 
     const draw = (ctx, frameCount) => {
+
+      if (moving) {
+        const newMove = {}
+        newMove.move = direction;
+        moveList.push(newMove);
+      }
+
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
       ctx.fillStyle = '#000000'
 
