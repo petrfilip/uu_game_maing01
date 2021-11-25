@@ -8,6 +8,7 @@ import uu.game.main.game.bulanci.BulanciMove;
 import uu.game.main.game.bulanci.BulanciPlayer;
 import uu.game.main.game.common.Direction;
 import uu.game.main.game.common.GameRuleEvent;
+import uu.game.main.game.common.Player2D;
 
 public class Bullet extends Ammo {
 
@@ -58,7 +59,7 @@ public class Bullet extends Ammo {
   }
 
   @Override
-  public List<GameRuleEvent> init(BulanciPlayer bulanciPlayer, BulanciMove bulanciMove) {
+  public List<GameRuleEvent> init(Player2D bulanciPlayer) {
     this.setDirection(bulanciPlayer.getDirection());
     this.setX(bulanciPlayer.getX());
     this.setY(bulanciPlayer.getY());

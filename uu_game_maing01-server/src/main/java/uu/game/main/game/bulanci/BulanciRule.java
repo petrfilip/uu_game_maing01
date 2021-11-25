@@ -25,7 +25,6 @@ import uu.game.main.helper.Utils;
 @Scope(scopeName = SCOPE_PROTOTYPE)
 public class BulanciRule implements IRule<BulanciBoard, BulanciMove> {
 
-  private static final Integer SPRINT_KOEF = 1;
 
   @Override
   public Class<BulanciMove> getMoveClass() {
@@ -88,10 +87,10 @@ public class BulanciRule implements IRule<BulanciBoard, BulanciMove> {
       for (BulanciMove bulanciMove : bulanciMoveList) {
 
         BulanciPlayer bulanciPlayer = game.getPlayers().get(player);
-        calculateNextStep(bulanciPlayer, bulanciMove);
+        bulanciPlayer.movePlayer(bulanciPlayer, bulanciMove);
 
         if (bulanciMove.getFired() != null) {
-          events.addAll(bulanciMove.getFired().init(bulanciPlayer, bulanciMove));
+          events.addAll(bulanciMove.getFired().init(bulanciPlayer));
           game.getAmmo().add(bulanciMove.getFired()); //todo check if has this kind of amo
         }
         game.getPlayers().put(player, bulanciPlayer);
@@ -113,32 +112,7 @@ public class BulanciRule implements IRule<BulanciBoard, BulanciMove> {
 
   private BulanciPlayer calculateNextStep(BulanciPlayer player, BulanciMove move) {
 
-    //todo check for collision with wall or another players
-    //todo add sprint
 
-    if (move.getMove() == null) {
-      return player;
-    }
-
-    if (!move.getMove().equals(player.getDirection())) {
-      player.setDirection(move.getMove());
-      return player;
-    }
-
-    switch (move.getMove()) {
-      case RIGHT:
-        player.setX(player.getX() + (player.getSpeed() * SPRINT_KOEF));
-        break;
-      case LEFT:
-        player.setX(player.getX() - (player.getSpeed() * SPRINT_KOEF));
-        break;
-      case UP:
-        player.setY(player.getY() + (player.getSpeed() * SPRINT_KOEF));
-        break;
-      case DOWN:
-        player.setY(player.getY() - (player.getSpeed() * SPRINT_KOEF));
-        break;
-    }
     return player;
   }
 }

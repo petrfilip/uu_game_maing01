@@ -9,6 +9,7 @@ import uu.game.main.game.bulanci.BulanciMove;
 import uu.game.main.game.bulanci.BulanciPlayer;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
+import uu.game.main.game.common.Player2D;
 
 public class Mine extends Ammo {
 
@@ -45,7 +46,7 @@ public class Mine extends Ammo {
   }
 
   @Override
-  public List<GameRuleEvent> init(BulanciPlayer bulanciPlayer, BulanciMove bulanciMove) {
+  public List<GameRuleEvent> init(Player2D bulanciPlayer) {
     this.setX(bulanciPlayer.getX());
     this.setY(bulanciPlayer.getY());
     this.setWidth(40);

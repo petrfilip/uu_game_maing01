@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import uu.game.main.game.common.Player2D;
 import uu.game.main.game.common.ammo.Ammo;
 import uu.game.main.game.common.ammo.AmmoDamagable;
 import uu.game.main.game.bulanci.helper.PlayerAmmoSerialization;
@@ -11,7 +12,9 @@ import uu.game.main.game.common.Direction;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
 
-public class BulanciPlayer extends GameRectangle implements AmmoDamagable {
+public class BulanciPlayer extends GameRectangle implements AmmoDamagable, Player2D<BulanciPlayer, BulanciMove> {
+
+  private static final Integer SPRINT_KOEF = 1;
 
   private Integer speed = 3;
   @JsonSerialize(using = PlayerAmmoSerialization.class)
@@ -64,5 +67,37 @@ public class BulanciPlayer extends GameRectangle implements AmmoDamagable {
 
   public void setDirection(Direction direction) {
     this.direction = direction;
+  }
+
+  @Override
+  public BulanciPlayer movePlayer(BulanciPlayer player, BulanciMove move) {
+    //todo check for collision with wall or another players
+    //todo add sprint
+
+    if (move.getMove() == null) {
+      return player;
+    }
+
+    if (!move.getMove().equals(player.getDirection())) {
+      player.setDirection(move.getMove());
+      return player;
+    }
+
+    switch (move.getMove()) {
+      case RIGHT:
+        player.setX(player.getX() + (player.getSpeed() * SPRINT_KOEF));
+        break;
+      case LEFT:
+        player.setX(player.getX() - (player.getSpeed() * SPRINT_KOEF));
+        break;
+      case UP:
+        player.setY(player.getY() + (player.getSpeed() * SPRINT_KOEF));
+        break;
+      case DOWN:
+        player.setY(player.getY() - (player.getSpeed() * SPRINT_KOEF));
+        break;
+    }
+
+    return player;
   }
 }

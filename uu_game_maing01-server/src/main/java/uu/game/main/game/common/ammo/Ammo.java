@@ -6,6 +6,7 @@ import uu.game.main.game.bulanci.BulanciMove;
 import uu.game.main.game.bulanci.BulanciPlayer;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
+import uu.game.main.game.common.Player2D;
 
 public abstract class Ammo extends GameRectangle {
 
@@ -36,5 +37,5 @@ public abstract class Ammo extends GameRectangle {
     isUsed = used;
   }
 
-  public abstract List<GameRuleEvent> init(BulanciPlayer bulanciPlayer, BulanciMove bulanciMove);
+  public abstract List<GameRuleEvent> init(Player2D player);
 }
