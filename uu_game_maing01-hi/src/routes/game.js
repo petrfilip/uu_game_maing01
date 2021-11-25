@@ -9,11 +9,15 @@ import ShakeHelper from "../bricks/shake-helper";
 //@@viewOff:imports
 const themeMusic = new Audio("../assets/theme.mp3");
 let moveList = [];
+let playerAnimation = [];
 let gameUpdateRate = new Date().getTime();
 let lastServerUpdateTimestamp = new Date().getTime();
 let currentServerUpdateTimestamp = new Date().getTime();
 
 let angle = 0;
+const gunW = 5;
+const gunH = 10;
+
 
 const interpolate = (min, max, fract) => max + (min - max) * fract;
 const extrapolate = (first, second) => (second - first) + second
@@ -168,15 +172,10 @@ const Game = createVisualComponent({
 
     function mouseMove(e) {
 
-      // console.info(`mouseEvent!`);
-
-
-      // todo mouse events
-
       // get current player
-      const keyGameState = currentGameState?.output?.game ?? []
+      const keyGameState = currentGameState?.output?.game ?? [];
       let playersState = JSON.parse(JSON.stringify(keyGameState.players));
-      const currentPlayer = playersState[JSON.stringify(UU5.Environment.getSession().getIdentity().uuIdentity)]
+      const currentPlayer = playersState[JSON.stringify(UU5.Environment.getSession().getIdentity().uuIdentity)];
 
       let canvasRect = canvasRef.current.getBoundingClientRect();
 
@@ -184,21 +183,14 @@ const Game = createVisualComponent({
       currentPlayer.y;
       currentPlayer.width;
       currentPlayer.height;
+
       // get player X and Y
       let x1 = currentPlayer.x + (currentPlayer.width / 2);
       let y1 = currentPlayer.y + (currentPlayer.height / 2);
       let x2 = e.x - canvasRect.left; //- leftOffset;
       let y2 = e.y - canvasRect.top; //- topOffset;
-      // console.info("===================");
-      // console.info(x1);
-      // console.info(y1);
-      // console.info(x2);
-      // console.info(y2);
 
-      angle = getAngle(x1, y1, x2, y2); // * (Math.PI / 180);
-
-      // console.info(angle);
-      // console.info("===================");
+      angle = getAngle(x1, y1, x2, y2);
 
     }
 
@@ -230,11 +222,11 @@ const Game = createVisualComponent({
           break;
         case 'ArrowUp':
           gameMoved = true;
-          direction = "DOWN"; // this is switched with DOWN because axes translation
+          direction = "UP";
           break
         case 'ArrowDown':
           gameMoved = true;
-          direction = "UP"; // this is switched with DOWN because axes translation
+          direction = "DOWN";
           break;
 
         // case "R":
@@ -250,10 +242,6 @@ const Game = createVisualComponent({
         if (event.shiftKey) {
           newMove.sprinting = true;
           fired = null;
-        }
-        if (fired) {
-          newMove.fired = fired;
-          newMove.firedAngle = angle;
         }
 
         moveList.push(newMove);
@@ -271,26 +259,101 @@ const Game = createVisualComponent({
       return playerColors[index];
     }
 
-    function drawPlayers(ctx, players) {
+    let debug = 0;
+    let dubugInterval;
+
+    function animatePlayer(debug, ctx, player){
+      const img = new Image();
+      let i = debug % 9;
+      img.src = `../assets/gun_idle/E_E_Gun__Idle_00${i}.png`;
+      ctx.drawImage(img, player.x, player.y, 60, 60);
+      debug++;
+    }
+
+    function drawPlayers(ctx, players, playerIds, state) {
       for (let i = 0; i < players.length; i++) {
-        const player = players[i]
-        ctx.fillStyle = "blue";
-        ctx.fillRect(player.x, player.y, player.width, player.height);
-        ctx.fillStyle = "red";
-        switch (player.direction) {
-          case 'RIGHT':
-            ctx.fillRect(player.x + player.width, player.y + (player.height / 2), 5, 5);
-            break;
-          case 'LEFT':
-            ctx.fillRect(player.x - 5, player.y + (player.height / 2), 5, 5);
-            break;
-          case 'UP':
-            ctx.fillRect(player.x + (player.width / 2), player.y + player.width, 5, 5);
-            break;
-          case 'DOWN':
-            ctx.fillRect(player.x + (player.width / 2), player.y - 5, 5, 5);
-            break;
-        }
+        const player = players[i];
+        const playerId = playerIds[i];
+
+
+
+        // todo  if animation interval for this user exits, clear it
+
+
+        // todo create new animation interval and store it to playerAnimation array
+        // playerAnimation[playerId] = {interval:setInterval(animatePlayer.bind(null, debug,ctx, player),33), state:"idle"}
+        //
+        // if(playerAnimation[playerId]?.state  === state)){
+        //
+        // }
+
+        const img = new Image();
+        img.src = `../assets/gun_idle/E_E_Gun__Idle_000.png`;
+        ctx.drawImage(img, player.x, player.y, 60, 60);
+
+          // dubugInterval = setInterval(function(playerId) {
+        //   // todo
+        //   const img = new Image();
+        //   let i = debug % 9;
+        //   img.src = `../assets/gun_idle/E_E_Gun__Idle_00${i}.png`;
+        //   debug++;
+        // },33);
+
+        // if(debug > 1000){
+        //   clearInterval(myInterval);
+        // }
+        // var foo = function () {
+        //   clearInterval(myInterval);
+        // };
+
+
+        // ctx.drawImage(img, player.x, player.y, 60, 60);
+
+        // ctx.fillStyle = "blue";
+        // ctx.fillRect(player.x, player.y, player.width, player.height);
+        // ctx.fillStyle = "red";
+        // switch (player.direction) {
+        //   case 'RIGHT':
+        //     ctx.fillRect(player.x + player.width, player.y + (player.height / 2), 5, 5);
+        //     break;
+        //   case 'LEFT':
+        //     ctx.fillRect(player.x - 5, player.y + (player.height / 2), 5, 5);
+        //     break;
+        //   case 'UP':
+        //     ctx.fillRect(player.x + (player.width / 2), player.y + player.width, 5, 5);
+        //     break;
+        //   case 'DOWN':
+        //     ctx.fillRect(player.x + (player.width / 2), player.y - 5, 5, 5);
+        //     break;
+        // }
+
+        // todo draw gun
+        drawGuns(ctx, player);
+
+      }
+    }
+
+    function drawGuns(ctx, player) {
+      // todo - check if this player is current player
+      ctx.fillStyle = "red";
+      //ctx.fillRect(player.x + player.width, player.y + (player.height / 2), 5, 10);
+      if (player.id === JSON.stringify(UU5.Environment.getSession().getIdentity().uuIdentity)) {
+        // current user
+        // draw gun by local angle
+        let x1 = player.x + (player.width / 2);
+        let y1 = player.y + (player.height / 2);
+
+        let angle = angle * (Math.PI / 180);
+        let x2 = x1 + gunH * Math.cos(angle);
+        let y2 = y1 + gunH * Math.sin(angle);
+
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        gun.x = x2;
+        gun.y = y2;
+        ctx.lineWidth = gunW;
+        ctx.stroke();
       }
     }
 
@@ -431,7 +494,9 @@ const Game = createVisualComponent({
       if (keyGameState) {
 
         // render state
-        drawPlayers(ctx, Object.values(playersState))
+
+        drawPlayers(ctx, Object.values(playersState), Object.keys(playersState));
+
         drawAmmo(ctx, amoState)
         drawObstacles(ctx, keyGameState.obstacles);
 
