@@ -14,7 +14,7 @@ public class BulanciMove implements PlayerMove {
   private Ammo fired; //todo only ammo name
 
   private boolean sprint;
-  private int fireAngle;
+  private double firedAngle;
 
   public Direction getMove() {
     return move;
@@ -41,12 +41,12 @@ public class BulanciMove implements PlayerMove {
   }
 
   @Override
-  public int getFireAngle() {
-    return fireAngle;
+  public double getFiredAngle() {
+    return firedAngle;
   }
 
   @Override
-  public void setFireAngle(int fireAngle) {
-    this.fireAngle = fireAngle;
+  public void setFiredAngle(double firedAngle) {
+    this.firedAngle = firedAngle;
   }
 }

@@ -10,7 +10,7 @@ public class SoldatMove implements PlayerMove {
 
   private Direction move;
 
-  private int fireAngle;
+  private double firedAngle;
 
   @JsonDeserialize(using = AmmoDeserializer.class)
   private Ammo fired; //todo only ammo name
@@ -42,12 +42,12 @@ public class SoldatMove implements PlayerMove {
   }
 
   @Override
-  public int getFireAngle() {
-    return fireAngle;
+  public double getFiredAngle() {
+    return firedAngle;
   }
 
   @Override
-  public void setFireAngle(int fireAngle) {
-    this.fireAngle = fireAngle;
+  public void setFiredAngle(double firedAngle) {
+    this.firedAngle = firedAngle;
   }
 }

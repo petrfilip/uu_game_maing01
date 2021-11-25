@@ -13,7 +13,7 @@ public class Bullet extends Projectile {
   /**
    * bullet speed
    */
-  private final static int SPEED = 20;
+  private final static int SPEED = 3;
 
   public Bullet() {
     super(0, 0, 10, 10, 0);
@@ -24,6 +24,11 @@ public class Bullet extends Projectile {
 
     for (int i = 0; i < getSpeed(); i++) {
       computeNextPosition();
+
+      if(checkOutOfBound()){
+        setUsed(true);
+        break;
+      }
 
       for (AmmoDamagable damagable : players) {
         if (damagable instanceof Intersectable && ((Intersectable) damagable).intersects(this)) {
@@ -45,9 +50,12 @@ public class Bullet extends Projectile {
 
   @Override
   public List<GameRuleEvent> init(Player2D player2D, PlayerMove playerMove) {
-    this.setAngle(playerMove.getFireAngle());
-    this.setX(player2D.getX());
-    this.setY(player2D.getY());
+    this.setAngle(playerMove.getFiredAngle());
+
+    double r = Math.sqrt(Math.pow(player2D.getWidth(), 2) + Math.pow(player2D.getWidth(), 2));
+
+    this.setX((player2D.getX() + (getWidth().doubleValue()/2)) + r * MathUtils.cos(getAngle()));
+    this.setY((player2D.getY() + (getHeight().doubleValue()/2)) + r * MathUtils.sin(getAngle()));
 
     return new GameRuleEvent("fired", this.getClass().getSimpleName(), this).asList();
   }
@@ -59,10 +67,10 @@ public class Bullet extends Projectile {
 
   @Override
   public void computeNextPosition() {
-    double posX = getX() + 1 * MathUtils.cos(getAngle());
-    double posY = getY() + 1 * MathUtils.sin(getAngle());
+    double posX = getX() + 5 * MathUtils.cos(getAngle());
+    double posY = getY() + 5 * MathUtils.sin(getAngle());
 
-    setX(MathUtils.roundUp(posX));
-    setY(MathUtils.roundUp(posY));
+    setX(posX);
+    setY(posY);
   }
 }

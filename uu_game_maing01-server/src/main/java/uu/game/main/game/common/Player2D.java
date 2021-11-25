@@ -2,13 +2,21 @@ package uu.game.main.game.common;
 
 public interface Player2D<PLAYER extends GameRectangle, MOVE extends PlayerMove, GAMEBOARD extends GameBoard> {
 
-  Integer getX();
+  double getX();
 
-  void setX(Integer x);
+  void setX(double x);
 
-  Integer getY();
+  double getY();
 
-  void setY(Integer y);
+  void setY(double y);
+
+  Integer getWidth();
+
+  void setWidth(Integer width);
+
+  Integer getHeight();
+
+  void setHeight(Integer height);
 
   Direction getDirection();
 

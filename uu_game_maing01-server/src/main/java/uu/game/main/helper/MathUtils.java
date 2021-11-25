@@ -13,7 +13,7 @@ public class MathUtils {
   }
 
   public static int roundUp(double toRound) {
-    return (int) ((toRound >= 0 ? 1 : -1) * Math.round(Math.abs(toRound)));
+    return (int) ((toRound >= 0 ? 1 : -1) * Math.ceil(Math.abs(toRound)));
   }
 
 }

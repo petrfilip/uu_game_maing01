@@ -15,7 +15,7 @@ public interface PlayerMove {
 
   void setSprint(boolean sprint);
 
-  int getFireAngle();
+  double getFiredAngle();
 
-  void setFireAngle(int fireAngle);
+  void setFiredAngle(double firedAngle);
 }

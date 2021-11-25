@@ -6,12 +6,12 @@ import uu.game.main.game.common.ammo.Intersectable;
 
 public class GameRectangle implements Intersectable {
 
-  private Integer x;
-  private Integer y;
+  private double x;
+  private double y;
   private Integer width;
   private Integer height;
 
-  public GameRectangle(Integer x, Integer y, Integer width, Integer height) {
+  public GameRectangle(double x, double y, Integer width, Integer height) {
     this.x = x;
     this.y = y;
     this.width = width;
@@ -20,22 +20,22 @@ public class GameRectangle implements Intersectable {
 
   @JsonIgnore
   public Rectangle getRectangle() {
-    return new Rectangle(x, y, width, height);
+    return new Rectangle(((int) x), ((int) y), width, height);
   }
 
-  public Integer getX() {
+  public double getX() {
     return x;
   }
 
-  public void setX(Integer x) {
+  public void setX(double x) {
     this.x = x;
   }
 
-  public Integer getY() {
+  public double getY() {
     return y;
   }
 
-  public void setY(Integer y) {
+  public void setY(double y) {
     this.y = y;
   }
 
