@@ -13,8 +13,8 @@ import uu.game.main.game.common.ammo.AmmoDamagable;
 
 public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player2D<SoldatPlayer, SoldatMove, SoldatBoard> {
 
-  public static final Integer JUMP_DURATION = 120;
-  public static final Integer JUMP_SPEED = 3;
+  public static final Integer JUMP_DURATION = 220;
+  public static final Integer JUMP_SPEED = 1;
 
   private Integer lives = 1;
   private Direction direction;
@@ -64,7 +64,7 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
     }
 
     // start jump
-    if (Direction.UP.equals(direction) && jumping == null) {
+    if (Direction.UP.equals(move.getMove()) && jumping == null) {
       jumpUpStarted = 0;
       jumping = Direction.UP;
       setY(getY() - JUMP_SPEED);
@@ -94,7 +94,7 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
     }
 
     // start falling when no obstacle below or continue in falling down
-    GameRectangle bellowPlayer = new GameRectangle(getX(), getY() - 3, getWidth(), getHeight());
+    GameRectangle bellowPlayer = new GameRectangle(getX(), getY() + 1, getWidth(), getHeight());
     boolean obstacleBellow = soldatBoard.getObstacles().stream().anyMatch(obstacle -> obstacle.intersects(bellowPlayer));
     if ((jumping == null || Direction.DOWN.equals(jumping)) && !obstacleBellow) {
       jumping = Direction.DOWN;
@@ -103,7 +103,7 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
     }
 
     if ((jumping == null || Direction.DOWN.equals(jumping)) && obstacleBellow) {
-      jumping = Direction.DOWN;
+      jumping = null;
       GameRectangle obstacle = soldatBoard.getObstacles()
         .stream().map(o -> o.intersectsWith(bellowPlayer))
         .filter(Objects::nonNull)

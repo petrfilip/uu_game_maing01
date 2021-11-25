@@ -95,7 +95,7 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
     for (Player player : newGameState.getGame().getPlayers().keySet()) {
       List<SoldatMove> moveList = unprocessedMoves.getOrDefault(player, new ArrayList<>(0));
 
-      for (int i = 0; i < 60; i++) {
+      for (int i = 0; i < 100; i++) {
 
         SoldatMove move = moveList.size() > i ? moveList.get(i) : new SoldatMove();
 
