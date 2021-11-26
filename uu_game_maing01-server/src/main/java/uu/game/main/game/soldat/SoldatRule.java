@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import uu.game.main.abl.ScoreAbl;
@@ -28,9 +27,7 @@ import uu.game.main.game.common.GameplayModeEnum;
 import uu.game.main.game.common.ScoreLimitGameplayMode;
 import uu.game.main.game.common.TimeLimitGameplayMode;
 import uu.game.main.game.common.ammo.AmmoDamagable;
-import uu.game.main.game.soldat.specialability.BonusItem;
 import uu.game.main.game.soldat.specialability.BonusItemService;
-import uu.game.main.game.soldat.specialability.SpecialAbility;
 import uu.game.main.helper.Utils;
 
 @Service("soldat")
@@ -126,7 +123,7 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
     for (Player player : newGameState.getGame().getPlayers().keySet()) {
       List<SoldatMove> moveList = unprocessedMoves.getOrDefault(player, new ArrayList<>(0));
 
-      for (int i = 0; i < 100; i++) {
+      for (int i = 0; i < 5; i++) {
 
         SoldatMove move = moveList.size() > i ? moveList.get(i) : new SoldatMove();
 

@@ -2,8 +2,8 @@ package uu.game.main.game.soldat;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -19,9 +19,9 @@ import uu.game.main.helper.Utils;
 public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player2D<SoldatPlayer, SoldatMove, SoldatBoard> {
 
   public static final Integer JUMP_DURATION = 600;
-  public static final Integer JUMP_SPEED = 1;
+  public static final double JUMP_SPEED = 5;
   public static final Integer INIT_LIVES = 5;
-  public static final Integer INIT_SPEED = 1;
+  public static final Integer INIT_SPEED = 3;
 
   private Integer lives = INIT_LIVES;
   private Direction direction;
@@ -91,6 +91,9 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
       setDirection(move.getMove());
     }
     boolean isCollisionWithObstacle = checkCollisionWithObstacle(soldatBoard);
+    GameRectangle bellowPlayer = new GameRectangle(getX(), getY() + 1, getWidth(), getHeight());
+    boolean obstacleBellow = soldatBoard.getObstacles().stream().anyMatch(obstacle -> obstacle.intersects(bellowPlayer));
+
 
     // move to left
     if (move.getMove() != null && Direction.LEFT.equals(direction) && !isCollisionWithObstacle) {
@@ -133,8 +136,6 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
     }
 
     // start falling when no obstacle below or continue in falling down
-    GameRectangle bellowPlayer = new GameRectangle(getX(), getY() + 1, getWidth(), getHeight());
-    boolean obstacleBellow = soldatBoard.getObstacles().stream().anyMatch(obstacle -> obstacle.intersects(bellowPlayer));
     if ((jumping == null || Direction.DOWN.equals(jumping)) && !obstacleBellow) {
       jumping = Direction.DOWN;
       setY(getY() + JUMP_SPEED);
