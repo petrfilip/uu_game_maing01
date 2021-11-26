@@ -109,7 +109,7 @@ const Game = createVisualComponent({
 
       document.body.addEventListener("keydown", sendPositionDown);
       document.body.addEventListener("keyup", sendPositionUp);
-      document.body.addEventListener("mousemove", mouseMove);
+      //document.body.addEventListener("mousemove", mouseMove);
       document.body.addEventListener("mousedown", mouseDown);
 
       if (props?.params?.roomId) {
@@ -128,7 +128,7 @@ const Game = createVisualComponent({
         setWaiting(true);
         document.removeEventListener("keydown", sendPositionDown);
         document.removeEventListener("keyup", sendPositionUp);
-        document.removeEventListener("mousemove", mouseMove);
+        //document.removeEventListener("mousemove", mouseMove);
         document.removeEventListener("mousedown", mouseDown);
 
       }
@@ -193,6 +193,9 @@ const Game = createVisualComponent({
     }
 
     function mouseDown(event) {
+
+      mouseMove(event)
+
       if (!event.shiftKey) {
         const newMove = {}
         newMove.fired = "BULLET"; // TODO - fire proper projectile type
