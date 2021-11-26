@@ -31,9 +31,9 @@ public class BulanciPlayer extends GameRectangle implements AmmoDamagable, Playe
   public List<GameRuleEvent> applyAmmoDamage(Integer damage) {
     this.lives = this.lives - damage;
     if ( lives > 0) {
-      return Collections.singletonList(new GameRuleEvent("liveDecreased", this.getClass().getSimpleName(), this));
+      return (new GameRuleEvent("liveDecreased", this.getClass().getSimpleName(), this)).asList();
     } else {
-      return Collections.singletonList(new GameRuleEvent("death", this.getClass().getSimpleName(), this));
+      return (new GameRuleEvent("death", this.getClass().getSimpleName(), this)).asList();
     }
   }
 

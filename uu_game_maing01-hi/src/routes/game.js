@@ -24,12 +24,10 @@ let leftOffset = 0, topOffset = 0;
 const interpolate = (min, max, fract) => max + (min - max) * fract;
 const extrapolate = (first, second) => (second - first) + second
 
-
 const Game = createVisualComponent({
   //@@viewOn:statics
   displayName: Config.TAG + "Game",
   //@@viewOff:statics
-
 
   render: function (props) {
     //@@viewOn:hooks
@@ -44,7 +42,6 @@ const Game = createVisualComponent({
     const {addExplosion} = RenderHelper()
     const {shake} = ShakeHelper()
 
-
     useEffect(() => {
 
       setCurrentUser()
@@ -55,7 +52,8 @@ const Game = createVisualComponent({
       let movesInTick = []
 
       async function poll() {
-        eventSource = new EventSource(`${Calls.getCommandUri("sse")}?roomId=${props.params.roomId}`);
+        eventSource = new EventSource(
+          `${Calls.getCommandUri("sse")}?roomId=${props.params.roomId}`);
         eventSource.onmessage = (event) => {
           const result = JSON.parse(event.data);
           if (fetch === false) {
@@ -74,13 +72,13 @@ const Game = createVisualComponent({
 
             lastServerUpdateTimestamp = currentServerUpdateTimestamp;
             currentServerUpdateTimestamp = new Date().getTime();
-            gameUpdateRate = (currentServerUpdateTimestamp - lastServerUpdateTimestamp)///1000.0;
-
+            gameUpdateRate = (currentServerUpdateTimestamp
+              - lastServerUpdateTimestamp)///1000.0;
 
             async function sendMoves(moves) {
-              await Calls.gameInstanceAddPlayerMove({roomId: props.params.roomId, playerMoves: moves})
+              await Calls.gameInstanceAddPlayerMove(
+                {roomId: props.params.roomId, playerMoves: moves})
             }
-
 
             if (moveList.length) {
               const oldMoves = movesInTick[result.output.tick]
@@ -102,14 +100,12 @@ const Game = createVisualComponent({
           console.log("Error", event);
         };
 
-
       }
 
       async function joinToRoom() {
         const room = await Calls.roomJoin({roomId: props.params.roomId})
         setRoomState(room);
       }
-
 
       document.body.addEventListener("keydown", sendPositionDown);
       document.body.addEventListener("keyup", sendPositionUp);
@@ -149,7 +145,6 @@ const Game = createVisualComponent({
 
     }, [themeMusicPlays, roomState?.state]);
 
-
     //@viewOff:hooks
 
     //@@viewOn:private
@@ -158,9 +153,9 @@ const Game = createVisualComponent({
       ctx.fillRect(event.clientX, event.clientY, 5, 5); // fill in the pixel at (10,10)
     }
 
-
     async function startGameHandler() {
-      const result = await Calls.gameInstanceStartGame({roomId: props.params.roomId})
+      const result = await Calls.gameInstanceStartGame(
+        {roomId: props.params.roomId})
     }
 
     function getAngle(cx, cy, ex, ey) {
@@ -172,13 +167,13 @@ const Game = createVisualComponent({
       return theta;
     }
 
-
     function mouseMove(e) {
 
       // get current player
       const keyGameState = currentGameState?.output?.game ?? [];
       let playersState = JSON.parse(JSON.stringify(keyGameState.players));
-      const currentPlayer = playersState[JSON.stringify(UU5.Environment.getSession().getIdentity().uuIdentity)];
+      const currentPlayer = playersState[JSON.stringify(
+        UU5.Environment.getSession().getIdentity().uuIdentity)];
 
       let canvasRect = canvasRef.current.getBoundingClientRect();
 
@@ -205,7 +200,6 @@ const Game = createVisualComponent({
         moveList.push(newMove);
       }
     }
-
 
     function sendPositionDown(event) {
       console.info("downEvent");
@@ -249,7 +243,8 @@ const Game = createVisualComponent({
     const playerColors = [];
     const getPlayerColors = (index) => {
       if (playerColors[index] === undefined) {
-        playerColors[index] = "#" + Math.floor(Math.random() * (16777215)).toString(16);
+        playerColors[index] = "#" + Math.floor(
+          Math.random() * (16777215)).toString(16);
       }
       return playerColors[index];
     }
@@ -277,7 +272,6 @@ const Game = createVisualComponent({
         const player = players[i];
         const playerId = playerIds[i];
 
-
         // todo  if animation interval for this user exits, clear it
 
         // todo create new animation interval and store it to playerAnimation array
@@ -289,7 +283,6 @@ const Game = createVisualComponent({
 
         const img = new Image();
         img.src = `../assets/gun_idle/E_E_Gun__Idle_000.png`;
-
 
         // dubugInterval = setInterval(function(playerId) {
         //
@@ -317,7 +310,6 @@ const Game = createVisualComponent({
             break;
         }
 
-
         if (player.lives > 0) {
           // plyer still breathing
           ctx.drawImage(img, player.x, player.y, player.width, player.height);
@@ -325,11 +317,9 @@ const Game = createVisualComponent({
           // draw grave
           const imgGrave = new Image();
           imgGrave.src = `../assets/graveTest.svg`;
-          ctx.drawImage(imgGrave, player.x, player.y+2, player.width, player.height);
+          ctx.drawImage(imgGrave, player.x, player.y + 2, player.width,
+            player.height);
         }
-
-
-
 
         // draw player lifespan bar
         // =========================
@@ -347,16 +337,17 @@ const Game = createVisualComponent({
             barLifeWidth = maxBarWidth;
           }
           ctx.fillStyle = 'rgba(255,0,0,0.6)'
-          ctx.fillRect(player.x - 15, player.y - player.height + 5, player.width + 20, 10);
+          ctx.fillRect(player.x - 15, player.y - player.height + 5,
+            player.width + 20, 10);
           if (maxLives < player.lives) {
             // player is in immortal mode, set gold color
             ctx.fillStyle = 'rgba(255,215,0,1)'
           } else {
             ctx.fillStyle = 'rgba(0,255,0,0.6)'
           }
-          ctx.fillRect(player.x - 15, player.y - player.height + 5, barLifeWidth, 10);
+          ctx.fillRect(player.x - 15, player.y - player.height + 5,
+            barLifeWidth, 10);
         } // End of life bar rendering
-
 
         // player is freezed
         // ==================
@@ -365,7 +356,8 @@ const Game = createVisualComponent({
           ctx.globalAlpha = 0.65;
           const imgIce = new Image();
           imgIce.src = `../assets/iceBlock.png`;
-          ctx.drawImage(imgIce, player.x - 13, player.y - 20, player.width + 20, player.height + 25);
+          ctx.drawImage(imgIce, player.x - 13, player.y - 20, player.width + 20,
+            player.height + 25);
           ctx.globalAlpha = 1;
         }
 
@@ -374,7 +366,6 @@ const Game = createVisualComponent({
 
       }
     }
-
 
     function drawAmmo(ctx, ammos) {
       for (let i = 0; i < ammos.length; i++) {
@@ -416,7 +407,8 @@ const Game = createVisualComponent({
             break;
         }
 
-        ctx.drawImage(img, specialItem.x, specialItem.y, specialItem.width, specialItem.height);
+        ctx.drawImage(img, specialItem.x, specialItem.y, specialItem.width,
+          specialItem.height);
 
       }
 
@@ -462,7 +454,6 @@ const Game = createVisualComponent({
       }
     }
 
-
     function renderEvents(ctx, frameCount, events) {
       if (frameCount !== 1) {
         return
@@ -483,9 +474,43 @@ const Game = createVisualComponent({
             // canvasRef && canvasRef.current && shake(canvasRef) //todo make it works - nejde mi použít ref
           }
         }
+
+        if (event.objectName === "Mine") {
+          if (event.action === "used") {
+            const bulletStopSound = new Audio(`../assets/explosions_sound/${getRandomInt(1,3)}`);
+            bulletStopSound.play();
+            addExplosion(ctx, event.data.x, event.data.y)
+          }
+
+          if (event.action === "fired") {
+            const firedSound = new Audio("../assets/bomb-has-been-planted-sound-effect-cs-go.mp3");
+            firedSound.play();
+            // canvasRef && canvasRef.current && shake(canvasRef) //todo make it works - nejde mi použít ref
+          }
+        }
+
+        if (event.objectName === "SoldatPlayer") {
+          if (event.action === "liveDecreased") {
+            const bulletStopSound = new Audio("../assets/fired.mp3");
+            bulletStopSound.play();
+            addExplosion(ctx, event.data.x, event.data.y)
+          }
+
+          if (event.action === "death") {
+            const firedSound = new Audio(
+              `../assets/death_sound/${getRandomInt(1, 15)}.wav`);
+            firedSound.play();
+            // canvasRef && canvasRef.current && shake(canvasRef) //todo make it works - nejde mi použít ref
+          }
+        }
       }
     }
 
+    function getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
     const draw = (ctx, frameCount, canvas) => {
 
@@ -512,7 +537,8 @@ const Game = createVisualComponent({
       if (frameCount !== 1) {
         const framePaint = 16
         for (let i = 0; i < amoState.length; i++) {
-          const interpolation = (amoState[i].bulletSpeed) * (framePaint / gameUpdateRate)
+          const interpolation = (amoState[i].bulletSpeed) * (framePaint
+            / gameUpdateRate)
 
           switch (amoState[i].direction) {
             case 'RIGHT':
@@ -523,12 +549,11 @@ const Game = createVisualComponent({
               break;
           }
 
-
         }
       }
 
-
-      const currentPlayer = playersState[JSON.stringify(UU5.Environment.getSession().getIdentity().uuIdentity)]
+      const currentPlayer = playersState[JSON.stringify(
+        UU5.Environment.getSession().getIdentity().uuIdentity)]
       for (let i = 0; i < moveList.length; i++) {
 
         switch (moveList[i].move) {
@@ -542,24 +567,23 @@ const Game = createVisualComponent({
             break;
         }
 
-
       }
 
       translateToPlayer(currentPlayer, canvas);
 
-      playersState[JSON.stringify(UU5.Environment.getSession().getIdentity().uuIdentity)] = currentPlayer;
+      playersState[JSON.stringify(
+        UU5.Environment.getSession().getIdentity().uuIdentity)] = currentPlayer;
 
       //todo extrapolate move - do only once
 
       //todo intrapolate move - do for every frame
 
-
       if (keyGameState) {
 
         // render state
 
-        drawPlayers(ctx, Object.values(playersState), Object.keys(playersState), "?", maxLives);
-
+        drawPlayers(ctx, Object.values(playersState), Object.keys(playersState),
+          "?", maxLives);
 
         drawAmmo(ctx, amoState)
 
@@ -585,25 +609,33 @@ const Game = createVisualComponent({
       height: 900,
     };
 
-
     function translateToPlayer(player, canvas) {
       let halfWidth = visibleMap.width / 2
       leftOffset = halfWidth - player.x;
-      if (leftOffset > 0) leftOffset = 0;
+      if (leftOffset > 0) {
+        leftOffset = 0;
+      }
 
       let maxLeftOffset = mapSize.width - visibleMap.width;
-      if (leftOffset < -Math.abs(maxLeftOffset)) leftOffset = -Math.abs(maxLeftOffset);
+      if (leftOffset < -Math.abs(maxLeftOffset)) {
+        leftOffset = -Math.abs(
+          maxLeftOffset);
+      }
 
       let halfHeight = visibleMap.height / 2
       topOffset = halfHeight - player.y;
-      if (topOffset > 0) topOffset = 0;
+      if (topOffset > 0) {
+        topOffset = 0;
+      }
 
       let maxTopOffset = mapSize.height - visibleMap.height;
-      if (topOffset < -Math.abs(maxTopOffset)) topOffset = -Math.abs(maxTopOffset);
+      if (topOffset < -Math.abs(maxTopOffset)) {
+        topOffset = -Math.abs(
+          maxTopOffset);
+      }
 
       canvas.style.transform = `translate(${leftOffset}px, ${topOffset}px)`;
     }
-
 
     //@@viewOff:private
 
@@ -613,7 +645,8 @@ const Game = createVisualComponent({
     }
 
     return (
-      <UU5.Bricks.Section level={1} header="Game" className={UU5.Common.Css.css`padding: 16px`}>
+      <UU5.Bricks.Section level={1} header="Game"
+                          className={UU5.Common.Css.css`padding: 16px`}>
 
 
         Updated upstream
@@ -625,7 +658,8 @@ const Game = createVisualComponent({
           minHeight: "550px",
           width: "100%"
         }}>
-          {gameState?.output?.state === "RUNNING" && gameState?.output?.tick > 0 ?
+          {gameState?.output?.state === "RUNNING" && gameState?.output?.tick > 0
+            ?
             <div ref={canvasRef}>
               <Canvas draw={draw}
 
@@ -633,22 +667,27 @@ const Game = createVisualComponent({
             </div>
             :
             <>
-              Connected players: {roomState?.output?.connectedPlayers?.map((p) => p.playerId)}
+              Connected players: {roomState?.output?.connectedPlayers?.map(
+              (p) => p.playerId)}
               {connectionError}
 
               {/*todo fix this*/}
               {/*{roomState?.output?.connectedPlayers?.map((p) => <Plus4U5.Bricks.BusinessCard visual="micro" uuIdentity={p.playerId}/>)}*/}
 
               <UU5.Bricks.Paragraph>
-                {gameState?.output?.state === "WAITING" && "Waiting for next players"}
-                {gameState?.output?.state === "WAITING" && "Move player with arrows or A W D, Fire on mouse left click."}
+                {gameState?.output?.state === "WAITING"
+                  && "Waiting for next players"}
+                {gameState?.output?.state === "WAITING"
+                  && "Move player with arrows or A W D, Fire on mouse left click."}
                 {gameState?.output?.state === "FINISHED" && "Game is finished"}
                 {/*{gameState?.output?.state === "FINISHED" && gameState?.output?.game?.players?.map((p) =>*/}
                 {/*  (<UU5.Bricks.Paragraph>{p.playerId} - {p.score}</UU5.Bricks.Paragraph>))}*/}
               </UU5.Bricks.Paragraph>
               <UU5.Bricks.TouchIcon content="Click" colorSchema="primary"/>
-              <UU5.Bricks.Button onClick={startGameHandler} colorSchema={"primary"}>Start new game<UU5.Bricks.Icon
-                icon="mdi-apple"/></UU5.Bricks.Button>
+              <UU5.Bricks.Button onClick={startGameHandler}
+                                 colorSchema={"primary"}>Start new
+                game<UU5.Bricks.Icon
+                  icon="mdi-apple"/></UU5.Bricks.Button>
             </>
           }
 
@@ -656,8 +695,10 @@ const Game = createVisualComponent({
 
 
         {gameState?.output?.tick > 0 &&
-        <UU5.Bricks.Button onClick={startGameHandler} colorSchema={"secondary"}>Restart game<UU5.Bricks.Icon
-          icon="mdi-apple"/></UU5.Bricks.Button>}
+          <UU5.Bricks.Button onClick={startGameHandler}
+                             colorSchema={"secondary"}>Restart
+            game<UU5.Bricks.Icon
+              icon="mdi-apple"/></UU5.Bricks.Button>}
 
 
         <UU5.Bricks.Paragraph content={"debug"}/>
