@@ -128,6 +128,9 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
     obstacles.add(new Obstacle(ObstacleTypeEnum.TROLL_FACE, new GameRectangle(Utils.getRandomNumber(50, 1200), 130, 50, 50)) );
 
 
+  // adhoc fix
+  //  obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(0, 450, 1400, 10)));
+
 
     return obstacles;
   }

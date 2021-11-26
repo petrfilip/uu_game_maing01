@@ -70,12 +70,21 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
   @Override
   public SoldatPlayer movePlayer(SoldatMove move, SoldatBoard soldatBoard) {
 
+    if (respawnTime != null && respawnTime.isBefore(ZonedDateTime.now())) {
+      respawnTime = null;
+      lives = INIT_LIVES;
+      setX(Utils.getRandomNumber(0, 500));
+      setY(Utils.getRandomNumber(0, 500));
+      return this;
+    }
+
     if (this.respawnTime != null && this.lives <= 0) {
       return this;
     }
 
     if (checkOutOfBound()) {
       applyAmmoDamage(9999);
+      return this;
     }
 
     for (SpecialAbility specialAbility : specialAbilityList) {
@@ -84,12 +93,7 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
       }
     }
 
-    if (respawnTime != null && respawnTime.isBefore(ZonedDateTime.now())) {
-      respawnTime = null;
-      lives = INIT_LIVES;
-      setX(Utils.getRandomNumber(0, 500));
-      setY(Utils.getRandomNumber(0, 500));
-    }
+
 
     if (move.getMove() != null && !move.getMove().equals(getDirection())) {
       setDirection(move.getMove());
