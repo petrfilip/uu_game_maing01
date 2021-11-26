@@ -139,6 +139,7 @@ const Game = createVisualComponent({
       if (themeMusic && !themeMusicPlays && roomState?.state === "ACTIVE") {
         themeMusic.loop = true;
         themeMusic.currentTime = 0;
+        themeMusic.volume = 0.2;
         themeMusic.play();
         setThemeMusicPlays(true);
       }
@@ -174,6 +175,8 @@ const Game = createVisualComponent({
       let playersState = JSON.parse(JSON.stringify(keyGameState.players));
       const currentPlayer = playersState[JSON.stringify(
         UU5.Environment.getSession().getIdentity().uuIdentity)];
+
+      translateToPlayer(currentPlayer)
 
       let canvasRect = canvasRef.current.getBoundingClientRect();
 
@@ -391,7 +394,6 @@ const Game = createVisualComponent({
 
       for (let i = 0; i < items.length; i++) {
         const specialItem = items[i];
-        console.info(specialItem.specialAbilityName);
 
         const img = new Image();
 
@@ -402,8 +404,8 @@ const Game = createVisualComponent({
           case 'IncreasedSpeedSpecialAbility':
             img.src = `../assets/bonus_speed.png`;
             break;
-          case 'IncreasedSpeedSpecialAbility':
-            img.src = `../assets/bonus_speed.png`;
+          case 'FreezeOpponentsSpecialAbility':
+            img.src = `../assets/bonus_freeze.jpg`;
             break;
           case 'IncreaseLiveSpecialAbility':
             img.src = `../assets/bonus_life.png`;
@@ -480,13 +482,15 @@ const Game = createVisualComponent({
 
         if (event.objectName === "Mine") {
           if (event.action === "used") {
-            const bulletStopSound = new Audio(`../assets/explosions_sound/${getRandomInt(1,3)}`);
+            const bulletStopSound = new Audio(
+              `../assets/explosions_sound/${getRandomInt(1, 3)}`);
             bulletStopSound.play();
             addExplosion(ctx, event.data.x, event.data.y)
           }
 
           if (event.action === "fired") {
-            const firedSound = new Audio("../assets/bomb-has-been-planted-sound-effect-cs-go.mp3");
+            const firedSound = new Audio(
+              "../assets/bomb-has-been-planted-sound-effect-cs-go.mp3");
             firedSound.play();
             // canvasRef && canvasRef.current && shake(canvasRef) //todo make it works - nejde mi použít ref
           }
@@ -637,7 +641,9 @@ const Game = createVisualComponent({
           maxTopOffset);
       }
 
-      canvas.style.transform = `translate(${leftOffset}px, ${topOffset}px)`;
+      if (canvas) {
+        canvas.style.transform = `translate(${leftOffset}px, ${topOffset}px)`;
+      }
     }
 
     //@@viewOff:private
