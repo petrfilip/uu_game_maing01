@@ -268,7 +268,7 @@ const Game = createVisualComponent({
       debug++;
     }
 
-    function drawPlayers(ctx, players, playerIds, state) {
+    function drawPlayers(ctx, players, playerIds, state, maxLives) {
       for (let i = 0; i < players.length; i++) {
         const player = players[i];
         const playerId = playerIds[i];
@@ -313,10 +313,28 @@ const Game = createVisualComponent({
             break;
         }
 
+
         //ctx.rotate(30*Math.PI/180.0);
         //img.setAttribute("style", "transform: rotate(" + 30 + "deg)");
         ctx.drawImage(img, player.x, player.y, player.width, player.height);
 
+
+        // draw player lifespan bar
+
+        let lifeSpan = player.width + 20;
+        let lifePoint = lifeSpan / maxLives;
+        ctx.fillStyle = 'rgba(255,0,0,0.6)'
+        ctx.fillRect( player.x - 15 , player.y - player.height + 5, player.width + 20, 10);
+
+
+        if(maxLives < player.lives){
+          // player is in immortal mode, set gold color
+          ctx.fillStyle = 'rgba(255,215,0,1)'
+        } else {
+          ctx.fillStyle = 'rgba(0,255,0,0.6)'
+        }
+
+        ctx.fillRect( player.x - 15 , player.y - player.height + 5, player.lives * lifePoint, 10);
 
         let freezed = player.speed === 0;
         if (freezed) {
@@ -361,7 +379,7 @@ const Game = createVisualComponent({
 
         switch(specialItem.specialAbilityName){
           case 'ImmortalitySpecialAbility':
-            img.src = `../assets/bonus_imortal.png`;
+            img.src = `../assets/bonus_imortal2.png`;
             break;
           case 'IncreasedSpeedSpecialAbility':
             img.src = `../assets/bonus_speed.png`;
@@ -465,6 +483,8 @@ const Game = createVisualComponent({
       let bonusItemsState = [...keyGameState.bonusItemList];
       let playersState = JSON.parse(JSON.stringify(keyGameState.players));
 
+      let maxLives =  gameState?.output?.params.initialLives ?? 5;
+
       if (frameCount !== 1) {
         const framePaint = 16
         for (let i = 0; i < amoState.length; i++) {
@@ -511,7 +531,7 @@ const Game = createVisualComponent({
 
         // render state
 
-        drawPlayers(ctx, Object.values(playersState), Object.keys(playersState));
+        drawPlayers(ctx, Object.values(playersState), Object.keys(playersState), "?", maxLives);
 
 
         drawAmmo(ctx, amoState)
