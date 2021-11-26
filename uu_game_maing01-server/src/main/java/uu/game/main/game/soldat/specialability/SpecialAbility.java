@@ -3,11 +3,20 @@ package uu.game.main.game.soldat.specialability;
 import java.util.List;
 import uu.game.main.game.soldat.SoldatPlayer;
 
-public interface SpecialAbility {
+public abstract class SpecialAbility {
 
-  void applyAbility(SoldatPlayer soldatPlayer, List<SoldatPlayer> opponents);
+  private boolean callbackUsed = false;
 
-  void applyAbilityFinished();
+  public abstract void applyAbility(SoldatPlayer soldatPlayer, List<SoldatPlayer> opponents);
 
-  boolean isDone();
+  public void applyAbilityFinishedOnce() {
+    if (!callbackUsed) {
+      callbackUsed = true;
+      applyAbilityFinished();
+    }
+  }
+
+  public abstract void applyAbilityFinished();
+
+  public abstract boolean isDone();
 }

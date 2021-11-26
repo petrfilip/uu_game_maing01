@@ -10,7 +10,7 @@ import uu.game.main.game.soldat.SoldatPlayer;
 
 @Service()
 @Scope(scopeName = SCOPE_PROTOTYPE)
-public class IncreasedSpeedSpecialAbility implements SpecialAbility {
+public class IncreasedSpeedSpecialAbility extends SpecialAbility {
 
   private ZonedDateTime endTime;
   private SoldatPlayer soldatPlayer;

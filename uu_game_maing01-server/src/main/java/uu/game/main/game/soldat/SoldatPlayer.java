@@ -70,17 +70,15 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
   @Override
   public SoldatPlayer movePlayer(SoldatMove move, SoldatBoard soldatBoard) {
 
-
-    if(checkOutOfBound()){
+    if (checkOutOfBound()) {
       applyAmmoDamage(9999);
     }
 
     for (SpecialAbility specialAbility : specialAbilityList) {
       if (specialAbility.isDone()) {
-        specialAbility.applyAbilityFinished();
+        specialAbility.applyAbilityFinishedOnce();
       }
     }
-
 
     if (respawnTime != null && respawnTime.isAfter(ZonedDateTime.now())) {
       respawnTime = null;
@@ -111,8 +109,6 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
       setY(getY() - JUMP_SPEED);
       return this;
     }
-
-
 
     Duration timeElapsed = Duration.between(jumpUpStarted, Instant.now());
     // continue in jump
@@ -160,12 +156,12 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
     return this;
   }
 
-  public boolean checkOutOfBound(){
+  public boolean checkOutOfBound() {
     return getX() < 0 || getX() > 800 || getY() < 0 || getY() > 600;
   }
 
   private boolean checkCollisionWithObstacle(SoldatBoard soldatBoard) {
-    return soldatBoard.getObstacles().stream().anyMatch(obstacle -> obstacle.intersects(new GameRectangle(this.getX(), this.getY()-2, this.getWidth(), this.getHeight())));
+    return soldatBoard.getObstacles().stream().anyMatch(obstacle -> obstacle.intersects(new GameRectangle(this.getX(), this.getY() - 2, this.getWidth(), this.getHeight())));
   }
 
   @Override

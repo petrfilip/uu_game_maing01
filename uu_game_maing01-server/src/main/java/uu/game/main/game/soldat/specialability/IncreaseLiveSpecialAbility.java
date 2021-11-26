@@ -9,7 +9,7 @@ import uu.game.main.game.soldat.SoldatPlayer;
 
 @Service()
 @Scope(scopeName = SCOPE_PROTOTYPE)
-public class IncreaseLiveSpecialAbility implements SpecialAbility {
+public class IncreaseLiveSpecialAbility extends SpecialAbility {
 
 
   public void applyAbility(SoldatPlayer soldatPlayer, List<SoldatPlayer> opponents) {

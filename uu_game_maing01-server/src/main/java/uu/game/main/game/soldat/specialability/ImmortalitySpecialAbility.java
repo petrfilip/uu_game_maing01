@@ -10,7 +10,7 @@ import uu.game.main.game.soldat.SoldatPlayer;
 
 @Service()
 @Scope(scopeName = SCOPE_PROTOTYPE)
-public class ImmortalitySpecialAbility implements SpecialAbility {
+public class ImmortalitySpecialAbility extends SpecialAbility {
 
   private ZonedDateTime endTime;
   private SoldatPlayer soldatPlayer;
