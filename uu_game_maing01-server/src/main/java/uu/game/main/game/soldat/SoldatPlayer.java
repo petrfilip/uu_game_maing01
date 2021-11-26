@@ -18,10 +18,10 @@ import uu.game.main.helper.Utils;
 
 public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player2D<SoldatPlayer, SoldatMove, SoldatBoard> {
 
-  public static final Integer JUMP_DURATION = 600;
+  public static final Integer JUMP_DURATION = 300;
   public static final double JUMP_SPEED = 5;
   public static final Integer INIT_LIVES = 5;
-  public static final Integer INIT_SPEED = 3;
+  public static final Integer INIT_SPEED = 6;
 
   private Integer lives = INIT_LIVES;
   private Direction direction;
