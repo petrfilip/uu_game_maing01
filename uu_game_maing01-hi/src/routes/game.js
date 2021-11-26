@@ -130,6 +130,8 @@ const Game = createVisualComponent({
         setWaiting(true);
         document.removeEventListener("keydown", sendPositionDown);
         document.removeEventListener("keyup", sendPositionUp);
+        document.removeEventListener("mousemove", mouseMove);
+        document.removeEventListener("mousedown", mouseDown);
 
       }
     }, [props?.params?.roomId]);
