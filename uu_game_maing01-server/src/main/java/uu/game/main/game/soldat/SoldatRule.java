@@ -163,7 +163,7 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
         SoldatPlayer soldatPlayer = game.getPlayers().get(player);
         soldatPlayer.movePlayer(move, game);
 
-        if (move.getFired() != null) {
+        if (move.getFired() != null && soldatPlayer.getLives() > 0) {
           events.addAll(move.getFired().init(player, soldatPlayer, move));
           game.getAmmo().add(move.getFired()); //todo check if has this kind of amo
         }
