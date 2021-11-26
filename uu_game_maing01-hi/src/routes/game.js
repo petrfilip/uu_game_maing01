@@ -476,6 +476,10 @@ const Game = createVisualComponent({
             const img = new Image();
             img.src = "../assets/wall2.png"
             ctx.drawImage(img, wall.x, wall.y, wall.width, wall.height);
+          } else if (obstacle.type === "TROLL_FACE") {
+            const img = new Image();
+            img.src = "../assets/trollFace.png"
+            ctx.drawImage(img, wall.x, wall.y, wall.width, wall.height);
           } else {
             ctx.fillStyle = "yellow" // todo obstacle.type
             ctx.fillRect(wall.x, wall.y, wall.width, wall.height);

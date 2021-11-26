@@ -8,5 +8,6 @@ public enum ObstacleTypeEnum {
   CONCRETE_BLOCK,
   WOODEN_BOX,
   METAL_BOX,
-  WALL
+  WALL,
+  TROLL_FACE
 }
