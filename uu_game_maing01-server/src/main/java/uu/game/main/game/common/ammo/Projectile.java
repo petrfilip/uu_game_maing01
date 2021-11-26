@@ -15,7 +15,7 @@ public abstract class Projectile extends Ammo {
   public abstract void computeNextPosition();
 
   public boolean checkOutOfBound(){
-    return getX() < 0 || getX() > 800 || getY() < 0 || getY() > 600;
+    return getX() < 0 || getX() > 1400 || getY() < 0 || getY() > 600;
   }
 
   public double getAngle() {

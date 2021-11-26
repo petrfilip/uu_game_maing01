@@ -158,7 +158,7 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
   }
 
   public boolean checkOutOfBound() {
-    return getX() < 0 || getX() > 800 || getY() < 0 || getY() > 600;
+    return getX() < 0 || getX() > 1400 || getY() < 0 || getY() > 600;
   }
 
   private boolean checkCollisionWithObstacle(SoldatBoard soldatBoard) {

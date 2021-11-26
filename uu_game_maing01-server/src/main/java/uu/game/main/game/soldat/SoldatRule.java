@@ -70,7 +70,7 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
     }
 
     currentState.getParams().putIfAbsent("initialLives", SoldatPlayer.INIT_LIVES);
-    currentState.getParams().putIfAbsent("areaWidth", 800);
+    currentState.getParams().putIfAbsent("areaWidth", 1400);
     currentState.getParams().putIfAbsent("areaHeight", 600);
 
     currentState.setState(GameStateEnum.RUNNING);
@@ -100,15 +100,15 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
     obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(550, 300, 50, 50)));
     obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(750, 450, 50, 50)));
 
-    addWall(obstacles, 400, 500, 12);
-    addWall(obstacles, 50, 350, 4);
+    addWall(obstacles, 400, 500, 24);
+    addWall(obstacles, 50, 350, 8);
 
     return obstacles;
   }
 
   private void addWall(List<Obstacle> obstacles, int x, int y, int count) {
     for (int i = 0; i < count; i++) {
-      obstacles.add(new Obstacle(ObstacleTypeEnum.WALL, new GameRectangle(x + (i * 50), y, 50, 50)));
+      obstacles.add(new Obstacle(ObstacleTypeEnum.WALL, new GameRectangle(x + (i * 25), y, 25, 25)));
     }
   }
 

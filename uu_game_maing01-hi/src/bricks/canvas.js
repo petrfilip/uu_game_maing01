@@ -56,7 +56,7 @@ const Canvas = createVisualComponent({
 
 
     //@@viewOn:render
-    return <div style={{ border:"3px solid red",  overflow: "hidden", width: visibleMap.width, height: visibleMap.height}}><canvas width={mapSize.width} height={mapSize.height} ref={canvasRef} {...rest} /></div>
+    return <div style={{ border:"3px solid red"}}><canvas width={1400} height={600} ref={canvasRef} {...rest} /></div>
     //@@viewOff:render
   },
 });

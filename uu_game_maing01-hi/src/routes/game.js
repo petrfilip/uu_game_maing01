@@ -21,6 +21,9 @@ let direction = "RIGHT";
 
 let leftOffset = 0, topOffset = 0;
 
+let firstDraw = new Date().getTime();
+let lastDraw = new Date().getTime();
+
 const interpolate = (min, max, fract) => max + (min - max) * fract;
 const extrapolate = (first, second) => (second - first) + second
 
@@ -176,7 +179,7 @@ const Game = createVisualComponent({
       const currentPlayer = playersState[JSON.stringify(
         UU5.Environment.getSession().getIdentity().uuIdentity)];
 
-      translateToPlayer(currentPlayer)
+      //translateToPlayer(currentPlayer)
 
       let canvasRect = canvasRef.current.getBoundingClientRect();
 
@@ -208,7 +211,6 @@ const Game = createVisualComponent({
     }
 
     function sendPositionDown(event) {
-      console.info("downEvent");
 
       switch (event.key) {
         case 'ArrowLeft':
@@ -272,6 +274,23 @@ const Game = createVisualComponent({
       ctx.drawImage(img, player.x, player.y, 60, 60);
       debug++;
     }
+
+
+    function animatePlayerDebug(ctx) {
+
+      let i = debug % 9;
+
+      let path = `../assets/gun_idle/E_E_Gun__Idle_00${i}.png`;
+      console.info("animate player:");
+      console.info(path);
+
+      const img = new Image();
+      img.src = path;
+      ctx.drawImage(img, 300, 300, 60, 60);
+
+      debug ++;
+    }
+
 
     function drawPlayers(ctx, players, playerIds, state, maxLives) {
       for (let i = 0; i < players.length; i++) {
@@ -521,6 +540,21 @@ const Game = createVisualComponent({
 
     const draw = (ctx, frameCount, canvas) => {
 
+      let currentDraw = new Date().getTime();
+      if (currentDraw - lastDraw > 33) {
+        lastDraw = currentDraw;
+      } else{
+        return;
+      }
+
+      if ( currentDraw - firstDraw  < 100) {
+        // debug, call this for first time
+        console.info("firstDraw - currentDraw:");
+        console.info(firstDraw - currentDraw  );
+        setInterval(() => animatePlayerDebug(ctx), 100);
+      }
+
+
       if (moving) {
         const newMove = {}
         newMove.move = direction;
@@ -576,7 +610,7 @@ const Game = createVisualComponent({
 
       }
 
-      translateToPlayer(currentPlayer, canvas);
+
 
       playersState[JSON.stringify(
         UU5.Environment.getSession().getIdentity().uuIdentity)] = currentPlayer;
@@ -606,45 +640,7 @@ const Game = createVisualComponent({
       ctx.fill()
     }
 
-    const visibleMap = {
-      width: 1000,
-      height: 750,
-    };
 
-    const mapSize = {
-      width: 1200,
-      height: 900,
-    };
-
-    function translateToPlayer(player, canvas) {
-      let halfWidth = visibleMap.width / 2
-      leftOffset = halfWidth - player.x;
-      if (leftOffset > 0) {
-        leftOffset = 0;
-      }
-
-      let maxLeftOffset = mapSize.width - visibleMap.width;
-      if (leftOffset < -Math.abs(maxLeftOffset)) {
-        leftOffset = -Math.abs(
-          maxLeftOffset);
-      }
-
-      let halfHeight = visibleMap.height / 2
-      topOffset = halfHeight - player.y;
-      if (topOffset > 0) {
-        topOffset = 0;
-      }
-
-      let maxTopOffset = mapSize.height - visibleMap.height;
-      if (topOffset < -Math.abs(maxTopOffset)) {
-        topOffset = -Math.abs(
-          maxTopOffset);
-      }
-
-      if (canvas) {
-        canvas.style.transform = `translate(${leftOffset}px, ${topOffset}px)`;
-      }
-    }
 
     //@@viewOff:private
 
