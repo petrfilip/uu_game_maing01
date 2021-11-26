@@ -101,8 +101,9 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
 
     obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(500, 300, 50, 50)));
     obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(550, 300, 50, 50)));
+    obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(750, 450, 50, 50)));
 
-    addWall(obstacles, 400, 500, 8);
+    addWall(obstacles, 400, 500, 12);
     addWall(obstacles, 50, 350, 4);
 
     return obstacles;

@@ -165,7 +165,7 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
   }
 
   private boolean checkCollisionWithObstacle(SoldatBoard soldatBoard) {
-    return soldatBoard.getObstacles().stream().anyMatch(obstacle -> obstacle.intersects(this));
+    return soldatBoard.getObstacles().stream().anyMatch(obstacle -> obstacle.intersects(new GameRectangle(this.getX(), this.getY()-2, this.getWidth(), this.getHeight())));
   }
 
   @Override
