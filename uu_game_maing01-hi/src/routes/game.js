@@ -314,28 +314,48 @@ const Game = createVisualComponent({
         }
 
 
-        //ctx.rotate(30*Math.PI/180.0);
-        //img.setAttribute("style", "transform: rotate(" + 30 + "deg)");
-        ctx.drawImage(img, player.x, player.y, player.width, player.height);
+        if (player.lives > 0) {
+          // plyer still breathing
+          ctx.drawImage(img, player.x, player.y, player.width, player.height);
+        } else {
+          // draw grave
+          const imgGrave = new Image();
+          imgGrave.src = `../assets/graveTest.svg`;
+          ctx.drawImage(imgGrave, player.x, player.y+2, player.width, player.height);
+        }
+
+
 
 
         // draw player lifespan bar
+        // =========================
 
-        let lifeSpan = player.width + 20;
-        let lifePoint = lifeSpan / maxLives;
-        ctx.fillStyle = 'rgba(255,0,0,0.6)'
-        ctx.fillRect( player.x - 15 , player.y - player.height + 5, player.width + 20, 10);
+        // life bar should be rendered only if player is still alive
+        if (player.lives > 0) {
+
+          let lifeSpan = player.width + 20;
+          let lifePoint = lifeSpan / maxLives;
+
+          let maxBarWidth = player.width + 20;
+          let barLifeWidth = player.lives * lifePoint;
+
+          if (barLifeWidth > maxBarWidth) {
+            barLifeWidth = maxBarWidth;
+          }
+          ctx.fillStyle = 'rgba(255,0,0,0.6)'
+          ctx.fillRect(player.x - 15, player.y - player.height + 5, player.width + 20, 10);
+          if (maxLives < player.lives) {
+            // player is in immortal mode, set gold color
+            ctx.fillStyle = 'rgba(255,215,0,1)'
+          } else {
+            ctx.fillStyle = 'rgba(0,255,0,0.6)'
+          }
+          ctx.fillRect(player.x - 15, player.y - player.height + 5, barLifeWidth, 10);
+        } // End of life bar rendering
 
 
-        if(maxLives < player.lives){
-          // player is in immortal mode, set gold color
-          ctx.fillStyle = 'rgba(255,215,0,1)'
-        } else {
-          ctx.fillStyle = 'rgba(0,255,0,0.6)'
-        }
-
-        ctx.fillRect( player.x - 15 , player.y - player.height + 5, player.lives * lifePoint, 10);
-
+        // player is freezed
+        // ==================
         let freezed = player.speed === 0;
         if (freezed) {
           ctx.globalAlpha = 0.65;
@@ -377,7 +397,7 @@ const Game = createVisualComponent({
 
         const img = new Image();
 
-        switch(specialItem.specialAbilityName){
+        switch (specialItem.specialAbilityName) {
           case 'ImmortalitySpecialAbility':
             img.src = `../assets/bonus_imortal2.png`;
             break;
@@ -390,7 +410,7 @@ const Game = createVisualComponent({
           case 'IncreaseLiveSpecialAbility':
             img.src = `../assets/bonus_life.png`;
             break;
-          }
+        }
 
         ctx.drawImage(img, specialItem.x, specialItem.y, specialItem.width, specialItem.height);
 
@@ -483,7 +503,7 @@ const Game = createVisualComponent({
       let bonusItemsState = [...keyGameState.bonusItemList];
       let playersState = JSON.parse(JSON.stringify(keyGameState.players));
 
-      let maxLives =  gameState?.output?.params.initialLives ?? 5;
+      let maxLives = gameState?.output?.params.initialLives ?? 5;
 
       if (frameCount !== 1) {
         const framePaint = 16
