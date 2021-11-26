@@ -87,11 +87,11 @@ public class GameInstanceAbl {
     });
 
     unprocessedMoves.put(player, move);
-    try {
+   /* try {
       System.out.println(new StringBuilder().append("New player move in tick ").append(currentState.getTick()).append(":").append(objectMapper.writeValueAsString(playerMove)));
     } catch (JsonProcessingException e) {
       e.printStackTrace();
-    }
+    }*/
   }
 
   public void calculateNextState() {

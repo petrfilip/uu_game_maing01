@@ -66,8 +66,12 @@ public class BroadcastAbl implements ApplicationListener<GameServerEvent> {
       try {
         sseEmitter.send(dtoOut);
       } catch (IOException e) {
-        unsubscribe(sseEmitter);
-        sseEmitter.completeWithError(e);
+        try {
+          unsubscribe(sseEmitter);
+          sseEmitter.completeWithError(e);
+        } catch (Exception ex) {
+          ex.printStackTrace();
+        }
       }
     });
   }
