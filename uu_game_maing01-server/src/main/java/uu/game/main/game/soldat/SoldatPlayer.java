@@ -97,12 +97,16 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
 
     // move to left
     if (move.getMove() != null && Direction.LEFT.equals(direction) && !isCollisionWithObstacle) {
-      setX(getX() - getSpeed());
+      if(!this.checkCollisionWithObstacleNextX(soldatBoard, - getSpeed())){
+        setX(getX() - getSpeed());
+      }
     }
 
     // move to right
     if (move.getMove() != null && Direction.RIGHT.equals(direction) && !isCollisionWithObstacle) {
-      setX(getX() + getSpeed());
+      if(!this.checkCollisionWithObstacleNextX(soldatBoard, + getSpeed())){
+        setX(getX() + getSpeed());
+      }
     }
 
     // start jump
@@ -110,12 +114,11 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
       jumpUpStarted = Instant.now();
       jumping = Direction.UP;
       setY(getY() - JUMP_SPEED);
-      return this;
     }
 
     Duration timeElapsed = Duration.between(jumpUpStarted, Instant.now());
     // continue in jump
-    if (Direction.UP.equals(jumping) && timeElapsed.toMillis() < JUMP_DURATION) {
+    if (Direction.UP.equals(jumping) && timeElapsed.toMillis() < JUMP_DURATION && !isCollisionWithObstacle) {
       setY(getY() - JUMP_SPEED);
       return this;
     }
@@ -126,7 +129,6 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
       jumpUpStarted = Instant.now();
       setY(getY() + JUMP_SPEED);
       return this;
-
     }
 
     // stop falling when collision
@@ -163,6 +165,10 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
 
   private boolean checkCollisionWithObstacle(SoldatBoard soldatBoard) {
     return soldatBoard.getObstacles().stream().anyMatch(obstacle -> obstacle.intersects(new GameRectangle(this.getX(), this.getY() - 2, this.getWidth(), this.getHeight())));
+  }
+
+  private boolean checkCollisionWithObstacleNextX(SoldatBoard soldatBoard, int nextXStep) {
+    return soldatBoard.getObstacles().stream().anyMatch(obstacle -> obstacle.intersects(new GameRectangle(this.getX() + nextXStep, this.getY() - 2, this.getWidth(), this.getHeight())));
   }
 
   @Override
