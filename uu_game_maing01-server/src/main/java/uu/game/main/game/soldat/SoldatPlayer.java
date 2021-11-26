@@ -80,7 +80,7 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
       }
     }
 
-    if (respawnTime != null && respawnTime.isAfter(ZonedDateTime.now())) {
+    if (respawnTime != null && respawnTime.isBefore(ZonedDateTime.now())) {
       respawnTime = null;
       lives = INIT_LIVES;
       setX(Utils.getRandomNumber(0, 500));
