@@ -105,9 +105,14 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
     obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(550, 250, 50, 50)));
     obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(550, 200, 50, 50)));
 
+
     obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(750, 450, 50, 50)));
 
 
+    obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(1100, 500, 50, 50)));
+    obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(1150, 500, 50, 50)));
+    obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(1200, 500, 50, 50)));
+    obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(1150, 450, 50, 50)));
 
     addBoxWall(obstacles, 1050, 550, 5);
 
@@ -119,8 +124,7 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
     addWall(obstacles, 1000, 200, 12);
 
     // Randomly generated part:
-
-
+    // =======================
     obstacles.add(new Obstacle(ObstacleTypeEnum.TROLL_FACE, new GameRectangle(Utils.getRandomNumber(50, 1200), 130, 50, 50)) );
 
 

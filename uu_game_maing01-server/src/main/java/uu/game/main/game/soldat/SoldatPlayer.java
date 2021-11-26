@@ -70,6 +70,10 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
   @Override
   public SoldatPlayer movePlayer(SoldatMove move, SoldatBoard soldatBoard) {
 
+    if (this.respawnTime != null && this.lives <= 0) {
+      return this;
+    }
+
     if (checkOutOfBound()) {
       applyAmmoDamage(9999);
     }
@@ -160,7 +164,7 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
   }
 
   public boolean checkOutOfBound() {
-    return getX() < 0 || getX() > 1400 || getY() < 0 || getY() > 600;
+    return getX() < 0 || getX() > 1400 || getY() > 600;
   }
 
   private boolean checkCollisionWithObstacle(SoldatBoard soldatBoard) {
