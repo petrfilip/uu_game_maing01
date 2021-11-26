@@ -118,6 +118,7 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
       jumpUpStarted = Instant.now();
       jumping = Direction.UP;
       setY(getY() - JUMP_SPEED);
+      return this;
     }
 
     Duration timeElapsed = Duration.between(jumpUpStarted, Instant.now());
