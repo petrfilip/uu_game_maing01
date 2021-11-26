@@ -53,9 +53,13 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
     if (lives > 0) {
       return new GameRuleEvent("liveDecreased", this.getClass().getSimpleName(), this).asList();
     } else {
-      this.respawnTime = ZonedDateTime.now().plusSeconds(6);
-      return new GameRuleEvent("death", this.getClass().getSimpleName(), this).asList();
+      if (respawnTime == null) {
+        this.respawnTime = ZonedDateTime.now().plusSeconds(6);
+        return new GameRuleEvent("death", this.getClass().getSimpleName(), this).asList();
+      }
     }
+
+    return new ArrayList<>();
   }
 
   @Override
@@ -66,14 +70,19 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
   @Override
   public SoldatPlayer movePlayer(SoldatMove move, SoldatBoard soldatBoard) {
 
+
+    if(checkOutOfBound()){
+      applyAmmoDamage(9999);
+    }
+
     for (SpecialAbility specialAbility : specialAbilityList) {
-      if (specialAbility.isDone()) {
+      if (!specialAbility.isDone()) {
         specialAbility.applyAbilityFinished();
       }
     }
 
 
-    if (respawnTime != null && respawnTime.isBefore(ZonedDateTime.now())) {
+    if (respawnTime != null && respawnTime.isAfter(ZonedDateTime.now())) {
       respawnTime = null;
       lives = INIT_LIVES;
       setX(Utils.getRandomNumber(0, 500));
@@ -149,6 +158,10 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
     }
 
     return this;
+  }
+
+  public boolean checkOutOfBound(){
+    return getX() < 0 || getX() > 800 || getY() < 0 || getY() > 600;
   }
 
   private boolean checkCollisionWithObstacle(SoldatBoard soldatBoard) {

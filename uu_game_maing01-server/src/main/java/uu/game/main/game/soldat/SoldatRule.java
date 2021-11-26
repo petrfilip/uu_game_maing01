@@ -102,15 +102,15 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
     obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(500, 300, 50, 50)));
     obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(550, 300, 50, 50)));
 
-    addWall(obstacles, 400, 500,8);
-    addWall(obstacles, 50, 350,4);
+    addWall(obstacles, 400, 500, 8);
+    addWall(obstacles, 50, 350, 4);
 
     return obstacles;
   }
 
   private void addWall(List<Obstacle> obstacles, int x, int y, int count) {
-    for (int i = 0 ; i < count ; i++ ){
-      obstacles.add(new Obstacle(ObstacleTypeEnum.WALL, new GameRectangle(x+(i*50), y, 50, 50)));
+    for (int i = 0; i < count; i++) {
+      obstacles.add(new Obstacle(ObstacleTypeEnum.WALL, new GameRectangle(x + (i * 50), y, 50, 50)));
     }
   }
 
@@ -141,7 +141,9 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
     }
 
     // remove special ability from board
-    game.setBonusItemList(game.getBonusItemList().stream().peek(item -> item.moveBonusItem(game.getObstacles())).filter(item -> !item.isUsed()).collect(Collectors.toList()));
+    game.setBonusItemList(game.getBonusItemList().stream()
+      .peek(item -> item.checkIntersection(newGameState.getGame().getPlayers().values()))
+      .peek(item -> item.moveBonusItem(game.getObstacles())).filter(item -> !item.isUsed()).collect(Collectors.toList()));
     if (nextBonusItemDrop.isBefore(ZonedDateTime.now())) {
       game.getBonusItemList().add(bonusItemService.generate());
       nextBonusItemDrop = ZonedDateTime.now().plusSeconds(20);

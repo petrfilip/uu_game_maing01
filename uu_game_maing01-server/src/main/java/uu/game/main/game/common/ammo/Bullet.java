@@ -47,9 +47,6 @@ public class Bullet extends Projectile {
       }
     }
 
-    //todo used when colision with obstacle
-
-    //todo used when out of the board
 
     return new ArrayList<>();
 

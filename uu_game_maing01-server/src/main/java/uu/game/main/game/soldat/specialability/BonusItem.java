@@ -33,7 +33,7 @@ public class BonusItem extends GameRectangle {
     for (SoldatPlayer player : players) {
       if (this.getRectangle().intersects(player.getRectangle())) {
         List<GameRuleEvent> gameRuleEvents = player.applySpecialAbility(players, specialAbility);
-        gameRuleEvents.add(new GameRuleEvent("used", player.getClass().getSimpleName(), specialAbility));
+        gameRuleEvents.add(new GameRuleEvent("gathered", player.getClass().getSimpleName(), specialAbility));
         isUsed = true;
         return gameRuleEvents;
       }

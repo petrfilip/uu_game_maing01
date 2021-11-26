@@ -21,7 +21,7 @@ public class ImmortalitySpecialAbility implements SpecialAbility {
     this.soldatPlayer = soldatPlayer;
     this.endTime = ZonedDateTime.now().plusSeconds(15);
     this.originLive = soldatPlayer.getLives();
-    soldatPlayer.setLives(999999);
+    soldatPlayer.setLives(999);
   }
 
   public void applyAbilityFinished() {
