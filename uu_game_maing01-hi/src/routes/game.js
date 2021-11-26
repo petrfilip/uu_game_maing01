@@ -19,6 +19,8 @@ let angle = 0;
 let moving = false;
 let direction = "RIGHT";
 
+let leftOffset = 0, topOffset = 0;
+
 const interpolate = (min, max, fract) => max + (min - max) * fract;
 const extrapolate = (first, second) => (second - first) + second
 
@@ -485,7 +487,7 @@ const Game = createVisualComponent({
     }
 
 
-    const draw = (ctx, frameCount) => {
+    const draw = (ctx, frameCount, canvas) => {
 
       if (moving) {
         const newMove = {}
@@ -542,6 +544,9 @@ const Game = createVisualComponent({
 
 
       }
+
+      translateToPlayer(currentPlayer, canvas);
+
       playersState[JSON.stringify(UU5.Environment.getSession().getIdentity().uuIdentity)] = currentPlayer;
 
       //todo extrapolate move - do only once
@@ -570,6 +575,35 @@ const Game = createVisualComponent({
       ctx.fill()
     }
 
+    const visibleMap = {
+      width: 1000,
+      height: 750,
+    };
+
+    const mapSize = {
+      width: 1200,
+      height: 900,
+    };
+
+
+    function translateToPlayer(player, canvas) {
+      let halfWidth = visibleMap.width / 2
+      leftOffset = halfWidth - player.x;
+      if (leftOffset > 0) leftOffset = 0;
+
+      let maxLeftOffset = mapSize.width - visibleMap.width;
+      if (leftOffset < -Math.abs(maxLeftOffset)) leftOffset = -Math.abs(maxLeftOffset);
+
+      let halfHeight = visibleMap.height / 2
+      topOffset = halfHeight - player.y;
+      if (topOffset > 0) topOffset = 0;
+
+      let maxTopOffset = mapSize.height - visibleMap.height;
+      if (topOffset < -Math.abs(maxTopOffset)) topOffset = -Math.abs(maxTopOffset);
+
+      canvas.style.transform = `translate(${leftOffset}px, ${topOffset}px)`;
+    }
+
 
     //@@viewOff:private
 
@@ -586,7 +620,7 @@ const Game = createVisualComponent({
         Connected players: {roomState?.connectedPlayers?.map((p) => p.playerId)}
 
 
-        <UU5.Bricks.Card className="uu5-common-padding-s" ref={canvasRef} style={{
+        <UU5.Bricks.Card className="uu5-common-padding-s" style={{
           border: "1px solid black",
           minHeight: "550px",
           width: "100%"

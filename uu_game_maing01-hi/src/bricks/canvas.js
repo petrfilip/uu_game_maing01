@@ -22,6 +22,18 @@ const Canvas = createVisualComponent({
     const {draw, ...rest} = props
     const canvasRef = useRef()
 
+    const visibleMap = {
+      width: 1000,
+      height: 750,
+    };
+
+    const mapSize = {
+      width: 1200,
+      height: 900,
+    };
+
+
+
     useEffect(() => {
 
       const canvas = canvasRef.current
@@ -32,7 +44,7 @@ const Canvas = createVisualComponent({
       const render = () => {
         animationFrameId = window.requestAnimationFrame(render)
         frameCount++
-        draw(context, frameCount)
+        draw(context, frameCount, canvas)
       }
       render()
 
@@ -44,7 +56,7 @@ const Canvas = createVisualComponent({
 
 
     //@@viewOn:render
-    return <canvas width={800} height={600} ref={canvasRef} {...rest} />
+    return <div style={{ border:"3px solid red",  overflow: "hidden", width: visibleMap.width, height: visibleMap.height}}><canvas width={mapSize.width} height={mapSize.height} ref={canvasRef} {...rest} /></div>
     //@@viewOff:render
   },
 });
