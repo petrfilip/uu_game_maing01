@@ -88,14 +88,14 @@ const Game = createVisualComponent({
             }
 
           }
-
-
         };
+
         eventSource.onopen = (event) => {
           console.log("Open", event);
           moveList = [];
           movesInTick = []
         };
+
         eventSource.onerror = (event) => {
           console.log("Error", event);
         };
@@ -199,27 +199,28 @@ const Game = createVisualComponent({
         newMove.fired = "BULLET"; // TODO - fire proper projectile type
         newMove.firedAngle = angle;
         moveList.push(newMove);
-
       }
     }
 
 
     function sendPositionDown(event) {
-
       console.info("downEvent");
 
       switch (event.key) {
         case 'ArrowLeft':
+        case 'a':
           direction = "LEFT";
           moving = true;
           event.preventDefault();
           break;
         case 'ArrowRight':
+        case 'd':
           direction = "RIGHT";
           moving = true;
           event.preventDefault();
           break;
         case 'ArrowUp':
+        case 'w':
           const newMove = {}
           newMove.move = "UP";
           moveList.push(newMove);
@@ -231,14 +232,19 @@ const Game = createVisualComponent({
     }
 
     function sendPositionUp(event) {
-      console.info("upEvent");
-      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-        moving = false;
+      switch (event.key) {
+        case 'ArrowLeft':
+        case 'a':
+        case 'ArrowRight':
+        case 'd':
+        case 'ArrowUp':
+          moving = false;
+          break;
       }
     }
 
+    // todo - colorize rendered players, not used now
     const playerColors = [];
-
     const getPlayerColors = (index) => {
       if (playerColors[index] === undefined) {
         playerColors[index] = "#" + Math.floor(Math.random() * (16777215)).toString(16);
@@ -272,13 +278,6 @@ const Game = createVisualComponent({
 
         // todo  if animation interval for this user exits, clear it
 
-        //
-        // if(debugFlag){
-        //   setInterval(animatePlayer.bind(null, debug, ctx, player),33)
-        //   debugFlag = false;
-        // }
-
-
         // todo create new animation interval and store it to playerAnimation array
         // playerAnimation[playerId] = {interval:setInterval(animatePlayer.bind(null, debug,ctx, player),33), state:"idle"}
         //
@@ -305,12 +304,8 @@ const Game = createVisualComponent({
         //   clearInterval(myInterval);
         // };
 
-
         // ctx.drawImage(img, player.x, player.y, 60, 60);
 
-        // ctx.fillStyle = "blue";
-        // ctx.fillRect(player.x, player.y, player.width, player.height);
-        // ctx.fillStyle = "red";
         switch (player.direction) {
           case 'RIGHT':
             img.src = `../assets/gun_idle/E_E_Gun__Idle_000.png`;
@@ -318,18 +313,10 @@ const Game = createVisualComponent({
           case 'LEFT':
             img.src = `../assets/gun_idle/E_E_Gun__Idle_000_left.png`;
             break;
-          // case 'UP':
-          //   img.src = `../assets/gun_idle/E_E_Gun__Idle_000_up.png`;
-          //   break;
-          // case 'DOWN':
-          //   img.src = `../assets/gun_idle/E_E_Gun__Idle_000_left.png`;
-          //   break;
         }
 
         //ctx.rotate(30*Math.PI/180.0);
         //img.setAttribute("style", "transform: rotate(" + 30 + "deg)");
-
-
         ctx.drawImage(img, player.x, player.y, player.width, player.height);
 
 
@@ -349,29 +336,6 @@ const Game = createVisualComponent({
       }
     }
 
-    function drawGuns(ctx, player) {
-      // // todo - check if this player is current player
-      // ctx.fillStyle = "red";
-      // //ctx.fillRect(player.x + player.width, player.y + (player.height / 2), 5, 10);
-      // if (player.id === JSON.stringify(UU5.Environment.getSession().getIdentity().uuIdentity)) {
-      //   // current user
-      //   // draw gun by local angle
-      //   let x1 = player.x + (player.width / 2);
-      //   let y1 = player.y + (player.height / 2);
-      //
-      //   let angle = angle * (Math.PI / 180);
-      //   let x2 = x1 + gunH * Math.cos(angle);
-      //   let y2 = y1 + gunH * Math.sin(angle);
-      //
-      //   ctx.beginPath();
-      //   ctx.moveTo(x1, y1);
-      //   ctx.lineTo(x2, y2);
-      //   gun.x = x2;
-      //   gun.y = y2;
-      //   ctx.lineWidth = gunW;
-      //   ctx.stroke();
-      // }
-    }
 
     function drawAmmo(ctx, ammos) {
       for (let i = 0; i < ammos.length; i++) {
@@ -450,10 +414,7 @@ const Game = createVisualComponent({
             firedSound.play();
             // canvasRef && canvasRef.current && shake(canvasRef) //todo make it works - nejde mi použít ref
           }
-
-
         }
-
       }
     }
 
@@ -489,12 +450,6 @@ const Game = createVisualComponent({
             case 'LEFT':
               amoState[i].x = amoState[i].x - interpolation
               break;
-            // case 'UP':
-            //   amoState[i].y = amoState[i].y + interpolation
-            //   break;
-            // case 'DOWN':
-            //   amoState[i].y = amoState[i].y - interpolation
-            //   break;
           }
 
 
@@ -505,11 +460,6 @@ const Game = createVisualComponent({
       const currentPlayer = playersState[JSON.stringify(UU5.Environment.getSession().getIdentity().uuIdentity)]
       for (let i = 0; i < moveList.length; i++) {
 
-        // if (moveList[i].move !== currentPlayer.direction) {
-        //   debugger
-        //   currentPlayer.direction = moveList[i].move;
-        // }
-
         switch (moveList[i].move) {
           case 'RIGHT':
             currentPlayer.direction = moveList[i].move;
@@ -519,14 +469,6 @@ const Game = createVisualComponent({
             currentPlayer.direction = moveList[i].move;
             currentPlayer.x = currentPlayer.x - currentPlayer.speed
             break;
-          // case 'DOWN':
-          //   currentPlayer.direction = moveList[i].move;
-          //   currentPlayer.y = currentPlayer.y + currentPlayer.speed
-          //   break;
-          // case 'UP':
-          //   currentPlayer.direction = moveList[i].move;
-          //   currentPlayer.y = currentPlayer.y - currentPlayer.speed
-          //   break;
         }
 
 
@@ -547,6 +489,8 @@ const Game = createVisualComponent({
         drawAmmo(ctx, amoState)
         drawObstacles(ctx, keyGameState.obstacles);
 
+        // todo add rander special items
+
         // render events
         renderEvents(ctx, frameCount, gameState?.output?.gameEvents)
       }
@@ -558,8 +502,6 @@ const Game = createVisualComponent({
     //@@viewOff:private
 
     //@@viewOn:render
-
-
     if (waiting) {
       return <UU5.Bricks.Loading/>
     }
@@ -568,7 +510,9 @@ const Game = createVisualComponent({
       <UU5.Bricks.Section level={1} header="Game" className={UU5.Common.Css.css`padding: 16px`}>
 
 
+        Updated upstream
         Connected players: {roomState?.connectedPlayers?.map((p) => p.playerId)}
+
 
 
         <UU5.Bricks.Card className="uu5-common-padding-s" ref={canvasRef} style={{
@@ -592,9 +536,10 @@ const Game = createVisualComponent({
 
               <UU5.Bricks.Paragraph>
                 {gameState?.output?.state === "WAITING" && "Waiting for next players"}
+                {gameState?.output?.state === "WAITING" && "Move player with arrows or A W D, Fire on mouse left click."}
                 {gameState?.output?.state === "FINISHED" && "Game is finished"}
-                {gameState?.output?.state === "FINISHED" && gameState?.output?.game?.players?.map((p) =>
-                  (<UU5.Bricks.Paragraph>{p.playerId} - {p.score}</UU5.Bricks.Paragraph>))}
+                {/*{gameState?.output?.state === "FINISHED" && gameState?.output?.game?.players?.map((p) =>*/}
+                {/*  (<UU5.Bricks.Paragraph>{p.playerId} - {p.score}</UU5.Bricks.Paragraph>))}*/}
               </UU5.Bricks.Paragraph>
               <UU5.Bricks.TouchIcon content="Click" colorSchema="primary"/>
               <UU5.Bricks.Button onClick={startGameHandler} colorSchema={"primary"}>Start new game<UU5.Bricks.Icon
