@@ -140,8 +140,8 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
     }
 
     // remove special ability from board
-    game.setBonusItemList(game.getBonusItemList().stream().filter(item -> !item.isUsed()).collect(Collectors.toList()));
-    if (nextBonusItemDrop.isAfter(ZonedDateTime.now())) {
+    game.setBonusItemList(game.getBonusItemList().stream().peek(item -> item.moveBonusItem()).filter(item -> !item.isUsed()).collect(Collectors.toList()));
+    if (nextBonusItemDrop.isBefore(ZonedDateTime.now())) {
       game.getBonusItemList().add(bonusItemService.generate());
       nextBonusItemDrop = ZonedDateTime.now().plusSeconds(20);
     }

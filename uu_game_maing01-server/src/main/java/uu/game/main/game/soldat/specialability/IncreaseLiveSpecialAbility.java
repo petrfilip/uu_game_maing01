@@ -11,6 +11,7 @@ import uu.game.main.game.soldat.SoldatPlayer;
 @Scope(scopeName = SCOPE_PROTOTYPE)
 public class IncreaseLiveSpecialAbility implements SpecialAbility {
 
+
   public void applyAbility(SoldatPlayer soldatPlayer, List<SoldatPlayer> opponents) {
     soldatPlayer.setLives(SoldatPlayer.INIT_LIVES);
   }
