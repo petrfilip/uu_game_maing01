@@ -346,6 +346,15 @@ const Game = createVisualComponent({
             player.height);
         }
 
+        // draw player name
+        ctx.font = "13px Comic Sans MS";
+        ctx.fillStyle = "red";
+        ctx.textAlign = "center";
+        ctx.fillText(playerId.substring(1, 10), player.x, player.y - player.height - 5);
+
+
+
+
         // draw player lifespan bar
         // =========================
 
@@ -543,16 +552,16 @@ const Game = createVisualComponent({
       let currentDraw = new Date().getTime();
       if (currentDraw - lastDraw > 33) {
         lastDraw = currentDraw;
-      } else{
+      } else {
         return;
       }
 
-      if ( currentDraw - firstDraw  < 100) {
-        // debug, call this for first time
-        console.info("firstDraw - currentDraw:");
-        console.info(firstDraw - currentDraw  );
-        setInterval(() => animatePlayerDebug(ctx), 100);
-      }
+      // if ( currentDraw - firstDraw  < 100) {
+      //   // debug, call this for first time
+      //   console.info("firstDraw - currentDraw:");
+      //   console.info(firstDraw - currentDraw  );
+      //   setInterval(animatePlayerDebug, 100, ctx);
+      // }
 
 
       if (moving) {

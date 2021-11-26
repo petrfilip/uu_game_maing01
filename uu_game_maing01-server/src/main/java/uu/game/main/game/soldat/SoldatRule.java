@@ -95,12 +95,19 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
 
     obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(100, 200, 50, 50)));
 
-    obstacles.add(new Obstacle(ObstacleTypeEnum.METAL_BOX, new GameRectangle(150, 500, 100, 100)));
-    obstacles.add(new Obstacle(ObstacleTypeEnum.METAL_BOX, new GameRectangle(350, 300, 100, 100)));
+    obstacles.add(new Obstacle(ObstacleTypeEnum.METAL_BOX, new GameRectangle(220, 500, 100, 100)));
+    obstacles.add(new Obstacle(ObstacleTypeEnum.METAL_BOX, new GameRectangle(300, 300, 100, 100)));
 
     obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(500, 300, 50, 50)));
     obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(550, 300, 50, 50)));
+    obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(550, 250, 50, 50)));
+    obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(550, 200, 50, 50)));
+
     obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(750, 450, 50, 50)));
+
+;
+
+    addBoxWall(obstacles, 1050, 550, 5);
 
     addWall(obstacles, 400, 500, 24);
     addWall(obstacles, 50, 350, 8);
@@ -117,7 +124,11 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
       obstacles.add(new Obstacle(ObstacleTypeEnum.WALL, new GameRectangle(x + (i * 25), y, 25, 25)));
     }
   }
-
+  private void addBoxWall(List<Obstacle> obstacles, int x, int y, int count) {
+    for (int i = 0; i < count; i++) {
+      obstacles.add(new Obstacle(ObstacleTypeEnum.WOODEN_BOX, new GameRectangle(x + (i * 50), y, 50, 50)));
+    }
+  }
   @Override
   public GameState<SoldatBoard> getNextGameState(GameState<SoldatBoard> newGameState, Map<Player, List<SoldatMove>> unprocessedMoves) {
 
