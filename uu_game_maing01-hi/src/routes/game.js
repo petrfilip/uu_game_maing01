@@ -237,7 +237,6 @@ const Game = createVisualComponent({
         case 'a':
         case 'ArrowRight':
         case 'd':
-        case 'ArrowUp':
           moving = false;
           break;
       }
@@ -320,7 +319,6 @@ const Game = createVisualComponent({
         ctx.drawImage(img, player.x, player.y, player.width, player.height);
 
 
-
         let freezed = player.speed === 0;
         if (freezed) {
           ctx.globalAlpha = 0.65;
@@ -352,6 +350,35 @@ const Game = createVisualComponent({
         ctx.drawImage(img, ammo.x, ammo.y, ammo.width, ammo.height);
 
       }
+    }
+
+    function drawSpecialItems(ctx, items) {
+
+      for (let i = 0; i < items.length; i++) {
+        const specialItem = items[i];
+        console.info(specialItem.specialAbilityName);
+
+        const img = new Image();
+
+        switch(specialItem.specialAbilityName){
+          case 'ImmortalitySpecialAbility':
+            img.src = `../assets/bonus_imortal.png`;
+            break;
+          case 'IncreasedSpeedSpecialAbility':
+            img.src = `../assets/bonus_speed.png`;
+            break;
+          case 'IncreasedSpeedSpecialAbility':
+            img.src = `../assets/bonus_speed.png`;
+            break;
+          case 'IncreaseLiveSpecialAbility':
+            img.src = `../assets/bonus_life.png`;
+            break;
+          }
+
+        ctx.drawImage(img, specialItem.x, specialItem.y, specialItem.width, specialItem.height);
+
+      }
+
     }
 
     function drawObstacles(ctx, obstacles) {
@@ -436,6 +463,7 @@ const Game = createVisualComponent({
 
       const keyGameState = gameState?.output?.game ?? []
       let amoState = [...keyGameState.ammo];
+      let bonusItemsState = [...keyGameState.bonusItemList];
       let playersState = JSON.parse(JSON.stringify(keyGameState.players));
 
       if (frameCount !== 1) {
@@ -486,9 +514,12 @@ const Game = createVisualComponent({
 
         drawPlayers(ctx, Object.values(playersState), Object.keys(playersState));
 
+
         drawAmmo(ctx, amoState)
+
         drawObstacles(ctx, keyGameState.obstacles);
 
+        drawSpecialItems(ctx, bonusItemsState);
         // todo add rander special items
 
         // render events
@@ -512,7 +543,6 @@ const Game = createVisualComponent({
 
         Updated upstream
         Connected players: {roomState?.connectedPlayers?.map((p) => p.playerId)}
-
 
 
         <UU5.Bricks.Card className="uu5-common-padding-s" ref={canvasRef} style={{
