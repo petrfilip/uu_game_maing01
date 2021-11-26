@@ -64,7 +64,7 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
 
     GameplayModeEnum gameplayModeEnum = getGamePlayMode((String) currentState.getParams().get("gameMode"));
     if (gameplayModeEnum.equals(GameplayModeEnum.TIME_LIMIT)) {
-      gameplayMode = new TimeLimitGameplayMode(ZonedDateTime.now().plusSeconds((Long) currentState.getParams().getOrDefault("gameModeSecondLimit", 300L)));
+      gameplayMode = new TimeLimitGameplayMode(ZonedDateTime.now().plusSeconds((Long) currentState.getParams().getOrDefault("gameModeSecondLimit", 60L)));
     } else {
       gameplayMode = new ScoreLimitGameplayMode((Integer) currentState.getParams().getOrDefault("gameModeStopAtScore", 5));
     }

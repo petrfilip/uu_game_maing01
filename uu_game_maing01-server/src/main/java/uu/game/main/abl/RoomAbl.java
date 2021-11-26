@@ -107,9 +107,9 @@ public class RoomAbl {
     Room room = roomDao.get(awid, dtoIn.getRoomId());
     GameInstanceAbl game = room.getGame();
 
-    if (!dtoIn.getPlayerId().equals(room.getRoomOwner().getPlayerId())) {
-      throw new IllegalAccessError("Game can be started only by room owner");
-    }
+    // if (!dtoIn.getPlayerId().equals(room.getRoomOwner().getPlayerId())) {
+    //   throw new IllegalAccessError("Game can be started only by room owner");
+    // }
 
     LOGGER.info("Starting new game {}", dtoIn);
 

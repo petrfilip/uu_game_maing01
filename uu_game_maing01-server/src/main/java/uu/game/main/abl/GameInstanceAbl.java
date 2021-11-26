@@ -132,7 +132,7 @@ public class GameInstanceAbl {
       } catch (Exception e) {
         LOGGER.error("Failed to calculate next state", e);
       }
-    }, 0, 50, TimeUnit.MILLISECONDS);
+    }, 0, 60, TimeUnit.MILLISECONDS);
     return currentState;
   }
 
