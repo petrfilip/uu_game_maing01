@@ -228,7 +228,6 @@ const Game = createVisualComponent({
           break;
       }
 
-      sendPositionCore(event);
     }
 
     function sendPositionUp(event) {

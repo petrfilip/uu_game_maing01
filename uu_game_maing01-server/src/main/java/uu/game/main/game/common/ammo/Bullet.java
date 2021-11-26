@@ -34,7 +34,7 @@ public class Bullet extends Projectile {
 
       for (AmmoDamagable damagable : players) {
         if (damagable instanceof Intersectable && ((Intersectable) damagable).intersects(this)) {
-          List<GameRuleEvent> gameRuleEvents = damagable.applyAmmoDamage(-1);
+          List<GameRuleEvent> gameRuleEvents = damagable.applyAmmoDamage(1);
 
           HashMap<Object, Object> sourceTargetMap = new HashMap<>();
           sourceTargetMap.put("source", this);

@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import uu.game.main.game.bulanci.Obstacle;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
-import uu.game.main.game.common.ammo.AmmoDamagable;
 import uu.game.main.game.soldat.SoldatPlayer;
 
 public class BonusItem extends GameRectangle {
@@ -16,9 +18,9 @@ public class BonusItem extends GameRectangle {
   private boolean isUsed = false;
 
   @JsonIgnore
-  private SpecialAbility specialAbility;
+  private final SpecialAbility specialAbility;
 
-  private String specialAbilityName;
+  private final String specialAbilityName;
 
   public BonusItem(double x, double y, Integer width, Integer height, SpecialAbility specialAbility) {
     super(x, y, width, height);
@@ -52,7 +54,15 @@ public class BonusItem extends GameRectangle {
     return specialAbilityName;
   }
 
-  public void moveBonusItem() {
+  public void moveBonusItem(List<Obstacle> obstacles) {
+
+    Optional<GameRectangle> first = obstacles
+      .stream().map(o -> o.intersectsWith(this))
+      .filter(Objects::nonNull)
+      .findFirst();
+
+    // stop falling when reach the bottom
+    first.ifPresent(gameRectangle -> setY(gameRectangle.getY() - getHeight()));
 
     setY(getY() + BONUS_ITEM_MOVE_SPEED);
     if (checkOutOfBound()) {

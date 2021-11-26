@@ -1,5 +1,7 @@
 package uu.game.main.game.soldat;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.time.ZonedDateTime;
 import java.util.Collection;
@@ -16,7 +18,7 @@ import uu.game.main.helper.Utils;
 
 public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player2D<SoldatPlayer, SoldatMove, SoldatBoard> {
 
-  public static final Integer JUMP_DURATION = 220;
+  public static final Integer JUMP_DURATION = 600;
   public static final Integer JUMP_SPEED = 1;
   public static final Integer INIT_LIVES = 5;
   public static final Integer INIT_SPEED = 1;
@@ -25,7 +27,7 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
   private Direction direction;
   private Integer speed = INIT_SPEED;
   private Direction jumping;
-  private Integer jumpUpStarted = 0;
+  private Instant jumpUpStarted = Instant.now();
   private boolean sprint;
   private ZonedDateTime respawnTime;
 
@@ -71,7 +73,7 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
     }
 
 
-    if (respawnTime != null && respawnTime.isAfter(ZonedDateTime.now())) {
+    if (respawnTime != null && respawnTime.isBefore(ZonedDateTime.now())) {
       respawnTime = null;
       lives = INIT_LIVES;
       setX(Utils.getRandomNumber(0, 500));
@@ -80,7 +82,6 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
 
     if (move.getMove() != null && !move.getMove().equals(getDirection())) {
       setDirection(move.getMove());
-      //return this;
     }
     boolean isCollisionWithObstacle = checkCollisionWithObstacle(soldatBoard);
 
@@ -96,29 +97,31 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
 
     // start jump
     if (Direction.UP.equals(move.getMove()) && jumping == null) {
-      jumpUpStarted = 0;
+      jumpUpStarted = Instant.now();
       jumping = Direction.UP;
       setY(getY() - JUMP_SPEED);
       return this;
     }
 
+
+
+    Duration timeElapsed = Duration.between(jumpUpStarted, Instant.now());
     // continue in jump
-    if (Direction.UP.equals(jumping) && jumpUpStarted < JUMP_DURATION) {
-      jumpUpStarted = jumpUpStarted + JUMP_SPEED;
+    if (Direction.UP.equals(jumping) && timeElapsed.toMillis() < JUMP_DURATION) {
       setY(getY() - JUMP_SPEED);
       return this;
     }
 
     // stop jump when jump duration is over or collision with obstacle detected
-    if (Direction.UP.equals(jumping) && (jumpUpStarted >= JUMP_DURATION || isCollisionWithObstacle)) {
+    if (Direction.UP.equals(jumping) && (timeElapsed.toMillis() >= JUMP_DURATION || isCollisionWithObstacle)) {
       jumping = Direction.DOWN;
-      jumpUpStarted = 0;
+      jumpUpStarted = Instant.now();
       setY(getY() + JUMP_SPEED);
       return this;
 
     }
 
-    // stop falling when
+    // stop falling when collision
     if (Direction.DOWN.equals(jumping) && isCollisionWithObstacle) {
       jumping = null;
       return this;
@@ -133,6 +136,7 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
       return this;
     }
 
+    // stop falling when reach the bottom
     if ((jumping == null || Direction.DOWN.equals(jumping)) && obstacleBellow) {
       jumping = null;
       GameRectangle obstacle = soldatBoard.getObstacles()
@@ -185,11 +189,11 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
     this.jumping = jumping;
   }
 
-  public Integer getJumpUpStarted() {
+  public Instant getJumpUpStarted() {
     return jumpUpStarted;
   }
 
-  public void setJumpUpStarted(Integer jumpUpStarted) {
+  public void setJumpUpStarted(Instant jumpUpStarted) {
     this.jumpUpStarted = jumpUpStarted;
   }
 

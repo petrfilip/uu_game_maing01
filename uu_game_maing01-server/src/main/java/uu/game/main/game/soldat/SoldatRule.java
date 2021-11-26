@@ -72,6 +72,7 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
       gameplayMode = new ScoreLimitGameplayMode((Integer) currentState.getParams().getOrDefault("gameModeStopAtScore", 5));
     }
 
+    currentState.getParams().putIfAbsent("initialLives", SoldatPlayer.INIT_LIVES);
     currentState.getParams().putIfAbsent("areaWidth", 800);
     currentState.getParams().putIfAbsent("areaHeight", 600);
 
@@ -140,7 +141,7 @@ public class SoldatRule implements IRule<SoldatBoard, SoldatMove> {
     }
 
     // remove special ability from board
-    game.setBonusItemList(game.getBonusItemList().stream().peek(item -> item.moveBonusItem()).filter(item -> !item.isUsed()).collect(Collectors.toList()));
+    game.setBonusItemList(game.getBonusItemList().stream().peek(item -> item.moveBonusItem(game.getObstacles())).filter(item -> !item.isUsed()).collect(Collectors.toList()));
     if (nextBonusItemDrop.isBefore(ZonedDateTime.now())) {
       game.getBonusItemList().add(bonusItemService.generate());
       nextBonusItemDrop = ZonedDateTime.now().plusSeconds(20);
