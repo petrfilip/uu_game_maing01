@@ -76,7 +76,7 @@ public class SoldatPlayer extends GameRectangle implements AmmoDamagable, Player
     }
 
     for (SpecialAbility specialAbility : specialAbilityList) {
-      if (!specialAbility.isDone()) {
+      if (specialAbility.isDone()) {
         specialAbility.applyAbilityFinished();
       }
     }
