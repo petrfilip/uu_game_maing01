@@ -6,38 +6,42 @@ Demo se zvuky: [https://www.youtube.com/watch?v=iRQiGY0veIs](https://www.youtube
 
 # **Soldat Nevolution**
 
-- [ ]  Relativně realtime
-- [ ]  Střílení myší
-- [ ]  "Náhodně" generovaná mapa
-- [ ]  Respawn hráče
-- [ ]  Bonusy (Nesmrtelnost, Zvýšená rychlost, Freeze hráčů, Přidání života, Zrychlení hráče)
-- [ ]  Herní módy (Time limit, Score limit)
-- [ ]  ELO + LeaderBoard
-- [ ]  Audio grafický masterpiece (Life bar + id hráče, Stav hráče)
+- Relativně realtime
+- Střílení myší
+- "Náhodně" generovaná mapa
+- Respawn hráče
+- Bonusy (Nesmrtelnost, Zvýšená rychlost, Freeze hráčů, Přidání života, Zrychlení hráče)
+- Herní módy (Time limit, Score limit)
+- ELO + LeaderBoard
+- Audio grafický masterpiece (Life bar + id hráče, Stav hráče)
 
 **Technické overview**
 
-- [ ]  Java
-- [ ]  HTML Canvas (nestandard)
-- [ ]  SSE (nestandard)
-- [ ]  Posílání stavu + speciálních event
-- [ ]  Klient posílá pohyb (neposílá souřadnice - výpočet na serveru)
-- [ ]  Univerzální engine
-- [ ]  Modulární koncept
-- [ ]  Snadná rozšiřitelnost (intefaces všude)
-- [ ]  InMemory místnosti (inMemory DAO)
-- [ ]  Ukládáme pouze uuIdentity + score
+-   Java
+-   HTML Canvas (nestandard)
+- SSE (nestandard)
+- Posílání stavu + speciálních event
+- Klient posílá pohyb (neposílá souřadnice - výpočet na serveru)
+- Univerzální engine
+- Modulární koncept
+- Snadná rozšiřitelnost (intefaces všude)
+- InMemory místnosti (inMemory DAO)
+- Ukládáme pouze uuIdentity + score
 
 **Co ještě chybí**
 
-- [ ]  Ze základní funkčnosti snad nic
-- [ ]  Ale ještě by se dalo vylepšovat
-- [ ]  Žádné testy
-- [ ]  Spousta úžasných bugů
+- Ze základní funkčnosti snad nic
+- Ale ještě by se dalo vylepšovat
+- Žádné testy
+- Spousta úžasných bugů
+- Loby pro konfiguraci hry 
+
 
 **Možná technologická vylepšení**
-- [ ] více canvasů pro pro různé vrstvy (pozadí X hráči)
-- [ ] optimalizace přenesených dat (minifikace JSON, rozdělení na více částí)
+- Více canvasů pro pro různé vrstvy (pozadí X hráči)
+- Optimalizace přenesených dat (minifikace JSON, rozdělení na více částí)
+- Přidání animací
+- Lepší interpolace pohybu hráče a kulky
 
 # Tým:
 
