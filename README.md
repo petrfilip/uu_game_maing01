@@ -42,9 +42,15 @@ Demo se zvuky: [https://www.youtube.com/watch?v=iRQiGY0veIs](https://www.youtube
 - Optimalizace přenesených dat (minifikace JSON, rozdělení na více částí)
 - Přidání animací
 - Lepší interpolace pohybu hráče a kulky
+- Optimalizace počtu výpočtů pro detekci kolizí
 
-# Tým:
+**Možná herní vylepšení**
+- Více zbraní (backend má připravenou minu)
+- Řazení hráčů na leaderboradu dle skóre ( + highlight aktuálního hráče)
+- Přidání JetPacku hráčům
+- Přidat omezení počtu vystřelené munice
 
+## Tým:
 - Lukáš
 - Petr
 - Petr
@@ -76,7 +82,5 @@ See following guidelines:
 - [uuApp Server Project (Java)](https://uuapp.plus4u.net/uu-bookkit-maing01/99c939a08e0849c68df5ee339c94054b/book/page?code=uuAppStyleGuide_00)
 - [uuApp Client Project (UU5)](https://uuapp.plus4u.net/uu-bookkit-maing01/ed11ec379073476db0aa295ad6c00178/book/page?code=getStartedHooks)
 
-
-- běží na http://localhost:8080/uu-game-maing01/22222222222222222222222222222222/
 - přidán docker s databází (volitelné)
 - přidán gradle wrapper 5.1.1
