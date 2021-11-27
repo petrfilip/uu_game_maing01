@@ -30,7 +30,7 @@ Demo se zvuky: [https://www.youtube.com/watch?v=iRQiGY0veIs](https://www.youtube
 
 **Co ještě chybí**
 
-- [ ]  ze základní funkčnosti snad nic
+- [ ]  Ze základní funkčnosti snad nic
 - [ ]  Ale ještě by se dalo vylepšovat
 - [ ]  Žádné testy
 - [ ]  Spousta úžasných bugů
