@@ -2,12 +2,13 @@
 
 V rámci školení SWAP vznikl herní engine postavený na SpringBootu. 
 
-- v prvním běhu měla vzniknout hra inspirovaná bulánky (v master branci)
+- v prvním běhu měla vzniknout hra inspirovaná bulánky
 - v druhém běhu vznikla hra na motiv Soldatu ([v branchi `Soldat`](https://github.com/petrfilip/uu_game_maing01/tree/Soldat))
 
 | Soldat  | Bulánci |
 | ------------- | ------------- |
 | ![Ukázka hry](demo3.gif) | ![Ukázka hry](demo2.gif)  |
+| Demo se zvuky: https://www.youtube.com/watch?v=iRQiGY0veIs|   |
 
 
 
