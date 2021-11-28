@@ -1,0 +1,50 @@
+@startuml
+skinparam backgroundcolor transparent
+participant User
+
+== Init game ==
+
+User -> Controller: StartGame
+Controller -> GameInstance : initGameInstance
+activate GameInstance
+
+GameInstance ->  GameRules : initGame
+activate GameRules
+
+User -> Controller: Subscribe
+activate Controller
+
+
+
+
+group GameLoop
+
+
+
+GameRules -> GameRules : Calculate next game state
+
+GameRules --> GameInstance: newGameState
+GameInstance --> Controller: onNewGameState
+Controller --> User: Game state
+
+User -> Controller : All player moves in round
+Controller -> GameInstance : addPlayerMove
+GameInstance -> GameRules : addPlayerMove
+
+
+
+
+
+end
+
+
+== Game end ==
+
+GameRules --> GameInstance : GameFinished
+GameInstance --> Controller : GameFinished
+Controller --> User : GameFinished
+
+deactivate GameRules
+deactivate GameInstance
+deactivate Controller
+@enduml

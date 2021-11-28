@@ -30,6 +30,14 @@ Hudba: https://gamesounds.xyz/?dir=OpenBundle/Background%20Music%20and%20Loops
 
 Assety: https://opengameart.org/ & https://remos.itch.io/timbered-house | https://itch.io/game-assets/free/tag-animation | https://www.gamedevmarket.net/category/2d/page/2/?type=free | https://tokegameart.net/category/freebies/
 
+# Game engine - life cycle
+
+```javascript
+GameState = (currentState, moves, rules) => {
+  return rules(currentState, moves);
+}
+```
+![Game engine](diagram-engine-life-cycle.png) |
 
 
 # Development and Usage
