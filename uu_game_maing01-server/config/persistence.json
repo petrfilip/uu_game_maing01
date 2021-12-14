@@ -43,7 +43,7 @@
         "sysUuAppSecret" : {
           "realization" : "uu.app.workspace.dao.mongo.UuAppSecretMongoDao",
           "maxSoi" : "16000000",
-          "maxNoi" : "100000"
+          "maxNoi" : "1000000"
         },
         "sysUuAppWorkspace" : {
           "realization" : "uu.app.workspace.dao.mongo.SysUuAppWorkspaceMongoDao",

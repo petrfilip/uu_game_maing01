@@ -1,23 +1,23 @@
 {
-  "product": "uu_game_maing01",
-  "version": "0.1.0",
-  "license": "License Commercial",
-  "description": {
-    "cs": "",
-    "en": ""
+  "product" : "uu_game_maing01",
+  "version" : "0.1.1",
+  "license" : "License Commercial",
+  "description" : {
+    "cs" : "",
+    "en" : ""
   },
-  "devkit": {
-    "development": {
-      "appBoxLocationUri": "----- VALUE REQUIRED -----",
-      "appDeploymentUri": null
+  "devkit" : {
+    "development" : {
+      "appBoxLocationUri" : "ues:UCL-BT:UDVH_TU",
+      "appDeploymentUri" : null
     }
   },
-  "uu_game_maing01-hi": {},
-  "uu_game_maing01-server": {
-    "devkit": {
-      "development": {
-        "appBoxLocationUri": "----- VALUE REQUIRED -----",
-        "appDeploymentUri": null
+  "uu_game_maing01-hi" : { },
+  "uu_game_maing01-server" : {
+    "devkit" : {
+      "development" : {
+        "appBoxLocationUri" : "ues:UCL-BT:UDVH_TU",
+        "appDeploymentUri" : "ues:UCL-BT[118500965363973101]:TRAINING_AWE[60a74789f903809d8237bb2c]:TGA.TRAININGCD.MAING01[61b8f1d7c7341e3c8fad24f2]"
       }
     }
   }
