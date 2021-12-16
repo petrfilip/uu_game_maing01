@@ -1,6 +1,6 @@
 {
   "product" : "uu_game_maing01",
-  "version" : "0.1.7",
+  "version" : "0.2.1",
   "license" : "License Commercial",
   "description" : {
     "cs" : "",
@@ -12,6 +12,7 @@
       "appDeploymentUri" : null
     }
   },
+  "uu_demo_scriptg01" : { },
   "uu_game_maing01-hi" : { },
   "uu_game_maing01-server" : {
     "devkit" : {

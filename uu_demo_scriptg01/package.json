@@ -1,0 +1,31 @@
+{
+  "name": "uu_demo_scriptg01",
+  "version": "0.1.8",
+  "description": "",
+  "license": "License Commercial",
+  "spec": "nodejs-scriptlib; uu_appg01@1.3.0",
+  "dependencies": {
+    "uu_appg01_server": "^4.3.0"
+  },
+  "devDependencies": {
+    "uu_script_devkitg01": "^1.3.0"
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  },
+  "scripts": {
+    "clean": "uu_script_devkitg01 clean",
+    "test": "uu_script_devkitg01 test",
+    "prettify": "uu_script_devkitg01 prettify",
+    "createScript": "uu_script_devkitg01 createScript",
+    "remoteRunScript": "uu_script_devkitg01 remoteRunScript",
+    "uploadScript": "uu_script_devkitg01 uploadScript"
+  },
+  "main": "src/index.js",
+  "files": [
+    "src"
+  ],
+  "prettier": {
+    "printWidth": 200
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "itemList": [
+    {
+      "name": "JOKE 01",
+      "text": "joke 01 text",
+      "averageRating": 1
+    },
+    {
+      "name": "JOKE 02",
+      "text": "joke 02 text",
+      "averageRating": 2
+    }
+  ],
+  "uuAppErrorMap": {}
+}

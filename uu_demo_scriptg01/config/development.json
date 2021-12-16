@@ -1,0 +1,6 @@
+{
+  "uuapp.perflog.logger.log_level": "WARN",
+  "scriptEngineBaseUri": "https://uuapp-dev.plus4u.net/uu-script-engineg02/b2c228d2e6bf46baa06759faeac9ed75",
+  "scriptConsoleUri": "https://uuapp.plus4u.net/uu-console-maing02/da5daa481190421ab75a4ad8a55bef05",
+  "scriptRepositoryBaseUri": "https://uuapp.plus4u.net/uu-script-repositoryg02/9570fdc992f2448096e482f8aa909d69"
+}

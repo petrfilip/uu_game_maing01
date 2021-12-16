@@ -1,0 +1,15 @@
+{
+  "log_level": "WARN",
+  "uuapp.perflog.logger.log_level": "OFF",
+  "uuapp.appserver.monitoring.accesslog.log_level": "OFF",
+  "userMap": {
+    "Executive": {
+      "passwordFile": "test-user.json"
+    },
+    "Reader": {
+      "accessCode1": "UafUaf",
+      "accessCode2": "tester4321"
+    }
+  },
+  "useMockData": false
+}
