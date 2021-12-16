@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152698317-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-152698317-3');
+    </script>
+
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>uuGame</title>
@@ -31,6 +40,8 @@
     ` %><%= htmlWebpackPlugin.options.ejsFixUrls(template) %>
   </head>
 
+
+
   <body class="clear-sans">
     <div id="uuApp">
       <div class="uu-app-loading">
@@ -42,7 +53,7 @@
         <div class="uu-app-loading-content">uuGame</div>
       </div>
     </div>
-    
+
 <%=
   // insert error snippet if application initialization fails entirely
   htmlWebpackPlugin.options.renderTemplate("index-error.html", {

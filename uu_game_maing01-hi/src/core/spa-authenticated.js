@@ -77,7 +77,15 @@ export const SpaAuthenticated = createVisualComponent({
         >
           <Plus4U5.App.MenuConsumer>
             {({ setActiveItemId }) => {
-              let handleRouteChanged = ({ useCase, parameters }) => setActiveItemId(useCase || DEFAULT_USE_CASE);
+              let handleRouteChanged = ({ useCase, parameters }) => {
+                const url = UU5.Common.Url.parse(window.location.href);
+                window.gtag('config', 'UA-152698317-3', {
+                  'page_location': window.location.href,
+                  'page_path': url.useCase,
+                });
+
+                return setActiveItemId(useCase || DEFAULT_USE_CASE)
+              };
               return <UU5.Common.Router routes={ROUTES} controlled={false} onRouteChanged={handleRouteChanged} />;
             }}
           </Plus4U5.App.MenuConsumer>

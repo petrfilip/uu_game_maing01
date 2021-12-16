@@ -158,6 +158,11 @@ const Game = createVisualComponent({
     }
 
     async function startGameHandler() {
+      gtag('event', 'gameStarted', {
+        'event_category' : 'game',
+      });
+
+
       const result = await Calls.gameInstanceStartGame(
         {roomId: props.params.roomId})
     }
