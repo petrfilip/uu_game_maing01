@@ -3,12 +3,13 @@
   "schemaSpecificationUri" : "https://uuapp.plus4u.net/uu-bookkit-maing01/bef682626ed943f28cde360ccb325981/book/page?code=uuSubAppInstanceDescriptor",
   "uuSubApp" : {
     "code" : "TGA.TRAININGCD.MAING01",
-    "version" : "0.1.1",
+    "version" : "0.1.7",
     "name" : "uuGameMaing01",
     "description" : "",
     "license" : "License Commercial",
     "asidRequired" : true,
     "awidCount" : 1,
+    "targetSlot" : "BETA",
     "resourcePoolUri" : "ues:UCL-BT:TRAINING_AWE",
     "uuAppNodeSetMap" : {
       "CMD" : {

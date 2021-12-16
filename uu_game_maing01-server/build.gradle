@@ -19,6 +19,9 @@ dependencies {
   compile "uu.appg01:uu_appg01_server:${uuAppg01ServerVersion}"
   compile "org.modelmapper:modelmapper"
 
+  compile("uu.appg01:uu_appg01_auditlog:{uuAppg01AuditVersion}")
+  runtime("uu.appg01:uu_appg01_auditlog_impl:{uuAppg01AuditVersion}")
+
   testCompile "uu.appg01:uu_appg01_core-test_support:${uuAppg01ServerVersion}"
 }
 

@@ -4,6 +4,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import javax.inject.Inject;
+import uu.app.auditlog.abl.UuAuditLog;
+import uu.app.auditlog.abl.entity.Severity;
+import uu.app.auditlog.annotation.DtoInAudit;
 import uu.app.server.CommandContext;
 import uu.app.server.annotation.Command;
 import uu.app.server.annotation.CommandController;
@@ -21,11 +24,17 @@ public final class RoomController {
 
   @Inject
   private RoomAbl roomAbl;
+  @Inject
+  private UuAuditLog uuAuditLog;
 
   @Command(path = "room/create", method = POST)
+  @DtoInAudit(alias = "roomName", path = "$.roomName")
+  @DtoInAudit(alias = "roomOwner", path = "$.roomOwner")
   public Room roomCreate(CommandContext<RoomCreateDtoIn> ctx) {
     ctx.getDtoIn().setRoomOwner(ctx.getAuthenticationSession().getIdentity().getUUIdentity());
-    return roomAbl.roomCreate(ctx.getUri().getAwid(), ctx.getDtoIn());
+    Room room = roomAbl.roomCreate(ctx.getUri().getAwid(), ctx.getDtoIn());
+    uuAuditLog.log(Severity.INFO,"TEST_LOAD_WITH_EXPLICIT_AUDIT", "Test explicit audit", null);
+    return room;
   }
 
   @Command(path = "room/list", method = GET)

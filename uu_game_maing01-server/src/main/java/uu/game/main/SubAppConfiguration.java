@@ -5,16 +5,18 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import uu.app.auditlog.AuditLogLibraryConfiguration;
 import uu.app.subapp.AbstractSubAppConfiguration;
 import uu.app.subapp.OidcAuthenticationContextConfiguration;
 import uu.app.subapp.WorkspaceContextConfiguration;
-import uu.app.validation.ValidationTypeDefinitionSource;
 
 /**
  * Spring configuration of the application.
  */
 @Configuration
-@Import({WorkspaceContextConfiguration.class, OidcAuthenticationContextConfiguration.class})
+@Import({WorkspaceContextConfiguration.class,
+  OidcAuthenticationContextConfiguration.class,
+  AuditLogLibraryConfiguration.class})
 public class SubAppConfiguration extends AbstractSubAppConfiguration {
 
   @Bean
