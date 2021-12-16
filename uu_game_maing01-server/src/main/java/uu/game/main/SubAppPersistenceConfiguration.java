@@ -11,6 +11,7 @@ import uu.app.datastore.annotations.DataStoreConfiguration;
 import uu.app.datastore.mongodb.AbstractPersistenceMongoDbContextConfiguration;
 import uu.app.datastore.mongodb.DatastoreMongoDbContextConfiguration;
 import uu.app.objectstore.annotations.ObjectStore;
+import uu.app.telemetry.TelemetryLibraryConfiguration;
 import uu.app.workspace.dao.WorkspaceStorageConfiguration;
 
 /**
@@ -28,7 +29,9 @@ public class SubAppPersistenceConfiguration extends AbstractPersistenceMongoDbCo
     return getMongoDbFactory(objectStorePrimaryUri);
   }
 
-  @ObjectStore(name = {"primary", WorkspaceStorageConfiguration.WORKSPACE_OBJECT_STORE, AuditLogLibraryConfiguration.AUDIT_OBJECT_STORE}, primary = true)
+  @ObjectStore(name = {"primary", WorkspaceStorageConfiguration.WORKSPACE_OBJECT_STORE,
+    AuditLogLibraryConfiguration.AUDIT_OBJECT_STORE,
+    TelemetryLibraryConfiguration.SYS_TELEMETRY_OBJECT_STORE}, primary = true)
   public MongoTemplate primaryMongo(@Qualifier("primaryObjectStoreFactory") MongoDbFactory mongoDbFactory) {
     return getMongoTemplate(mongoDbFactory);
   }

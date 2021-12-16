@@ -1,7 +1,12 @@
-import { AppContainer } from "react-hot-loader";
+import {AppContainer} from "react-hot-loader";
 import UU5 from "uu5g04";
 
 import Spa from "./core/spa.js";
+
+import * as Plus4U5 from "uu_plus4u5g01";
+
+Plus4U5.Environment.telemetry = true;
+Plus4U5.Telemetry.init({ interval: 10 * 1000 });
 
 // propagate app version into environment
 UU5.Environment["appVersion"] = process.env.VERSION;

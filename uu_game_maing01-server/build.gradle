@@ -19,6 +19,8 @@ dependencies {
   compile "uu.appg01:uu_appg01_server:${uuAppg01ServerVersion}"
   compile "org.modelmapper:modelmapper"
 
+  compile 'uu.appg01:uu_appg01_telemetry:3.0.0'
+
   compile("uu.appg01:uu_appg01_auditlog:{uuAppg01AuditVersion}")
   runtime("uu.appg01:uu_appg01_auditlog_impl:{uuAppg01AuditVersion}")
 

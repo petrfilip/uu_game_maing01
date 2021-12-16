@@ -31,6 +31,9 @@ let Calls = {
     },
 
     roomCreate(dtoInData) {
+        Plus4U5.Telemetry.info("createRoom", {
+          room: dtoInData
+        });
         let commandUri = Calls.getCommandUri("room/create");
         return Calls.call("post", commandUri, dtoInData);
     },
