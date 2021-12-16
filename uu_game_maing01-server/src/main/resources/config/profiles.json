@@ -17,7 +17,16 @@
       "Public"
     ],
     "useCaseMap": {
-      "calculate/create": {
+      "calculateAsync/create": {
+        "sysStateList": [
+          "active"
+        ],
+        "profileList": [
+          "Public",
+          "AwidLicenseOwner"
+        ]
+      },
+      "calculate/createAsyncJob": {
         "sysStateList": [
           "active"
         ],
