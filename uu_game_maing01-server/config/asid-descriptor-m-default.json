@@ -3,7 +3,7 @@
   "schemaSpecificationUri" : "https://uuapp.plus4u.net/uu-bookkit-maing01/bef682626ed943f28cde360ccb325981/book/page?code=uuSubAppInstanceDescriptor",
   "uuSubApp" : {
     "code" : "UU.GAME.MAING01",
-    "version" : "0.1.1",
+    "version" : "0.1.7",
     "name" : "uuGameMaing01",
     "description" : "",
     "license" : "License Commercial",
@@ -17,7 +17,7 @@
           "min" : 1,
           "max" : 1
         },
-        "appPackUri" : "ues:UCL-BT[118500965363973101]:TGA.TRAININGCD.MAING01/APPBOX-0.1.1[44191602074743858]:TGA.TRAININGCD.MAING01/CMD-PACK",
+        "appPackUri" : "ues:UCL-BT[118500965363973101]:TGA.TRAININGCD.MAING01/APPBOX-0.1.7[44191602090283752]:TGA.TRAININGCD.MAING01/CMD-PACK",
         "runtimeStack" : "UU.APPG01/APPSERVER_JAVA_OPENJDK_STACK-1.4"
       }
     },

@@ -17,6 +17,40 @@
       "Public"
     ],
     "useCaseMap": {
+      "calculate/create": {
+        "sysStateList": [
+          "active"
+        ],
+        "profileList": [
+          "Public",
+          "AwidLicenseOwner"
+        ]
+      },
+      "calculate/list": {
+        "sysStateList": [
+          "active"
+        ],
+        "profileList": [
+          "Public",
+          "AwidLicenseOwner"
+        ]
+      },
+      "sys/logTelemetryData":{
+        "sysStateList": ["active"],
+        "profileList": ["Public"]
+      },
+      "sys/listTelemetryRecordsByTime":{
+        "sysStateList": ["active","readOnly","restricted"],
+        "profileList": ["Authorities", "AwidLicenseOwner"]
+      },
+      "sys/deleteTelemetryRecords":{
+        "sysStateList": ["active","restricted"],
+        "profileList": ["Authorities", "AwidLicenseOwner"]
+      },
+      "sys/getTelemetryConfig":{
+        "sysStateList": ["active","readOnly","restricted"],
+        "profileList": ["Authorities", "AwidLicenseOwner"]
+      },
       "sys/uuAppWorkspace/init": {
         "sysStateList": [
           "created"
