@@ -59,7 +59,8 @@
       },
       "score/list": {
         "sysStateList": [
-          "active"
+          "active",
+          "readOnly"
         ],
         "profileList": [
           "Public",
