@@ -87,7 +87,7 @@ public class AsyncJobClient {
 
     Uri createJobUri = DefaultUriBuilder
       .parse(asyncJobUri)
-      .setUseCase("calculateAsync/create")
+      .setUseCase("createJob")
       .toUri();
     return appClient.post(createJobUri, createJobDtoIn, CreateJobDtoOut.class);
   }

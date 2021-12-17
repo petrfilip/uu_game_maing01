@@ -40,6 +40,11 @@
           "maxSoi" : "16000000",
           "maxNoi" : "32"
         },
+        "sysQosQuota" : {
+          "realization" : "uu.app.qos.dao.mongo.SysQosQuotaMongoDao",
+          "maxSoi" : "16000000",
+          "maxNoi" : "1"
+        },
         "sysTelemetryConfig" : {
           "realization" : "uu.app.telemetry.dao.mongo.SysTelemetryConfigMongoDao",
           "maxSoi" : "16000000",

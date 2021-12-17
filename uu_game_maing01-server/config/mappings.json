@@ -662,6 +662,22 @@
         "consumes" : "*/*",
         "produces" : "application/*"
       },
+      "sys/uuSubAppInstance/qos/getConfiguration" : {
+        "realization" : "uu.app.qos.api.controller.SysUuSubAppInstanceQosController::qosGetConfiguration",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuSubAppInstance/qos/setConfiguration" : {
+        "realization" : "uu.app.qos.api.controller.SysUuSubAppInstanceQosController::qosSetConfiguration",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
       "sys/uuSubAppInstance/restore" : {
         "realization" : "uu.app.workspace.api.controller.UuSubAppInstanceController::restore",
         "httpMethod" : "POST",
