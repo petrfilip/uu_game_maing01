@@ -13,14 +13,33 @@ defaultTasks 'start'
 
 buildscript {
   ext {
-    uuAppg01ServerVersion = "4.+"
-    uuAppg01DevKitVersion = "3.+"
-    uuProdRepository = 'https://repo.plus4u.net/repository/public-java/'
+    uuAppg01ServerVersion = "5.+"
+    uuAppg01RepresentationVersion = "5+"
+    uuAppg01BinaryStoreVersion = "5.+"
+    uuAppg01DevKitVersion = "4.+"
+    uuProdRepository = 'https://repo.plus4u.net/repository/jars/'
+    uuBetaRepository = 'https://repo.plus4u.net/repository/jars-beta/'
+    uuDevRepository = 'http://192.168.4.209:8081/nexus/content/groups/uaf-all/'
     gradlePluginsRepository = 'https://plugins.gradle.org/m2/'
+
+
+    try {
+      connection = new URL(uuDevRepository).openConnection()
+      connection.setConnectTimeout(1000)
+      connection.getResponseCode()
+      uuDevRepoAvailable = true
+    } catch (Exception e) {
+      uuDevRepoAvailable = false
+      println 'Development repository is not available. Using production/beta one.'
+    }
   }
 
   repositories {
     maven { url uuProdRepository }
+    maven { url uuBetaRepository }
+    if (uuDevRepoAvailable) {
+      maven { url uuDevRepository }
+    }
     maven { url gradlePluginsRepository }
   }
 
@@ -38,6 +57,8 @@ ext {
   // TODO change to your nexus repository URL
   uuDevReleaseRepository = 'https://repo.plus4u.net/repository/jars'
   uuDevSprintRepository = 'https://repo.plus4u.net/repository/jars-sprint'
+
+  mainClassName = 'uu.game.main.SubAppRunner'
+
 }
 
-apply plugin: "uu.appg01.template"

@@ -1,8 +1,5 @@
 package uu.game.main;
 
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import uu.app.auditlog.AuditLogLibraryConfiguration;
@@ -21,11 +18,6 @@ import uu.app.telemetry.TelemetryLibraryContextConfiguration;
   AuditLogLibraryConfiguration.class})
 public class SubAppConfiguration extends AbstractSubAppConfiguration {
 
-  @Bean
-  public ModelMapper modelMapper() {
-    ModelMapper modelMapper = new ModelMapper();
-    modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-    return modelMapper;
-  }
+
 
 }

@@ -1,12 +1,19 @@
+description 'A template project used for implementing uuApp server.'
+
 apply plugin: 'java'
 apply plugin: "com.sourcemuse.mongo"
+apply plugin: 'war'
 apply plugin: 'uu.appg01.devkit'
+apply plugin: 'jacoco'
 
 // repositories setup
 repositories {
   maven { url uuProdRepository }
+  maven { url uuBetaRepository }
+  if (uuDevRepoAvailable) {
+    maven { url uuDevRepository }
+  }
 }
-
 // java properties setup
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -19,7 +26,7 @@ dependencies {
   compile "uu.appg01:uu_appg01_server:${uuAppg01ServerVersion}"
   compile "org.modelmapper:modelmapper"
 
-  compile 'uu.appg01:uu_appg01_telemetry:3.0.0'
+  compile 'uu.appg01:uu_appg01_telemetry:4.0.0'
 
   compile("uu.appg01:uu_appg01_auditlog:{uuAppg01AuditVersion}")
   runtime("uu.appg01:uu_appg01_auditlog_impl:{uuAppg01AuditVersion}")
@@ -27,7 +34,7 @@ dependencies {
   testCompile "uu.appg01:uu_appg01_core-test_support:${uuAppg01ServerVersion}"
 }
 
-bootRepackage {
+bootJar {
   enabled = false
 }
 

@@ -24,7 +24,7 @@ public class CalculateMongoDao extends UuObjectMongoDao<Calculate> implements Ca
   @Override
   public PagedResult<Calculate> list(String awid, PageInfo pageInfo) throws DatastoreRuntimeException {
     Query query = awidQuery(awid);
-    query.with(new Sort(Direction.DESC, "key"));
+    query.with(Sort.by(new Sort.Order(Direction.DESC, "key")));
     return find(query, pageInfo);
   }
 }

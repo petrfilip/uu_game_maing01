@@ -59,7 +59,7 @@ public class RoomMemoryDao implements RoomDao {
 
   @Override
   public long getCount(String awid) throws DatastoreRuntimeException {
-    return list(awid, new PageRequest(0, Integer.MAX_VALUE)).size();
+    return list(awid, new PageInfo(0, Integer.MAX_VALUE)).getPageInfo().getTotal();
   }
 
   @Override
@@ -90,8 +90,7 @@ public class RoomMemoryDao implements RoomDao {
 
   @Override
   public PagedResult<Room> list(String awid, PageInfo pageInfo) throws DatastoreRuntimeException {
-    Pageable page = new PageRequest(pageInfo.getPageIndex(), pageInfo.getPageSize());
-
+    Pageable page = PageRequest.of(pageInfo.getPageIndex(), pageInfo.getPageSize());
     List<Room> list = list(awid, page);
     pageInfo.setTotal(list.size());
     return new PagedResult<>(list, pageInfo);

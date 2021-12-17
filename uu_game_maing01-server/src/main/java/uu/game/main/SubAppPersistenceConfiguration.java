@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import uu.app.auditlog.AuditLogLibraryConfiguration;
 import uu.app.datastore.annotations.DataStoreConfiguration;
@@ -25,14 +25,14 @@ public class SubAppPersistenceConfiguration extends AbstractPersistenceMongoDbCo
   private String objectStorePrimaryUri;
 
   @Bean({"primaryObjectStoreFactory"})
-  public MongoDbFactory primaryOsMongoFactory() {
+  public MongoDatabaseFactory primaryOsMongoFactory() {
     return getMongoDbFactory(objectStorePrimaryUri);
   }
 
   @ObjectStore(name = {"primary", WorkspaceStorageConfiguration.WORKSPACE_OBJECT_STORE,
     AuditLogLibraryConfiguration.AUDIT_OBJECT_STORE,
     TelemetryLibraryConfiguration.SYS_TELEMETRY_OBJECT_STORE}, primary = true)
-  public MongoTemplate primaryMongo(@Qualifier("primaryObjectStoreFactory") MongoDbFactory mongoDbFactory) {
+  public MongoTemplate primaryMongo(@Qualifier("primaryObjectStoreFactory") MongoDatabaseFactory mongoDbFactory) {
     return getMongoTemplate(mongoDbFactory);
   }
 
