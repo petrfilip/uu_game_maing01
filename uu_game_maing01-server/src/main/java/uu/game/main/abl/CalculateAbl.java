@@ -4,11 +4,13 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.inject.Inject;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import uu.app.datastore.domain.PageInfo;
 import uu.app.datastore.domain.PagedResult;
 import uu.game.main.abl.entity.Calculate;
 import uu.game.main.api.dto.CalculateDtoIn;
+import uu.game.main.api.dto.CalculateDtoOut;
 import uu.game.main.dao.CalculateDao;
 
 @Component
@@ -18,6 +20,8 @@ public class CalculateAbl {
 
   @Inject
   private CalculateDao calculateDao;
+  @Inject
+  private ModelMapper modelMapper;
 
   public Calculate calculate(String awid, CalculateDtoIn dtoIn) {
     Calculate calculate = new Calculate();
@@ -41,7 +45,8 @@ public class CalculateAbl {
     return random.nextInt(max - min) + min;
   }
 
-  public PagedResult<Calculate> list(String awid, CalculateDtoIn dtoIn) {
-    return calculateDao.list(awid, new PageInfo(0, 20));
+  public CalculateDtoOut list(String awid, CalculateDtoIn dtoIn) {
+    PagedResult<Calculate> list = calculateDao.list(awid, new PageInfo(0, 20));
+    return modelMapper.map(list, CalculateDtoOut.class);
   }
 }

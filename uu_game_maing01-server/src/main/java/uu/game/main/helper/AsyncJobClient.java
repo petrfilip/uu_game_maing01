@@ -73,7 +73,7 @@ public class AsyncJobClient {
     createJobDtoIn.setCall(callParams);
     createJobDtoIn.setCallback(callbackParams);
 
-    String scope = "openid " + callParams.getUri();
+    String scope = String.join(" ", "openid", callParams.getUri(), callbackParams.getUri());
     AuthenticationCredentials authenticationCredentials = new AuthenticationCredentials();
     CallTokenOptions callTokenOptions = new CallTokenOptions();
     callTokenOptions.setExcludeAuthenticationType(true);

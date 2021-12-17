@@ -1,6 +1,6 @@
 allprojects {
   group 'uu.game.maing01'
-  version '0.2.1'
+  version '0.2.4-dev'
 
   gradle.projectsEvaluated {
     tasks.withType(JavaCompile) {
@@ -36,10 +36,6 @@ buildscript {
 
   repositories {
     maven { url uuProdRepository }
-    maven { url uuBetaRepository }
-    if (uuDevRepoAvailable) {
-      maven { url uuDevRepository }
-    }
     maven { url gradlePluginsRepository }
   }
 

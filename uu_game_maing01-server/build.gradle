@@ -9,10 +9,6 @@ apply plugin: 'jacoco'
 // repositories setup
 repositories {
   maven { url uuProdRepository }
-  maven { url uuBetaRepository }
-  if (uuDevRepoAvailable) {
-    maven { url uuDevRepository }
-  }
 }
 // java properties setup
 sourceCompatibility = 1.8
@@ -28,9 +24,6 @@ dependencies {
 
   compile 'uu.appg01:uu_appg01_telemetry:4.0.0'
   compile "uu.appg01:uu_appstatusg01:1.0.0"
-  compile "uu.appg01:uu_appqosg01:1.0.0"
-
-
 
   compile("uu.appg01:uu_appg01_auditlog:{uuAppg01AuditVersion}")
   runtime("uu.appg01:uu_appg01_auditlog_impl:{uuAppg01AuditVersion}")
