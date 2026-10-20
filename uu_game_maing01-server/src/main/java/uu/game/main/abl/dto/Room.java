@@ -5,27 +5,34 @@ import java.util.List;
 import uu.app.datastore.domain.LockableSysAttributes;
 import uu.app.datastore.mongodb.domain.UuDataEntitySysAttributes;
 import uu.app.objectstore.domain.UuObject;
-import uu.game.main.abl.GameInstanceAbl;
 
+/**
+ * Persistable description of a room.
+ *
+ * <p>Deliberately plain data. It used to hold the live game runtime in a {@code GameInstanceAbl}
+ * field, which meant an object with a running scheduler was part of the entity a DAO was supposed
+ * to write - no Mongo implementation could ever have stored it, and the in-memory DAO only worked
+ * because callers mutated the very instance it handed back. The runtime now lives in
+ * {@link uu.game.main.engine.GameEngineRegistry}, keyed by awid and room id.
+ */
 public class Room implements UuObject {
 
   private String awid;
   private UuDataEntitySysAttributes sys;
 
-
   private String id;
-  private GameInstanceAbl game;
+  private String gameName;
   private String roomName;
   private RoomStateEnum state;
   private Player roomOwner;
   private List<Player> connectedPlayers = new ArrayList<>();
 
-  public GameInstanceAbl getGame() {
-    return game;
+  public String getGameName() {
+    return gameName;
   }
 
-  public void setGame(GameInstanceAbl game) {
-    this.game = game;
+  public void setGameName(String gameName) {
+    this.gameName = gameName;
   }
 
   public String getRoomName() {
@@ -87,7 +94,7 @@ public class Room implements UuObject {
 
   @Override
   public void setAsid(String asid) {
-
+    // Rooms are workspace scoped; asid is not used.
   }
 
   @Override

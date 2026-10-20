@@ -2,80 +2,99 @@ package uu.game.main.game.common.ammo;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import uu.game.main.abl.dto.Player;
+import uu.game.main.game.common.GameArea;
+import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
-import uu.game.main.game.common.Player2D;
+import uu.game.main.game.common.Obstacle;
 import uu.game.main.game.common.PlayerMove;
 import uu.game.main.helper.MathUtils;
 
 public class Bullet extends Projectile {
 
   /**
-   * bullet speed
+   * Pixels travelled per tick. At a 50 ms tick this is 300 px/s, which crosses the 1400 px map in
+   * a little under five seconds.
    */
-  private static final int SPEED = 3;
+  private static final int SPEED = 15;
+
+  private static final int SIZE = 10;
 
   public Bullet() {
-    super(0, 0, 10, 10, 0);
+    super(0, 0, SIZE, SIZE, 0);
   }
 
   @Override
-  public List<GameRuleEvent> applyEffect(Collection<? extends AmmoDamagable> players, Integer tick) {
+  public List<GameRuleEvent> applyEffect(Collection<? extends AmmoDamagable> targets,
+                                         Collection<Obstacle> obstacles,
+                                         int tick,
+                                         GameArea area) {
+    int remaining = getSpeed();
 
-    for (int i = 0; i < getSpeed(); i++) {
-      computeNextPosition();
+    while (remaining > 0) {
+      int step = Math.min(getStepSize(), remaining);
+      remaining -= step;
+      advance(step);
 
-      if(checkOutOfBound()){
+      if (isOutOfBounds(area)) {
+        // Previously missing: a bullet that hit nothing flew forever and stayed in the board's ammo
+        // list, so the list - and the state pushed to every client each tick - grew without bound.
         setUsed(true);
-        break;
+        return new ArrayList<>();
       }
 
-      for (AmmoDamagable damagable : players) {
-        if (damagable instanceof Intersectable && ((Intersectable) damagable).intersects(this)) {
-          List<GameRuleEvent> gameRuleEvents = damagable.applyAmmoDamage(1);
+      for (AmmoDamagable target : targets) {
+        if (!target.intersects(this)) {
+          continue;
+        }
 
-          HashMap<Object, Object> sourceTargetMap = new HashMap<>();
-          sourceTargetMap.put("source", this);
-          sourceTargetMap.put("target", damagable);
-          gameRuleEvents.add(new GameRuleEvent("used", this.getClass().getSimpleName(), sourceTargetMap));
+        DamageResult result = target.applyAmmoDamage(1);
+        if (!result.isAbsorbed()) {
+          continue;
+        }
+
+        // Where the bullet died is where the client draws the impact. The victim publishes its own
+        // event, with its own id and position, so repeating the target here would be a second copy
+        // of something already in the payload.
+        List<GameRuleEvent> events = result.mutableEvents();
+        events.add(new GameRuleEvent("used", getType(), null, this));
+
+        if (result.isLethal()) {
+          awardKill(target);
+        }
+        setUsed(true);
+        return events;
+      }
+
+      for (Obstacle obstacle : obstacles) {
+        if (obstacle.intersects(this)) {
           setUsed(true);
-          getOwner().setScore(getOwner().getScore()+1);
-          return gameRuleEvents;
+          return new GameRuleEvent("used", getType(), null, this).asList();
         }
       }
     }
 
-
     return new ArrayList<>();
-
   }
 
   @Override
-  public List<GameRuleEvent> init(Player userPlayer, Player2D player2D, PlayerMove playerMove) {
-    this.setOwner(userPlayer);
-    this.setAngle(playerMove.getFiredAngle());
+  public List<GameRuleEvent> init(Player owner, GameRectangle shooter, PlayerMove move, int tick) {
+    setOwner(owner);
+    setShooterEntity(shooter);
+    setAngle(move.getFiredAngle());
 
-    double r = Math.sqrt(Math.pow(player2D.getWidth(), 2) + Math.pow(player2D.getWidth(), 2));
+    // Spawn on the muzzle rather than inside the shooter, so the shot does not immediately collide
+    // with the player who fired it.
+    double offset = Math.hypot(shooter.getWidth(), shooter.getHeight()) / 2 + SIZE;
+    setX(shooter.getCenterX() - SIZE / 2.0 + offset * MathUtils.cos(getAngle()));
+    setY(shooter.getCenterY() - SIZE / 2.0 + offset * MathUtils.sin(getAngle()));
 
-    this.setX((player2D.getX() + (getWidth().doubleValue()/2)) + r * MathUtils.cos(getAngle()));
-    this.setY((player2D.getY() + (getHeight().doubleValue()/2)) + r * MathUtils.sin(getAngle()));
-
-    return new GameRuleEvent("fired", this.getClass().getSimpleName(), this).asList();
+    return new GameRuleEvent("fired", getType(), ownerId(), this).asList();
   }
 
   @Override
   public int getSpeed() {
     return SPEED;
-  }
-
-  @Override
-  public void computeNextPosition() {
-    double posX = getX() + 5 * MathUtils.cos(getAngle());
-    double posY = getY() + 5 * MathUtils.sin(getAngle());
-
-    setX(posX);
-    setY(posY);
   }
 }

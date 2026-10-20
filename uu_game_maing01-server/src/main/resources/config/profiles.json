@@ -44,7 +44,8 @@
           "active"
         ],
         "profileList": [
-          "Public",
+          "Executives",
+          "Authorities",
           "AwidLicenseOwner"
         ]
       },
@@ -53,7 +54,8 @@
           "active"
         ],
         "profileList": [
-          "Public",
+          "Executives",
+          "Authorities",
           "AwidLicenseOwner"
         ]
       },
@@ -67,6 +69,17 @@
           "AwidLicenseOwner"
         ]
       },
+      "metrics/get": {
+        "sysStateList": [
+          "active",
+          "readOnly"
+        ],
+        "profileList": [
+          "Executives",
+          "Authorities",
+          "AwidLicenseOwner"
+        ]
+      },
       "room/list": {
         "sysStateList": [
           "active"
@@ -77,6 +90,16 @@
         ]
       },
       "room/create": {
+        "sysStateList": [
+          "active"
+        ],
+        "profileList": [
+          "Executives",
+          "Authorities",
+          "AwidLicenseOwner"
+        ]
+      },
+      "room/delete": {
         "sysStateList": [
           "active"
         ],

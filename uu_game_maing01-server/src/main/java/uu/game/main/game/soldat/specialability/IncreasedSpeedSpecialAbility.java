@@ -1,33 +1,19 @@
 package uu.game.main.game.soldat.specialability;
 
-import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROTOTYPE;
-
-import java.time.ZonedDateTime;
 import java.util.List;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import uu.game.main.game.soldat.SoldatPlayer;
 
-@Service()
-@Scope(scopeName = SCOPE_PROTOTYPE)
+@Service
 public class IncreasedSpeedSpecialAbility extends SpecialAbility {
 
-  private ZonedDateTime endTime;
-  private SoldatPlayer soldatPlayer;
+  /** 15 seconds at a 50 ms tick. */
+  private static final int DURATION_TICKS = 300;
 
+  private static final int BONUS = 6;
 
-  public void applyAbility(SoldatPlayer soldatPlayer, List<SoldatPlayer> opponents) {
-    this.soldatPlayer = soldatPlayer;
-    this.endTime = ZonedDateTime.now().plusSeconds(30);
-    soldatPlayer.setSpeed(this.soldatPlayer.getSpeed()+3);
+  @Override
+  public void applyAbility(SoldatPlayer player, List<SoldatPlayer> opponents, int tick) {
+    player.grantSpeedBonus(BONUS, DURATION_TICKS);
   }
-
-  public void applyAbilityFinished() {
-    this.soldatPlayer.setSpeed(soldatPlayer.getSpeed()-3);
-  }
-
-  public boolean isDone() {
-    return endTime != null && ZonedDateTime.now().compareTo(endTime) > 0;
-  }
-
 }

@@ -13,8 +13,11 @@ defaultTasks 'start'
 
 buildscript {
   ext {
-    uuAppg01ServerVersion = "4.+"
-    uuAppg01DevKitVersion = "3.+"
+    // Pinned, not floating. With "4.+" the build resolved to whatever was newest at the time:
+    // rebuilding regenerated config/mappings.json with endpoints that were not there at the last
+    // commit, purely because the framework had moved underneath. Bump these deliberately.
+    uuAppg01ServerVersion = "4.2.4"
+    uuAppg01DevKitVersion = "3.0.5"
     uuProdRepository = 'https://repo.plus4u.net/repository/public-java/'
     gradlePluginsRepository = 'https://plugins.gradle.org/m2/'
   }

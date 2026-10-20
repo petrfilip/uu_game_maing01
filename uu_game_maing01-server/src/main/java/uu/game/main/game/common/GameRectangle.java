@@ -1,9 +1,16 @@
 package uu.game.main.game.common;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.awt.Rectangle;
 import uu.game.main.game.common.ammo.Intersectable;
 
+/**
+ * Axis aligned bounding box with sub-pixel precision.
+ *
+ * <p>Overlap is computed directly on {@code double} coordinates. The previous implementation
+ * converted to {@link java.awt.Rectangle}, which truncated positions to {@code int} and made
+ * collisions jitter by up to one pixel depending on which side of the grid an entity sat on.
+ */
 public class GameRectangle implements Intersectable {
 
   private double x;
@@ -19,10 +26,34 @@ public class GameRectangle implements Intersectable {
   }
 
   @JsonIgnore
-  public Rectangle getRectangle() {
-    return new Rectangle(((int) x), ((int) y), width, height);
+  public double getRight() {
+    return x + (width == null ? 0 : width);
   }
 
+  @JsonIgnore
+  public double getBottom() {
+    return y + (height == null ? 0 : height);
+  }
+
+  @JsonIgnore
+  public double getCenterX() {
+    return x + (width == null ? 0 : width) / 2.0;
+  }
+
+  @JsonIgnore
+  public double getCenterY() {
+    return y + (height == null ? 0 : height) / 2.0;
+  }
+
+  /**
+   * @return a detached copy translated by the given offset, useful for "would I collide if I moved
+   * there" probes without mutating the entity.
+   */
+  public GameRectangle translated(double dx, double dy) {
+    return new GameRectangle(x + dx, y + dy, width, height);
+  }
+
+  @JsonSerialize(using = CompactDoubleSerializer.class)
   public double getX() {
     return x;
   }
@@ -31,6 +62,7 @@ public class GameRectangle implements Intersectable {
     this.x = x;
   }
 
+  @JsonSerialize(using = CompactDoubleSerializer.class)
   public double getY() {
     return y;
   }
@@ -57,6 +89,13 @@ public class GameRectangle implements Intersectable {
 
   @Override
   public boolean intersects(GameRectangle hitArea) {
-    return this.getRectangle().intersects(hitArea.getRectangle());
+    if (hitArea == null || width == null || height == null
+      || hitArea.getWidth() == null || hitArea.getHeight() == null) {
+      return false;
+    }
+    return x < hitArea.getRight()
+      && getRight() > hitArea.getX()
+      && y < hitArea.getBottom()
+      && getBottom() > hitArea.getY();
   }
 }

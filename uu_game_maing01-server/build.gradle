@@ -42,6 +42,36 @@ test {
   runWithMongoDb = true
 }
 
+// Simulation tests: plain JUnit, no Spring context and no database.
+//
+// The `test` task above boots an embedded MongoDB, and the pinned 3.4.3 build is an x86_64 binary
+// that will not launch on Apple Silicon ("Bad CPU type in executable"). Without a separate task the
+// rule and engine tests - which need neither Mongo nor Spring - would be unrunnable on any recent
+// Mac. Run with: gradle unitTest
+task unitTest(type: Test) {
+  description = 'Runs game rule and engine tests without a database.'
+  group = 'verification'
+
+  useJUnit()
+  testClassesDirs = sourceSets.test.output.classesDirs
+  classpath = sourceSets.test.runtimeClasspath
+
+  include 'uu/game/main/game/**'
+  include 'uu/game/main/engine/**'
+  include 'uu/game/main/helper/**'
+  include 'uu/game/main/broadcast/**'
+  include 'uu/game/main/abl/**'
+
+  jacoco {
+    enabled = false
+  }
+
+  testLogging {
+    events 'passed', 'failed', 'skipped'
+    exceptionFormat = 'full'
+  }
+}
+
 // artifacts which will be published to Nexus repository
 uuPublishArtifacts {
   sources = true

@@ -1,19 +1,39 @@
 package uu.game.main.game.soldat.specialability;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import uu.game.main.game.bulanci.Obstacle;
+import uu.game.main.game.common.CollisionSpace;
+import uu.game.main.game.common.CompactDoubleSerializer;
+import uu.game.main.game.common.GameArea;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
 import uu.game.main.game.soldat.SoldatPlayer;
 
+/**
+ * A crate that parachutes in, lands on the first surface below it and grants an ability when
+ * touched.
+ */
 public class BonusItem extends GameRectangle {
 
-  public static final Integer BONUS_ITEM_MOVE_SPEED = 20;
+  public static final int SIZE = 30;
+
+  /** Fall speed, in px per tick. */
+  private static final double FALL_SPEED = 6;
+
+  /**
+   * How far this crate actually moved on the last tick; zero once it has settled.
+   *
+   * <p>Sent so the client can carry the crate between states the way it already does for players.
+   * The simulation runs at twenty ticks a second and the canvas draws at sixty, so a crate drawn
+   * only where the server last reported it steps down the screen three frames at a time - which is
+   * exactly as jerky as it sounds. Omitted from the payload once it is zero, so a landed crate
+   * costs nothing.
+   */
+  private double velocityY = FALL_SPEED;
 
   private boolean isUsed = false;
 
@@ -22,30 +42,51 @@ public class BonusItem extends GameRectangle {
 
   private final String specialAbilityName;
 
-  public BonusItem(double x, double y, Integer width, Integer height, SpecialAbility specialAbility) {
-    super(x, y, width, height);
+  public BonusItem(double x, double y, SpecialAbility specialAbility) {
+    super(x, y, SIZE, SIZE);
     this.specialAbility = specialAbility;
-    this.specialAbilityName = specialAbility.getClass().getSimpleName();
+    this.specialAbilityName = specialAbility.getName();
   }
 
   public List<GameRuleEvent> checkIntersection(Collection<SoldatPlayer> players) {
-
     for (SoldatPlayer player : players) {
-      if (this.getRectangle().intersects(player.getRectangle())) {
-        List<GameRuleEvent> gameRuleEvents = player.applySpecialAbility(players, specialAbility);
-        gameRuleEvents.add(new GameRuleEvent("gathered", player.getClass().getSimpleName(), specialAbility));
-        isUsed = true;
-        return gameRuleEvents;
+      if (player.isDead() || !intersects(player)) {
+        continue;
       }
+      List<GameRuleEvent> events = new ArrayList<>();
+      events.add(player.applySpecialAbility(players, specialAbility));
+      isUsed = true;
+      return events;
     }
-
     return new ArrayList<>();
+  }
+
+  /**
+   * Falls one tick's worth and stops on the first solid surface.
+   *
+   * <p>The old version snapped to the top of an overlapping obstacle and then added the fall speed
+   * again unconditionally, so a landed crate sank back into the floor every tick and jittered.
+   */
+  public void fall(CollisionSpace space, GameArea area) {
+    // The distance it managed is this tick's velocity: a full FALL_SPEED in the air, less on the
+    // tick it meets a surface, and zero every tick after that.
+    velocityY = space.moveY(this, FALL_SPEED);
+    if (area.isBelow(this)) {
+      isUsed = true;
+    }
+  }
+
+  @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+  @JsonSerialize(using = CompactDoubleSerializer.class)
+  public double getVelocityY() {
+    return velocityY;
   }
 
   public boolean isUsed() {
     return isUsed;
   }
 
+  @JsonIgnore
   public SpecialAbility getSpecialAbility() {
     return specialAbility;
   }
@@ -53,27 +94,4 @@ public class BonusItem extends GameRectangle {
   public String getSpecialAbilityName() {
     return specialAbilityName;
   }
-
-  public void moveBonusItem(List<Obstacle> obstacles) {
-
-    Optional<GameRectangle> first = obstacles
-      .stream().map(o -> o.intersectsWith(this))
-      .filter(Objects::nonNull)
-      .findFirst();
-
-    // stop falling when reach the bottom
-    first.ifPresent(gameRectangle -> setY(gameRectangle.getY() - getHeight()));
-
-    setY(getY() + BONUS_ITEM_MOVE_SPEED);
-    if (checkOutOfBound()) {
-      isUsed = true;
-    }
-  }
-
-
-  //todo params from game settings
-  public boolean checkOutOfBound() {
-    return getX() < 0 || getX() > 1400 || getY() < 0 || getY() > 600;
-  }
-
 }

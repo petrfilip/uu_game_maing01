@@ -18,8 +18,15 @@ public class ScoreMongoDao extends UuObjectMongoDao<Score> implements ScoreDao {
 
   public void createSchema() {
    super.createSchema();
-   createIndex(new Index().on(ATTR_AWID, Direction.ASC).unique());
-   createIndex(new Index().on(ATTR_AWID, Direction.ASC).on(ATTR_UU_IDENTITY, Direction.ASC).on(ATTR_SCORE, Direction.DESC));
+   // One leaderboard row per identity per workspace. This was unique on awid alone (the shape copied
+   // from GameMainMongoDao, where a single document per workspace is in fact correct), which meant
+   // only the first player ever stored in a workspace could exist - every other create failed on the
+   // duplicate key. The unique key is also what makes the create race in ScoreAbl detectable instead
+   // of producing two rows for the same player.
+   // Note: createSchema only creates indexes, it does not drop the old one, so an already deployed
+   // workspace needs the awid-only unique index removed by hand.
+   createIndex(new Index().on(ATTR_AWID, Direction.ASC).on(ATTR_UU_IDENTITY, Direction.ASC).unique());
+   createIndex(new Index().on(ATTR_AWID, Direction.ASC).on(ATTR_SCORE, Direction.DESC));
 
  }
 

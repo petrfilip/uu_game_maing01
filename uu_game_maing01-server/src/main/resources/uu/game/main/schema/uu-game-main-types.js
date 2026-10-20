@@ -15,12 +15,21 @@ const pageInfoType = shape({
 
 const roomCreateDtoInType = shape({
   roomName: string(1, null).isRequired(),
-  roomOwner: uuIdentity().isRequired()
+  roomOwner: uuIdentity().isRequired(),
+  gameName: oneOf(["soldat", "bulanci"]) // optional; falls back to game.defaultGame
 });
 
 const roomJoinDtoInType = shape({
   roomId: string(1, null).isRequired(),
   playerId: uuIdentity().isRequired()
+});
+
+// Either key identifies the room: every room command server side calls it roomId, while the uu5
+// data list deletes an item by posting the item, whose identifier is id.
+const roomDeleteDtoInType = shape({
+  roomId: string(1, null),
+  id: string(1, null),
+  forceDelete: boolean()
 });
 
 const scoreGetByUuIdentityDtoInType = shape({

@@ -8,7 +8,7 @@ public class Player {
 
   private String playerName;
 
-  private PlayerStateEnum state = PlayerStateEnum.WAITING;
+  private volatile PlayerStateEnum state = PlayerStateEnum.WAITING;
 
   private Integer score = 0;
 

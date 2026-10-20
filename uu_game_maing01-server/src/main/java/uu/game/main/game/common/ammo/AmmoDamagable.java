@@ -1,9 +1,9 @@
 package uu.game.main.game.common.ammo;
 
-import java.util.List;
-import uu.game.main.game.common.GameRuleEvent;
+/**
+ * Something a projectile can hit.
+ */
+public interface AmmoDamagable extends Intersectable {
 
-public interface AmmoDamagable {
-
-  List<GameRuleEvent> applyAmmoDamage(Integer damage);
+  DamageResult applyAmmoDamage(int damage);
 }

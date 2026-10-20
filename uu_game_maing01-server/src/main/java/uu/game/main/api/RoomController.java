@@ -14,6 +14,7 @@ import uu.game.main.abl.RoomAbl;
 import uu.game.main.abl.dto.Room;
 import uu.game.main.api.dto.AddPlayerMoveDtoIn;
 import uu.game.main.api.dto.RoomCreateDtoIn;
+import uu.game.main.api.dto.RoomDeleteDtoIn;
 import uu.game.main.api.dto.RoomJoinDtoIn;
 import uu.game.main.api.dto.RoomListDtoOut;
 import uu.game.main.api.dto.StartGameDtoIn;
@@ -40,6 +41,13 @@ public final class RoomController {
   @Command(path = "room/list", method = GET)
   public RoomListDtoOut roomList(CommandContext<Void> ctx) {
     return roomAbl.roomList(ctx.getUri().getAwid());
+  }
+
+  @Command(path = "room/delete", method = POST)
+  @DtoInAudit(alias = "roomId", path = "$.roomId")
+  public Room roomDelete(CommandContext<RoomDeleteDtoIn> ctx) {
+    ctx.getDtoIn().setPlayerId(ctx.getAuthenticationSession().getIdentity().getUUIdentity());
+    return roomAbl.roomDelete(ctx.getUri().getAwid(), ctx.getDtoIn());
   }
 
   @Command(path = "room/join", method = POST)

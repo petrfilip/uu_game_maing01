@@ -36,6 +36,15 @@
           "maxSoi" : "16000000",
           "maxNoi" : "32"
         },
+        "sysTelemetryConfig" : {
+          "realization" : "uu.app.telemetry.dao.mongo.SysTelemetryConfigMongoDao",
+          "maxSoi" : "16000000",
+          "maxNoi" : "1"
+        },
+        "sysTelemetryRecord" : {
+          "realization" : "uu.app.telemetry.dao.mongo.SysTelemetryRecordMongoDao",
+          "maxSoi" : "256000"
+        },
         "sysUuAppDataStoreStats" : {
           "realization" : "uu.app.workspace.dao.mongo.SysUuAppDataStoreStatsMongoDao",
           "maxSoi" : "16000000"

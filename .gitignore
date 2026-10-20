@@ -24,7 +24,14 @@ build/
 npm-debug.log
 pnpm-debug.log
 Gemfile.lock
-package-lock.json
+# package-lock.json is intentionally COMMITTED for uu_game_maing01-hi.
+# Without it npm re-resolved transitive deps on every install and pulled Babel
+# versions the pinned uu_appg01_devkit 4.x cannot use. Keep the lockfile tracked.
+# package-lock.json
 gradle-app.setting
 gradlew
 gradlew.bat
+
+# plus4u access kódy pro lokální init — nikdy necommitovat
+acc
+token

@@ -25,7 +25,12 @@ public final class ScoreController {
 
   @Command(path = "score/getByUuIdentity", method = GET)
   public ScoreGetDtoOut getByUuIdentity(CommandContext<ScoreGetByUuIdentityDtoIn> ctx) {
-    return scoreAbl.getByUuIdentity(ctx.getUri().getAwid(), ctx.getAuthenticationSession().getIdentity().getUUIdentity());
+    // The uuCmd has always answered for the caller's own identity and a uuIdentity sent by the client
+    // is deliberately ignored, so the dtoIn handed to the ABL is the one built from the session - that
+    // is also the value worth validating, a session without a usable uuIdentity must not reach the DAO.
+    ScoreGetByUuIdentityDtoIn dtoIn = new ScoreGetByUuIdentityDtoIn();
+    dtoIn.setUuIdentity(ctx.getAuthenticationSession().getIdentity().getUUIdentity());
+    return scoreAbl.getByUuIdentity(ctx.getUri().getAwid(), dtoIn);
   }
 
 }

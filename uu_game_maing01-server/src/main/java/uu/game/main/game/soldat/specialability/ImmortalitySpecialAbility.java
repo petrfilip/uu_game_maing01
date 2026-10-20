@@ -1,35 +1,20 @@
 package uu.game.main.game.soldat.specialability;
 
-import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROTOTYPE;
-
-import java.time.ZonedDateTime;
 import java.util.List;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import uu.game.main.game.soldat.SoldatPlayer;
 
-@Service()
-@Scope(scopeName = SCOPE_PROTOTYPE)
+@Service
 public class ImmortalitySpecialAbility extends SpecialAbility {
 
-  private ZonedDateTime endTime;
-  private SoldatPlayer soldatPlayer;
-  private Integer originLive = 0;
+  /** 10 seconds at a 50 ms tick. */
+  private static final int DURATION_TICKS = 200;
 
-
-  public void applyAbility(SoldatPlayer soldatPlayer, List<SoldatPlayer> opponents) {
-    this.soldatPlayer = soldatPlayer;
-    this.endTime = ZonedDateTime.now().plusSeconds(15);
-    this.originLive = soldatPlayer.getLives();
-    soldatPlayer.setLives(999);
+  @Override
+  public void applyAbility(SoldatPlayer player, List<SoldatPlayer> opponents, int tick) {
+    // Marks the player invulnerable instead of setting lives to 999 and restoring the old value
+    // later - that trick lost any damage or healing that happened in between, and showed a
+    // nonsensical health bar while it was active.
+    player.grantInvulnerability(DURATION_TICKS);
   }
-
-  public void applyAbilityFinished() {
-    soldatPlayer.setLives(this.originLive);
-  }
-
-  public boolean isDone() {
-    return endTime != null && ZonedDateTime.now().compareTo(endTime) > 0;
-  }
-
 }

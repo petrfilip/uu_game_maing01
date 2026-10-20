@@ -26,6 +26,14 @@
         "consumes" : "*/*",
         "produces" : "application/*"
       },
+      "metrics/get" : {
+        "realization" : "uu.game.main.api.MetricsController::get",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
       "oidc/callback" : {
         "realization" : "uu.app.authentication.oidc.api.controller.OidcUveController::callback",
         "httpMethod" : "GET",
@@ -120,7 +128,22 @@
         "type" : "CMD",
         "primary" : false,
         "consumes" : "*/*",
-        "produces" : "application/*"
+        "produces" : "application/*",
+        "dtoInAuditMap" : {
+          "roomOwner" : "$.roomOwner",
+          "roomName" : "$.roomName"
+        }
+      },
+      "room/delete" : {
+        "realization" : "uu.game.main.api.RoomController::roomDelete",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*",
+        "dtoInAuditMap" : {
+          "roomId" : "$.roomId"
+        }
       },
       "room/join" : {
         "realization" : "uu.game.main.api.RoomController::roomJoin",
@@ -178,6 +201,14 @@
         "consumes" : "*/*",
         "produces" : "application/*"
       },
+      "sys/deleteTelemetryRecords" : {
+        "realization" : "uu.app.telemetry.api.controller.SysTelemetryController::deleteTelemetryRecords",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
       "sys/generateDiagnosticReport" : {
         "realization" : "uu.app.monitoring.api.controller.DiagnosticReportController::generateDiagnosticReport",
         "httpMethod" : "POST",
@@ -218,8 +249,24 @@
         "consumes" : "*/*",
         "produces" : "application/*"
       },
+      "sys/getTelemetryConfig" : {
+        "realization" : "uu.app.telemetry.api.controller.SysTelemetryController::getTelemetryConfig",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
       "sys/getUseCases" : {
         "realization" : "uu.app.monitoring.api.controller.UseCaseController::getUseCases",
+        "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/listTelemetryRecordsByTime" : {
+        "realization" : "uu.app.telemetry.api.controller.SysTelemetryController::listTelemetryRecordsByTime",
         "httpMethod" : "GET",
         "type" : "CMD",
         "primary" : false,
@@ -242,6 +289,14 @@
         "consumes" : "*/*",
         "produces" : "application/*"
       },
+      "sys/logTelemetryData" : {
+        "realization" : "uu.app.telemetry.api.controller.SysTelemetryController::logTelemetryData",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
       "sys/resetStatistics" : {
         "realization" : "uu.app.monitoring.api.controller.StatisticsController::resetStatistics",
         "httpMethod" : "POST",
@@ -252,6 +307,14 @@
       },
       "sys/setAuthType" : {
         "realization" : "uu.app.workspace.authorization.controller.WorkspaceAuthorizationController::setAuthType",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/setTelemetryConfig" : {
+        "realization" : "uu.app.telemetry.api.controller.SysTelemetryController::setTelemetryConfig",
         "httpMethod" : "POST",
         "type" : "CMD",
         "primary" : false,
@@ -285,6 +348,14 @@
       "sys/uuAppDataStore/stats/list" : {
         "realization" : "uu.app.workspace.api.controller.DataStoreStatsController::list",
         "httpMethod" : "GET",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*"
+      },
+      "sys/uuAppDataStore/stats/privilegedCalculate" : {
+        "realization" : "uu.app.workspace.api.controller.DataStoreStatsController::privelegedCalculate",
+        "httpMethod" : "POST",
         "type" : "CMD",
         "primary" : false,
         "consumes" : "*/*",
@@ -392,7 +463,11 @@
         "type" : "CMD",
         "primary" : false,
         "consumes" : "*/*",
-        "produces" : "application/*"
+        "produces" : "application/*",
+        "dtoInAuditMap" : {
+          "profile" : "$.profile",
+          "uuIdentityList" : "$.uuIdentityList"
+        }
       },
       "sys/uuAppWorkspace/permission/delete" : {
         "realization" : "uu.app.workspace.api.controller.PermissionController::delete",
@@ -400,7 +475,11 @@
         "type" : "CMD",
         "primary" : false,
         "consumes" : "*/*",
-        "produces" : "application/*"
+        "produces" : "application/*",
+        "dtoInAuditMap" : {
+          "profile" : "$.profile",
+          "uuIdentityList" : "$.uuIdentityList"
+        }
       },
       "sys/uuAppWorkspace/permission/list" : {
         "realization" : "uu.app.workspace.api.controller.PermissionController::list",
@@ -432,7 +511,11 @@
         "type" : "CMD",
         "primary" : false,
         "consumes" : "*/*",
-        "produces" : "application/*"
+        "produces" : "application/*",
+        "dtoInAuditMap" : {
+          "profile" : "$.profile",
+          "roleGroupUri" : "$.roleGroupUri"
+        }
       },
       "sys/uuAppWorkspace/profile/update" : {
         "realization" : "uu.app.workspace.api.controller.ProfileController::update",
@@ -536,7 +619,11 @@
         "type" : "CMD",
         "primary" : false,
         "consumes" : "*/*",
-        "produces" : "application/*"
+        "produces" : "application/*",
+        "dtoInAuditMap" : {
+          "profile" : "$.profile",
+          "uuIdentityList" : "$.uuIdentityList"
+        }
       },
       "sys/uuSubAppInstance/permission/delete" : {
         "realization" : "uu.app.workspace.api.controller.PermissionController::delete",
@@ -544,7 +631,11 @@
         "type" : "CMD",
         "primary" : false,
         "consumes" : "*/*",
-        "produces" : "application/*"
+        "produces" : "application/*",
+        "dtoInAuditMap" : {
+          "profile" : "$.profile",
+          "uuIdentityList" : "$.uuIdentityList"
+        }
       },
       "sys/uuSubAppInstance/permission/list" : {
         "realization" : "uu.app.workspace.api.controller.PermissionController::list",
@@ -572,6 +663,18 @@
       },
       "sys/uuSubAppInstance/profile/set" : {
         "realization" : "uu.app.workspace.api.controller.ProfileController::set",
+        "httpMethod" : "POST",
+        "type" : "CMD",
+        "primary" : false,
+        "consumes" : "*/*",
+        "produces" : "application/*",
+        "dtoInAuditMap" : {
+          "profile" : "$.profile",
+          "roleGroupUri" : "$.roleGroupUri"
+        }
+      },
+      "sys/uuSubAppInstance/profile/update" : {
+        "realization" : "uu.app.workspace.api.controller.ProfileController::updateAsidProfiles",
         "httpMethod" : "POST",
         "type" : "CMD",
         "primary" : false,

@@ -1,7 +1,10 @@
 version: '3'
 services:
   uuGame-mongo:
-    image: mongo
+    # Pinned, not floating. "mongo" resolved to 8.x, which no longer accepts OP_QUERY;
+    # uu_appg01_datastore-mongodb 4.0.1 ships mongodb-driver 3.4.3, which still uses it,
+    # so startup died on createIndexes. 4.4 is the last server release that speaks it.
+    image: mongo:4.4
     tty: true
     ports:
       - 27017:27017

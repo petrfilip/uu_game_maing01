@@ -1,47 +1,151 @@
 package uu.game.main.game.bulanci;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import uu.game.main.game.common.Player2D;
-import uu.game.main.game.common.ammo.Ammo;
-import uu.game.main.game.common.ammo.AmmoDamagable;
-import uu.game.main.game.bulanci.helper.PlayerAmmoSerialization;
+import uu.game.main.game.common.CollisionSpace;
 import uu.game.main.game.common.Direction;
 import uu.game.main.game.common.GameRectangle;
 import uu.game.main.game.common.GameRuleEvent;
+import uu.game.main.game.common.Player2D;
+import uu.game.main.game.common.ammo.Ammo;
+import uu.game.main.game.common.ammo.AmmoDamagable;
+import uu.game.main.game.common.ammo.DamageResult;
+import uu.game.main.game.common.ammo.PlayerAmmoSerialization;
 
+/**
+ * Top-down Bulanci player: no gravity, free movement in four directions.
+ */
 public class BulanciPlayer extends GameRectangle implements AmmoDamagable, Player2D<BulanciPlayer, BulanciMove, BulanciBoard> {
 
-  private static final Integer SPRINT_KOEF = 1;
+  public static final int SIZE = 30;
 
-  private Integer speed = 3;
+  private static final int SPRINT_KOEF = 2;
+
+  /** Pixels per tick. */
+  private int speed = 6;
+
   @JsonSerialize(using = PlayerAmmoSerialization.class)
   private List<Ammo> ammoList = new ArrayList<>();
-  private Integer lives = 1;
+
+  private int lives = 3;
   private Direction direction;
 
-  public BulanciPlayer(Direction direction, Integer x, Integer y, Integer width, Integer height) {
+  /**
+   * Id of the {@link uu.game.main.abl.dto.Player} at the controls, so an event can name who it is
+   * about. Not serialised - the board's player map is already keyed by it.
+   */
+  @JsonIgnore
+  private String playerId;
+
+  @JsonIgnore
+  private Direction pendingMove;
+  @JsonIgnore
+  private boolean sprinting;
+
+  public BulanciPlayer(Direction direction, double x, double y, Integer width, Integer height) {
     super(x, y, width, height);
     this.direction = direction;
   }
 
   @Override
-  public List<GameRuleEvent> applyAmmoDamage(Integer damage) {
-    this.lives = this.lives - damage;
-    if ( lives > 0) {
-      return (new GameRuleEvent("liveDecreased", this.getClass().getSimpleName(), this)).asList();
-    } else {
-      return (new GameRuleEvent("death", this.getClass().getSimpleName(), this)).asList();
+  public void applyInput(BulanciMove move) {
+    if (move == null || move.getMove() == null || isDead()) {
+      return;
     }
+    pendingMove = move.getMove();
+    direction = move.getMove();
+    sprinting = move.isSprint();
   }
 
-  public Integer getSpeed() {
+  @Override
+  public BulanciPlayer step(BulanciBoard board, int tick) {
+    if (pendingMove == null || isDead()) {
+      sprinting = false;
+      return this;
+    }
+
+    CollisionSpace space = board.collisionSpace(aliveOthers(board));
+    double distance = speed * (sprinting ? SPRINT_KOEF : 1);
+
+    // Was missing entirely ("todo check for collision with wall or another players"): players walked
+    // through houses, trees and each other.
+    switch (pendingMove) {
+      case RIGHT:
+        space.moveX(this, distance);
+        break;
+      case LEFT:
+        space.moveX(this, -distance);
+        break;
+      case DOWN:
+        space.moveY(this, distance);
+        break;
+      case UP:
+        space.moveY(this, -distance);
+        break;
+      default:
+        break;
+    }
+
+    setX(board.getArea().clampX(getX(), getWidth()));
+    setY(Math.max(0, Math.min(getY(), board.getArea().getHeight() - (double) getHeight())));
+
+    pendingMove = null;
+    sprinting = false;
+    return this;
+  }
+
+  private List<BulanciPlayer> aliveOthers(BulanciBoard board) {
+    List<BulanciPlayer> others = new ArrayList<>();
+    for (BulanciPlayer candidate : board.getPlayers().values()) {
+      if (candidate != this && !candidate.isDead()) {
+        others.add(candidate);
+      }
+    }
+    return others;
+  }
+
+  @Override
+  public DamageResult applyAmmoDamage(int damage) {
+    if (isDead()) {
+      return DamageResult.none();
+    }
+
+    lives = lives - damage;
+    if (lives > 0) {
+      return DamageResult.absorbed(event("liveDecreased").asList());
+    }
+
+    lives = 0;
+    return DamageResult.lethal(event("death").asList());
+  }
+
+  /** An event about this player: who it is and where it stands. */
+  private GameRuleEvent event(String action) {
+    return new GameRuleEvent(action, getClass().getSimpleName(), playerId, this);
+  }
+
+  @JsonIgnore
+  public String getPlayerId() {
+    return playerId;
+  }
+
+  @JsonIgnore
+  public void setPlayerId(String playerId) {
+    this.playerId = playerId;
+  }
+
+  @JsonIgnore
+  public boolean isDead() {
+    return lives <= 0;
+  }
+
+  public int getSpeed() {
     return speed;
   }
 
-  public void setSpeed(Integer speed) {
+  public void setSpeed(int speed) {
     this.speed = speed;
   }
 
@@ -53,51 +157,21 @@ public class BulanciPlayer extends GameRectangle implements AmmoDamagable, Playe
     this.ammoList = ammoList;
   }
 
-  public Integer getLives() {
+  public int getLives() {
     return lives;
   }
 
-  public void setLives(Integer lives) {
+  public void setLives(int lives) {
     this.lives = lives;
   }
 
+  @Override
   public Direction getDirection() {
     return direction;
   }
 
+  @Override
   public void setDirection(Direction direction) {
     this.direction = direction;
-  }
-
-  @Override
-  public BulanciPlayer movePlayer(BulanciMove move, BulanciBoard bulanciBoard) {
-    //todo check for collision with wall or another players
-    //todo add sprint
-
-    if (move.getMove() == null) {
-      return this;
-    }
-
-    if (!move.getMove().equals(getDirection())) {
-      setDirection(move.getMove());
-      return this;
-    }
-
-    switch (move.getMove()) {
-      case RIGHT:
-        setX(getX() + (getSpeed() * SPRINT_KOEF));
-        break;
-      case LEFT:
-        setX(getX() - (getSpeed() * SPRINT_KOEF));
-        break;
-      case UP:
-        setY(getY() + (getSpeed() * SPRINT_KOEF));
-        break;
-      case DOWN:
-        setY(getY() - (getSpeed() * SPRINT_KOEF));
-        break;
-    }
-
-    return this;
   }
 }

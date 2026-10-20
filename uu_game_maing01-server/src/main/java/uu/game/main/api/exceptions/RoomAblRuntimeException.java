@@ -21,7 +21,10 @@ public final class RoomAblRuntimeException extends AppRuntimeException {
 
   public enum Error {
 
-    INVALID_DTO_IN(ErrorCode.application("uu-game-main/room/invalidDtoIn"), "DtoIn is not valid.");
+    INVALID_DTO_IN(ErrorCode.application("uu-game-main/room/invalidDtoIn"), "DtoIn is not valid."),
+    ROOM_DOES_NOT_EXIST(ErrorCode.application("uu-game-main/room/roomDoesNotExist"), "Room does not exist."),
+    NOT_ROOM_OWNER(ErrorCode.application("uu-game-main/room/notRoomOwner"), "Only the room owner may do this."),
+    NOT_ROOM_MEMBER(ErrorCode.application("uu-game-main/room/notRoomMember"), "Only players of the room may watch it.");
 
 
     private final ErrorCode code;
